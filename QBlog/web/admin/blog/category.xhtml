@@ -1,0 +1,71 @@
+<ui:composition
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:q="http://huliqing.name/qfaces"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/template/layout_blog.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="category" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/star.png" height="40" styleClass="alignM" />
+	文章分类
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <h:form>
+            <h:panelGroup layout="block" styleClass="padd">
+                <h:outputText value="新分类：" />
+                <h:inputText id="name" value="#{categoryWe.category.name}" styleClass="marginL"/>
+                <h:commandButton value="Submit" action="#{categoryWe.save}" styleClass="button marginL"/>
+                <q:validator for="name" required="true" messageError="需要填写名称!" displayFlag="false" />
+            </h:panelGroup>
+        </h:form>
+        <h:form>
+            <h:panelGroup layout="block" styleClass="padd marginT">
+                <q:scroller for="categorys" listener="#{categoryWe.loadData}" var="catetory"
+                            displayJump="false"
+                            sortFields=",name,sort">
+                    <h:dataTable id="categorys"
+                                 binding="#{categoryWe.uiCategorys}"
+                                 headerClass="header"
+                                 border="0"
+                                 width="100%"
+                                 styleClass="alignC dotted"
+                                 rowClasses="row1,row2"
+                                 columnClasses="oper,"
+                                 cellpadding="3">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="操作" />
+                            </f:facet>
+                            <h:commandLink action="#{categoryWe.delete}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
+                                <h:graphicImage url="/_res/image/button-delete.gif" />
+                            </h:commandLink>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="名称" />
+                            </f:facet>
+                            <h:outputText value="#{catetory.name}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="排序值" />
+                            </f:facet>
+                            <h:inputText value="#{catetory.sort}" />
+                        </h:column>
+                        <f:facet name="footer">
+                            <h:panelGroup>
+                                <h:commandButton value="批量更新" action="#{categoryWe.updateAll}" styleClass="floatL button"/>
+                            </h:panelGroup>
+                        </f:facet>
+                    </h:dataTable>
+                </q:scroller>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+a:link {color: #1F3A87;text-decoration: none;}
+a:visited {color: #1F3A87;text-decoration: none;}
+a:hover {color: #ff4d00;text-decoration: underline;}
+body {
+    margin:0 0;
+    font-family: Arial, sans-serif;
+    font-size:13px;
+    font-weight:normal;
+}
+form {margin:0 0;padding:0 0;}
+img {border:0;}
+/** textarea {border:1px solid #C9C5BE;vertical-align:top;} */
+.floatL {float:left;}
+.floatR {float:right;}
+.alignL {text-align:left;}
+.alignC {text-align:center;}
+.alignR {text-align:right;}
+.alignT {vertical-align:top;}
+.alignM {vertical-align:middle;}
+.marginLR {margin-left:5px; margin-right:5px;}
+.marginL {margin-left:10px;}
+.marginR {margin-right:10px;}
+.marginB {margin-bottom:5px;}
+.marginT {margin-top:5px;}
+.padd {padding:3px;}
+.clear {clear:both;}
+.gray {color:GRAY;}
+.red {color:RED;}
+.green {color:GREEN;}
+
+/* QBlog */
+.bold {font-weight: bold;}
+.header{background:#F6F6F6;border-bottom:1px solid #CED6DC;}
+.border {border:1px solid gray;}
+.dotted{border-bottom: 1px dotted #F0F0F0;}
+.button {width:120px;height:40px;}
+.row1 {background:#FFF;}
+.row2 {background:#F6F6F6;}
+.oper {width:60px;}
+.none {font-size: 0;height:0;overflow:hidden;}
+.actionPanel {max-width:400px;background: #F0F0F0;border:3px solid #C0C0C0;padding: 3px;text-align: left;line-height: 1.2;}
+.actionDate {color:blue;text-decoration: underline;}

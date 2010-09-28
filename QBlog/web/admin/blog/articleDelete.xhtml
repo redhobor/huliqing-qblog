@@ -1,0 +1,27 @@
+<ui:composition 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:q="http://huliqing.name/qfaces"
+                xmlns:g="http://huliqing.name/qblog"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/WEB-INF/template/layout_blog.xhtml">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="articleAdd" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/star.png" height="40" styleClass="alignM" />
+        删除文章
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <q:saveState value="#{articleDeleteWe.returnURL}" />
+        <h:outputText value="#{articleDeleteWe.result}" escape="false" /><br />
+
+        <h:outputLink value="#{articleDeleteWe.returnURL}" >
+            <h:outputText value="返回页面" />
+        </h:outputLink>
+    </ui:define>
+</ui:composition>

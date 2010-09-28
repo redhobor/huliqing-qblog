@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+    
+  <cron>
+    <url>/keepWorking.faces</url>
+    <description> Keep the app not to disabled </description>
+    <schedule>every 2 minutes</schedule>
+  </cron>
+
+  <cron>
+    <url>/task/</url>
+    <description> Execute Tasks </description>
+    <schedule>every 5 minutes</schedule>
+  </cron>
+
+  <!--cron>
+    <url>/test/</url>
+    <description> Execute Tasks </description>
+    <schedule>every 1 minutes</schedule>
+  </cron -->
+</cronentries>

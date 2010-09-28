@@ -1,0 +1,67 @@
+<ui:composition 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:q="http://huliqing.name/qfaces"
+                xmlns:g="http://huliqing.name/qblog"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/template/layout_photo.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="photoUpload" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/star.png" height="40" styleClass="alignM" />
+        图片上传
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <q:saveState value="#{photoUploadWe.folderId}" />
+        <q:saveState value="#{photoUploadWe.folders}" />
+        <q:saveState value="#{photoUploadWe.returnURL}" />
+
+        <!-- Import -->
+        <h:form id="myform" enctype="multipart/form-data" style="margin-top: 20px;" >
+            <h:panelGrid columns="2" headerClass="header" width="100%"
+                         styleClass="alignL"
+                         cellpadding="3"
+                         cellspacing="3">
+                <f:facet name="header">
+                    <h:outputText value="上传文件" />
+                </f:facet>
+
+                <h:outputText value="上传到" />
+                <h:panelGroup>
+                    <h:selectOneMenu id="folder" value="#{photoUploadWe.folderId}" >
+                        <f:selectItem itemValue="" itemLabel="" />
+                        <f:selectItems value="#{photoUploadWe.folders}" />
+                    </h:selectOneMenu>
+                    <q:validator for="folder" required="true" messageError="必须要选择一个相册" />
+                </h:panelGroup>
+
+                <h:outputText value="本地文件" />
+                <h:panelGroup>
+                    <g:fileUpload binding="#{photoUploadWe.uiFileUpload}" />
+                    <h:outputText value="不能大于1M" styleClass="gray" />
+                </h:panelGroup>
+
+                <h:outputText value="备注" />
+                <h:inputText value="#{photoUploadWe.des}" size="40" />
+
+                <ui:remove>
+                    <h:outputText value="压缩" />
+                    <h:selectBooleanCheckbox value="#{photoUploadWe.pack}" style="margin-left:0px;"/>
+                </ui:remove>
+
+                <h:panelGroup />
+                <h:panelGroup>
+                    <h:commandButton value="上传" action="#{photoUploadWe.upload}" style="width:100px;height:40px;" />
+                    <h:outputLink value="#{photoUploadWe.returnURL}" rendered="#{photoUploadWe.returnURL != null}" styleClass="marginL" >
+                        <h:outputText value="返回页面" />
+                    </h:outputLink>
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

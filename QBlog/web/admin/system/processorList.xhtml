@@ -1,0 +1,68 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:b="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="/WEB-INF/template/layout_system.xhtml">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="moduleList" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <img src="/_res/image/star.png" height="40" style="vertical-align:middle;" alt=""/>
+        渲染器列表
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <style type="text/css" >
+            .col1{width:100px;}
+            .col2{}
+            .col3{}
+        </style>
+
+        <h:form>
+            <h:outputText value="请选择相应的模块处理器，不同的模块处理器可以生成不同的模块。" styleClass="marginB gray" />
+            <q:scroller for="ps"
+                        listener="#{processorListWe.loadData}"
+                        var="p">
+                <h:dataTable id="ps"
+                             binding="#{processorListWe.uiData}"
+                             cellpadding="3"
+                             cellspacing="3"
+                             border="0"
+                             styleClass="dotted"
+                             headerClass="header"
+                             rowClasses="row2,row1"
+                             columnClasses="oper alignC,col1,,,,">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="选择" />
+                        </f:facet>
+                        <h:commandButton value="选择" action="#{processorListWe.selectProcessor}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="名称" />
+                        </f:facet>
+                        <h:outputText value="#{p.name}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="渲染器类" />
+                        </f:facet>
+                        <h:outputText value="#{p.type}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="描述" />
+                        </f:facet>
+                        <h:outputText value="#{p.description}" />
+                    </h:column>
+                </h:dataTable>
+            </q:scroller>
+        </h:form>
+    </ui:define>
+</ui:composition>

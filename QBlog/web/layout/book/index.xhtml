@@ -1,0 +1,40 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/layout/common.xhtml"> 
+    <ui:define name="header">
+        <link href="/layout/book/style.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            .top {
+                height: 318px;
+                background:url(/layout/book/o_bookTop1280.jpg) no-repeat;
+            }
+            .content {
+                background:url(/layout/book/o_bookBG1280.jpg) repeat-y;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="body">
+        <div class="top"></div>
+        <div class="content" style="width:1240px;border: 0px solid blue;">
+            <div style="border:0px solid red;float:left;width:810px;min-height:400px;margin-top: -270px;margin-left: 70px;">
+                <div> <ui:insert name="GROUP_HEADER" /> </div>
+                <div> <ui:insert name="GROUP_TOP" /> </div>
+                <div> <ui:insert name="GROUP_NAVIGATION" /> </div>
+                <div style="min-height:360px;"> <ui:insert name="GROUP_CONTENT" /> </div>
+                <div style="background:#CAD1D9; height: 3px; margin: 20px 0 10px 0;"></div>
+                <div> <ui:insert name="GROUP_FOOTER" /> </div>
+            </div>
+
+            <div style="border:0px solid green;float:right;width:250px;min-height:400px;margin-top:-260px;margin-right: 30px;">
+                <div> <ui:insert name="GROUP_MENU" /> </div>
+            </div>
+
+            <div style="clear:both;" />
+        </div>
+    </ui:define>
+</ui:composition>

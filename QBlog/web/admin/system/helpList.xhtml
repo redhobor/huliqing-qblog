@@ -1,0 +1,127 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="/WEB-INF/template/layout_system.xhtml">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="helpList" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <img src="/_res/image/star.png" height="40" style="vertical-align:middle;" alt=""/>
+        Help List
+    </ui:define>
+    <ui:define name="menuContent">
+        <style type="text/css">
+            .col1 {width:#{helpListWe.editable ? "60" : "120" }px;}
+            .col2 {width:#{helpListWe.editable ? "120" : "" }px;}
+        </style>
+        <q:saveState value="#{helpListWe.editable}" />
+        <h:outputLink value="/admin/system/helpAdd.faces" rendered="#{helpListWe.editable}">
+            <h:outputText value="Create Help" />
+        </h:outputLink>
+        <h:form>
+            <h:panelGroup layout="block" styleClass="padd marginT">
+                <q:scroller for="helps"
+                            listener="#{helpListWe.loadData}"
+                            var="help"
+                            displayJump="false"
+                            sortFields=",helpId,des">
+                    <h:dataTable id="helps"
+                                 binding="#{helpListWe.uiHelps}"
+                                 headerClass="header"
+                                 border="0"
+                                 width="100%"
+                                 styleClass="dotted"
+                                 rowClasses="row1,row2"
+                                 columnClasses="col1,col2,,"
+                                 cellpadding="3"
+                                 cellspacing="3">
+                        <h:column rendered="#{helpListWe.editable}">
+                            <f:facet name="header">
+                                <h:commandLink action="fix bug：多余的空格存在于首行edit与delete之间。" />
+                            </f:facet>
+                            <h:outputLink value="/admin/system/helpEdit.faces" styleClass="marginLR">
+                                <f:param name="helpId" value="#{help.helpId}" />
+                                <h:graphicImage url="/_res/image/button-edit.gif" />
+                            </h:outputLink>
+                            <h:commandLink action="#{helpListWe.delete}"
+                                onclick="return confirm('#{text['p.toDelete']}');"
+                                styleClass="marginLR">
+                                <h:graphicImage url="/_res/image/button-delete.gif" />
+                            </h:commandLink>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="HELP ID" />
+                            </f:facet>
+                            <h:outputLink id="helpLink" value="javascript:void(0)" onclick="findHelp(this.innerHTML, this.id)">
+                                <h:outputText value="#{help.helpId}"/>
+                            </h:outputLink>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="DES" />
+                            </f:facet>
+                            <h:inputText  rendered="#{helpListWe.editable}" value="#{help.des}" style="width:99%" />
+                            <h:outputText rendered="#{!helpListWe.editable}" value="#{help.des}" style="width:99%" />
+                        </h:column>
+                    </h:dataTable>
+                </q:scroller>
+                <h:panelGroup rendered="#{helpListWe.editable}">
+                    <h:commandButton value="批量更新" action="#{helpListWe.updateAll}" styleClass="marginT"/>
+                    <h:commandButton value="导出" action="#{helpListWe.export}" styleClass="marginL marginT"/>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:form>
+
+        <!-- Show Help Message -->
+        <h:inputHidden id="tempHelpId" />
+        <h:inputHidden id="tempHelpLinkId" />
+        <q:ajaxSupport id="ajaxSupport" for="helpPanel" ref="tempHelpId" listener="#{helper.listenerForAjaxSupport}"
+                       onStart="Q.F.loading()"
+                       onFinish="findOnFinish()"
+                       />
+        <q:dynFrame id="helpFrame" headerId="frameHeader" visible="false" drag="true" shade="false" >
+            <h:panelGrid border="0" columns="1" width="400">
+                <h:panelGroup layout="block" id="helpPanel" />
+            </h:panelGrid>
+        </q:dynFrame>
+        <script type="text/javascript">
+            function findHelp(helpId, linkId) {
+                Q.get("tempHelpId").value = helpId;
+                Q.get("tempHelpLinkId").value = linkId;
+                Q.F.find('ajaxSupport').ajaxInvoke();
+            }
+            function findOnFinish() {
+                var helpLink = Q.get(Q.get("tempHelpLinkId").value);
+                var p = Q.U.getPosition(helpLink);
+                Q.get('frameHeader').innerHTML = Q.get('tempHelpId').value;
+                Q.F.find('helpFrame').moveTo(p.x + 120, p.y - 5, 100);
+                Q.F.loading(false);
+            }
+        </script>
+
+        <!-- Import -->
+        <h:form id="myForm" enctype="multipart/form-data" style="margin-top: 20px;" rendered="#{helpListWe.editable}" >
+            <h:panelGrid columns="1" headerClass="header" width="100%"
+                         styleClass="alignL"
+                         cellpadding="3"
+                         cellspacing="3">
+                <f:facet name="header">
+                    <h:outputText value="导入" />
+                </f:facet>
+                <h:panelGroup>
+                    <g:fileUpload id="myFile" binding="#{helpListWe.uiFileUpload}" />
+                    <h:commandButton value="Import" action="#{helpListWe.importHelp}" />
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

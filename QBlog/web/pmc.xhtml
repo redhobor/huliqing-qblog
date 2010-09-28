@@ -1,0 +1,68 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:q="http://huliqing.name/qfaces"
+     xmlns:g="http://huliqing.name/qblog"
+     xmlns:f="http://java.sun.com/jsf/core">
+    <script type="text/javascript" language="javascript" src="/_res/js/pmc.js" ></script>
+    <h:form id="pmcForm">
+        <!-- 为防止配置过程中pageId丢失，这个hidden是必须的,否则在回传过程pageId丢失而会造成找不到layout的错误 -->
+        <input type="hidden" name="pageId" value="#{pmcWe.pageId}" />
+        <input type="hidden" name="layout" value="#{pmcWe.layout}" />
+        <q:dynFrame id="configFrame" drag="true" center="true"
+                    labelHeader="QBlog 页面配置" 
+                    visible="true"
+                    renderCloseButton="false">
+            <!-- Config 面板 -->
+            <h:panelGrid columns="2" border="0" 
+                         columnClasses="alignT,alignT"
+                         headerClass="alignL"
+                         style="max-width: 600px;">
+                <f:facet name="header">
+                    <h:selectOneMenu value="#{pmcWe.layout}" onchange="changeLayout(this.value, '#{pmcWe.pageId}');" >
+                        <f:selectItem itemValue="" itemLabel="切换模版" itemDisabled="true" />
+                        <f:selectItems value="#{pmcWe.layouts}" />
+                    </h:selectOneMenu>
+                </f:facet>
+                <q:miniDataTable search="#{pmcWe.loadModules}"
+                                 alwaysShow="true"
+                                 showOpenButton="false"
+                                 columnClasses="dotted"
+                                 pageSize="8"
+                                 width="230"
+                                 displayPage="5"/>
+                <h:panelGroup>
+                    <div id="ajaxModulePanel"><!-- The id "modulePanel couldn't be change." --></div>
+                </h:panelGroup>
+                <f:facet name="footer">
+                    <h:panelGroup>
+                        <h:commandButton value="保存配置" 
+                                         action="#{pmcWe.saveConfig}"
+                                         onclick="return submitConfig();"
+                                         style="width:120px;height: 40px;margin-top: 20px;" />
+                        <div class="gray" style="padding:5px;background: #F0F0F0;" >
+                            <div> * 生成预览 - 点击获取模块，将模块拖动并部署到相应区域，记得“保存配置”</div>
+                            <div> * 模版 - 切换模版预览后，记得“保存配置” </div>
+                            <div> * 备份 - 将满意的配置备份起来，多个备份配置间随意切换，一键搞定。 更多 <g:help helpId="BackupNotice" visible="false" /> </div>
+                            <div> * 浏览器 - 配置时推荐的优先顺序：FireFox,Opera,IE,Chrome,Safari(Chrome,Safari预览效果较差) </div>
+                        </div>
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+
+            <!-- 保存各Group的配置信息 -->
+            <h:inputHidden id="configValue" value="#{pmcWe.configValue}" />
+        </q:dynFrame>
+    </h:form>
+    <script type="text/javascript" language="javascript">
+        // change layout
+        function changeLayout(layout, pageId) {
+            window.location.href = "/page/pageId=" + pageId + ",layout=" + layout + ",editable=true";
+        }
+
+        // Update Config
+        AjaxModule.Manager.initAllGroup();
+        function submitConfig() {
+            Q.get("pmcForm:configValue").value = AjaxModule.Manager.collectGroupConfigAll();
+            return true;
+        }
+    </script>
+</div>

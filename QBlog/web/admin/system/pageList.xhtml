@@ -1,0 +1,88 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="/WEB-INF/template/layout_system.xhtml">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="pageList" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <img src="/_res/image/star.png" height="40" style="vertical-align:middle;" alt=""/>
+        页面列表
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <h:outputLink value="/admin/system/pageAdd.faces">
+            <h:outputText value="创建新页面" />
+        </h:outputLink>
+        <h:form>
+            <q:scroller for="pages"
+                        listener="#{pageListWe.loadData}"
+                        var="page"
+                        displayJump="false">
+                <h:dataTable id="pages"
+                             binding="#{pageListWe.uiPages}"
+                             headerClass="header"
+                             border="0"
+                             width="100%"
+                             styleClass="dotted"
+                             rowClasses="row1,row2"
+                             columnClasses="oper,alignL,alignC,alignC"
+                             cellpadding="3">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="操作" />
+                            <h:commandLink action="fix bug：多余的空格存在于首行edit与delete之间。" />
+                        </f:facet>
+                        <h:outputLink value="/admin/system/pageEdit.faces" styleClass="marginLR">
+                            <f:param name="pageId" value="#{page.pageId}" />
+                            <h:graphicImage url="/_res/image/button-edit.gif" />
+                        </h:outputLink>
+                        <h:commandLink action="#{pageListWe.delete}"
+                                       onclick="return confirm('#{text['p.toDelete']}');"
+                                       styleClass="marginLR">
+                            <h:graphicImage url="/_res/image/button-delete.gif" />
+                        </h:commandLink>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="标题" />
+                        </f:facet>
+                        <h:inputText id="name" value="#{page.name}" required="true" requiredMessage="必填的"/>
+                        <h:message for="name" styleClass="red" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="模版" />
+                        </f:facet>
+                        <h:inputText value="#{page.layout}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="激活的" />
+                        </f:facet>
+                        <h:selectBooleanCheckbox value="#{page.enabled}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="排序值" />
+                        </f:facet>
+                        <h:inputText value="#{page.sort}" style="width:40px;text-align:center;" />
+                    </h:column>
+
+                    <f:facet name="footer">
+                        <h:commandButton value="批量更新" action="#{pageListWe.updateAll}" styleClass="button"/>
+                    </f:facet>
+                </h:dataTable>
+            </q:scroller>
+        </h:form>
+    </ui:define>
+</ui:composition>

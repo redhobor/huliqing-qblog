@@ -1,0 +1,19 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template/common.xhtml">
+    <ui:define name="title"> Notice </ui:define>
+
+    <ui:define name="body">
+        <q:dynFrame center="true" labelHeader="Message" shade="true" >
+            <div style="width:500px;padding:5px;">
+                <h1 class="red"> 系统提示： </h1>
+                <div style="text-indent: 2.0em;line-height: 2.0;">
+                    <h:outputText value="#{param.message}" escape="false"/>
+                </div>
+            </div>
+        </q:dynFrame>
+    </ui:define>
+</ui:composition>

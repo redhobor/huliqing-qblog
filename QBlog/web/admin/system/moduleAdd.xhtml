@@ -1,0 +1,85 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="/WEB-INF/template/layout_system.xhtml">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="moduleList" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <img src="/_res/image/star.png" height="40" class="alignM" alt=""/>
+        Module Add
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <style type="text/css">
+            .col1{width:120px;text-align:right;}
+            .col2{width:350px;}
+            .col3{}
+        </style>
+        <h:form>
+            <q:saveState value="#{moduleEditWe.module}" />
+            <q:saveState value="#{moduleEditWe.processorName}" />
+            <q:saveState value="#{moduleEditWe.attrs}" />
+
+            <h:panelGrid columns="3"
+                         border="0"
+                         width="100%"
+                         columnClasses="col1,col2,col3"
+                         rowClasses="row1,row2"
+                         cellpadding="3"
+                         cellspacing="3">
+                <h:outputLabel for="name" value="模块名称*" />
+                <h:inputText id="name" value="#{moduleEditWe.module.name}" />
+                <q:validator for="name" required="true" displayFlag="false" message="填写模块名称,必须填写的!"/>
+
+                <h:outputLabel for="displayName" value="显示名称" />
+                <h:selectBooleanCheckbox id="displayName" value="#{moduleEditWe.module.displayName}" style="margin-left:0px;"/>
+                <h:outputText styleClass="gray" value="是否在运行时显示名称，某些模块可能不希望在运行时显示模块名称，如导航栏模块。" />
+
+                <h:outputLabel for="autoStyle" value="自动样式" />
+                <h:selectBooleanCheckbox id="autoStyle" value="#{moduleEditWe.module.autoStyle}" style="margin-left:0px;"/>
+                <h:outputText styleClass="gray" value="是否使用来自模版文件的样式定义Module的标题及内容." />
+
+                <h:outputLabel for="enabled" value="启用" />
+                <h:selectBooleanCheckbox id="enabled" value="#{moduleEditWe.module.enabled}" style="margin-left:0px;"/>
+                <h:outputText styleClass="gray" value="是否启用该模块，只有启用，该模块才会在页面上显示。否则不管您把这个模块配置到那一个页面，该模块都不会显示。" />
+
+            </h:panelGrid>
+
+            <g:attribute binding="#{moduleEditWe.uiAttrs}" value="#{moduleEditWe.attrs}" />
+
+            <h:panelGrid columns="3"
+                         border="0"
+                         width="100%"
+                         columnClasses="col1,col2,col3"
+                         rowClasses="row2,row1"
+                         cellpadding="3"
+                         cellspacing="3">
+                <h:outputLabel for="des" value="备注" />
+                <h:inputTextarea id="des" value="#{moduleEditWe.module.des}" style="width:99%;height:100px;" />
+                <h:outputText styleClass="gray" value="简单备注：这可以帮助您更好的记住该模块的作用。" />
+            </h:panelGrid>
+
+            <h:panelGrid columns="2" columnClasses="col1,col2"
+                         border="0"
+                         cellpadding="3"
+                         cellspacing="3">
+                <h:panelGroup />
+                <h:panelGroup>
+                    <ui:insert name="actions">
+                        <h:commandButton value="创建模块" action="#{moduleEditWe.createModule}" styleClass="button"/>
+                        <h:outputLink value="processorList.faces" styleClass="marginL">
+                            <h:outputText value="返回渲染器列表" />
+                        </h:outputLink>
+                    </ui:insert>
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

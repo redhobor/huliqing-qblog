@@ -1,0 +1,81 @@
+<ui:composition 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:q="http://huliqing.name/qfaces"
+                xmlns:g="http://huliqing.name/qblog"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/template/layout_blog.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="articleBackup" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/star.png" height="40" styleClass="alignM" />
+        文章备份及恢复
+    </ui:define>
+
+    <ui:define name="menuContent">
+
+        <!-- Export -->
+        <h:form>
+            <h:panelGrid columns="2" border="0" headerClass="header alignL"
+                         cellpadding="3"
+                         cellspacing="3"
+                         rowClasses="row1,row2"
+                         width="100%">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="文章备份" />
+                        <g:help helpId="BackupArticle" />
+                    </h:panelGroup>
+                </f:facet>
+
+                <h:outputLabel for="articles" value="备份文章" />
+                <h:selectBooleanCheckbox id="articles" value="#{articleBackupWe.backupArticles}" />
+
+                <h:outputLabel for="replies" value="备份评论" />
+                <h:selectBooleanCheckbox id="replies" value="#{articleBackupWe.backupReplies}" />
+
+                <h:outputLabel for="tags" value="备份标签" />
+                <h:selectBooleanCheckbox id="tags" value="#{articleBackupWe.backupTags}" />
+
+                <h:outputText value="日期范围" />
+                <h:panelGroup>
+                    <q:calendar renderAsPop="true" value="#{articleBackupWe.startDate}" style="width:115px;" labelHeader="开始日期" />
+                    <span style="margin:0 1px;"> - </span>
+                    <q:calendar renderAsPop="true" value="#{articleBackupWe.endDate}" style="width:115px;" labelHeader="结束日期"/>
+                </h:panelGroup>
+
+                <h:outputLabel for="backupName" value="备份名称" />
+                <h:panelGroup>
+                    <h:inputText id="backupName" value="#{articleBackupWe.backupName}" size="40" />
+                    <q:validator for="backupName" required="true" messageError="请填写一个备份名称" displayFlag="false" />
+                </h:panelGroup>
+
+                <h:panelGroup />
+                <h:commandButton value="导出数据" action="#{articleBackupWe.backup}" />
+            </h:panelGrid>
+        </h:form>
+
+        <!-- Import -->
+        <h:form id="myform" enctype="multipart/form-data" style="margin-top: 20px;" >
+            <h:panelGrid columns="1" headerClass="header" width="100%"
+                         styleClass="alignL"
+                         cellpadding="3"
+                         cellspacing="3">
+                <f:facet name="header">
+                    <h:panelGroup>
+                        <h:outputText value="导入备份文件" />
+                        <g:help helpId="RestoreArticle" />
+                    </h:panelGroup>
+                </f:facet>
+                <h:panelGroup>
+                    <g:fileUpload binding="#{articleBackupWe.uiFileUpload}" />
+                    <h:commandButton value="Import" action="#{articleBackupWe.importBackup}" />
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

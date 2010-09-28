@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="pmc.xhtml" x="900" y="900" zoom="true"/>
+        <Node id="admin/file/folderAdd.xhtml" x="1900" y="150" zoom="true"/>
+        <Node id="footer.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="page.xhtml" x="1150" y="750" zoom="true"/>
+        <Node id="layout/book/index.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="admin/system/helpAdd.xhtml" x="2150" y="300" zoom="true"/>
+        <Node id="admin/file/fileUpload.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="admin/system/start.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="admin/blog/tagList.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="admin/blog/articleList.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="admin/system/account.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="admin/blog/articleEdit.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="admin/system/moduleEdit.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="admin/blog/articleBackup.xhtml" x="400" y="1200" zoom="true"/>
+        <Node id="admin/system/pageEdit.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="admin/system/helpList.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="passwordReset.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="admin/system/password.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="_res/help/noticeInFirstDeploy.html" x="900" y="600" zoom="true"/>
+        <Node id="admin/system/moduleAdd.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="articles.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="admin/file/folderList.xhtml" x="150" y="900" zoom="true"/>
+        <Node id="layout/default/index.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="login.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="admin/system/processorList.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="admin/blog/category.xhtml" x="150" y="1350" zoom="true"/>
+        <Node id="passwordRetrive.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="task.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="admin/system/pageAdd.xhtml" x="2150" y="150" zoom="true"/>
+        <Node id="admin/system/backup.xhtml" x="650" y="900" zoom="true"/>
+        <Node id="admin/system/settings.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="admin/file/folderEdit.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="layout/common.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="rss.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="admin/system/moduleList.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="article.xhtml" x="1400" y="600" zoom="true"/>
+        <Node id="admin/blog/articleAdd.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="admin/system/pageList.xhtml" x="400" y="1050" zoom="true"/>
+        <Node id="menu.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="admin/system/helpEdit.xhtml" x="2400" y="150" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

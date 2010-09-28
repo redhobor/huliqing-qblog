@@ -1,0 +1,43 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template/layout_photo.xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="folderList" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/star.png" height="40" styleClass="alignM"/>
+        图片 - #{photoListWe.folder.name}
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <q:saveState value="#{photoListWe.folder}" />
+
+        <h:outputLink value="/admin/photo/photoUpload.faces" rendered="#{param.folderId != null}">
+            <f:param name="folderId" value="#{photoListWe.folder.folderId}" />
+            <f:param name="returnURL" value="#{app.currentURL}" />
+            <h:outputText value="上传图片" />
+        </h:outputLink>
+        <h:outputLink value="/admin/photo/photoUpload.faces" rendered="#{param.folderId == null}">
+            <f:param name="folderId" value="#{photoListWe.folder.folderId}" />
+            <f:param name="returnURL" value="#{app.currentURL}&amp;folderId=#{photoListWe.folder.folderId}" />
+            <h:outputText value="上传图片" />
+        </h:outputLink>
+
+        <h:form>
+            <q:scroller for="photos"
+                        listener="#{photoListWe.loadData}"
+                        displayJump="false"
+                        face="1"
+                        pageSize="18"
+                        >
+                <g:photoDataTable id="photos" columns="6" />
+            </q:scroller>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,84 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template/common.xhtml">
+    <ui:define name="title">QBlog 系统登录</ui:define>
+
+    <ui:define name="body">
+        <style type="text/css">
+            body {background:url(/_res/image/bg-01.gif);}
+            .col1 {width:80px;}
+            .th {margin:0;padding:0;}
+        </style>
+        
+        <div style="height:5px;background:orange;margin-top:100px;"/>
+
+        <!-- Login Form -->
+        <div style="background:white;padding:10px;">
+            <h:form id="loginForm">
+                <q:saveState value="#{loginWe.returnURL}" />
+
+                <h:panelGrid columns="1" border="0" style="width:600px;margin:10px auto;">
+                    <h:panelGroup layout="block" style="color:orange;font-weight: bold;font-size: 1.5em;margin:0 0 0 10px;" >
+                        <h:outputText value="QBlog 系统登录" />
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" style="margin-left:10px;">
+                        <h:outputText value="Notice: Demo版本,您可以使用以下帐号来登录：" rendered="#{app.demo}" /><br />
+                        <h:outputText value="帐号：admin " rendered="#{app.demo}" />
+                        <h:outputText value="密码：admin " rendered="#{app.demo}" />
+                    </h:panelGroup>
+
+                    <h:panelGrid columns="2" border="0" width="100%" style="margin-top:10px;" >
+                        <h:graphicImage url="/_res/image/login.jpg" height="150" />
+                        <h:panelGrid border="0"
+                                     columns="2"
+                                     width="400"
+                                     cellpadding="5"
+                                     cellspacing="5"
+                                     styleClass="alignL"
+                                     headerClass="th"
+                                     columnClasses="alignR col1,,"
+                                     style="border-left:1px dotted gray;">
+                            <f:facet name="header">
+                                <h:messages showDetail="true" globalOnly="true" styleClass="red" />
+                            </f:facet>
+
+                            <h:outputText value="登录帐号" />
+                            <h:panelGroup>
+                                <h:inputText id="accountId" value="#{loginWe.account.account}" style="width:150px;" autocomplete="off" />
+                                <q:validator for="accountId" required="true" messageError="请填写用户帐号" displayFlag="false"/>
+                            </h:panelGroup>
+
+                            <h:outputText value="登录密码" />
+                            <h:panelGroup>
+                                <h:inputSecret id="password" value="#{loginWe.account.password}" style="width:150px;" autocomplete="off"/>
+                                <q:validator for="password" required="true" messageError="请填写用户密码" displayFlag="false"/>
+                            </h:panelGroup>
+
+                            <h:outputLabel for="keepLogin" value="记住登录" />
+                            <h:selectBooleanCheckbox id="keepLogin" value="#{loginWe.keepLogin}" tabindex="-1" style="margin:0;"/>
+
+                            <h:panelGroup />
+                            <h:commandButton action="#{loginWe.login}" style="background:url(/_res/image/key.gif);width:48px;height:48px;" />
+
+                            <h:panelGroup />
+                            <h:outputLink value="/passwordRetrive.faces" >
+                                <h:outputText value="忘记密码?" />
+                            </h:outputLink>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <div style="height:5px;background:orange;"/>
+
+        <script type="text/javascript">
+            document.getElementById("loginForm:accountId").focus();
+        </script>
+
+    </ui:define>
+</ui:composition>

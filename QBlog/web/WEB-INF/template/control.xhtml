@@ -1,0 +1,91 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/WEB-INF/template/common.xhtml">
+    <ui:define name="title">QBlog 控制面板</ui:define>
+    <ui:define name="body">
+        <script type="text/javascript" src="/_res/js/tab.js"></script>
+        <style type="text/css" >
+            body{background:#C0C0C0;}
+        </style>
+        <!-- 用于定义当前所在的tab -->
+        <ui:insert name="tabName" />
+        <ui:insert name="subTabName" />
+
+        <!-- Header -->
+        <div style="height:30px;"></div>
+
+        <!-- Tab List -->
+        <div id="p_tabs" style="width:900px;">
+            <div id="/admin/blog/articleAdd.faces"> Blog文章 </div>
+            <div id="/admin/photo/folderList.faces"> 我的相册 </div>
+            <div id="/admin/system/pageList.faces"> 系统设置 </div>
+            <div id="javascript:alert('未开发')" > 统计信息 </div>
+            <div id="clear"/>
+        </div>
+        <script type="text/javascript">loadTabEvent("p_tabs", '#{tabName}');</script>
+
+        <!-- Tab Content -->
+        <table border="0" width="100%" style="background:white;">
+            <tbody>
+                <tr>
+                    <td valign="top" style="width:150px;">
+                        <div style="margin:30px -7px 0 0;overflow: hidden;">
+                            <div id="p_menus" style="margin:0 -3px 0 0;">
+                                <ui:insert name="menus" />
+                            </div>
+                        </div>
+                        <script type="text/javascript" src="/_res/js/subTab.js" ></script>
+                        <script type="text/javascript">loadTabEvent("p_menus", '#{subTabName}');</script>
+                        <div style="float:right;overflow: hidden;margin-right: -5px;">
+                            <div style="margin-top:-20px;">
+                                <script type="text/javascript"><!--
+                                    google_ad_client = "pub-0155192758955646";
+                                    /* 120x240, 创建于 10-8-15 */
+                                    google_ad_slot = "5182554055";
+                                    google_ad_width = 120;
+                                    google_ad_height = 240;
+                                    //-->
+                                    </script>
+                                    <script type="text/javascript"
+                                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                                </script>
+                            </div>
+                        </div>
+                    </td>
+                    <td valign="top">
+                        <div style="border-left:3px solid #CAD1D9;margin:10px 0;padding:10px;min-height: 500px;">
+                            <div class="bold">
+                                <ui:insert name="menuTitle" />
+                                <div style="overflow: hidden;">
+                                    <div style="border:0;margin-left: -120px;">
+                                        <script type="text/javascript">
+                                            <!--
+                                            google_ad_client = "pub-0155192758955646";
+                                            /* 728x15, 创建于 10-8-1 */
+                                            google_ad_slot = "2921691708";
+                                            google_ad_width = 700;
+                                            google_ad_height = 15;
+                                        //-->
+                                        </script>
+                                        <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="border-bottom:3px solid #CAD1D9;margin:5px 0;"/>
+                            <div>
+                                <h:messages globalOnly="true" showDetail="true" infoClass="green" errorClass="red"/>
+                                <ui:insert name="menuContent" />
+                            </div>
+                        </div>
+                     </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="height:3px;background: #CAD1D9;" />
+        <div style="text-align:center;margin-top:10px;"><ui:include src="/footer.xhtml" ></ui:include></div>
+        
+    </ui:define>
+</ui:composition>
