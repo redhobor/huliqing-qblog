@@ -1,0 +1,111 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/page.xhtml">
+    <ui:define name="title">#{articleWe.article.title}</ui:define>
+    <ui:define name="GROUP_CONTENT">
+        <script type="text/javascript" src="/_res/js/article.js" ></script>
+        <q:saveState value="#{articleWe.article}" />
+        <h:inputHidden id="re_articleId" value="#{articleWe.article.articleId}" />
+        <h:inputHidden id="re_replyId" />
+
+        <div style="padding: 5px;">
+            <div class="css_article_title">
+                <h:outputText value="#{articleWe.article.title}" />
+            </div>
+
+            <div class="css_article_content">
+                <h:outputText value="#{articleWe.article.content}" escape="false">
+                        <f:converter converterId="converter.TextConverter" />
+                </h:outputText>
+            </div>
+
+            <!-- Split line-->
+            <div style="color:gray;margin-top:10px;padding:3px;border-bottom:1px solid #C0C0C0;">
+                <h:form>
+                    <h:panelGroup rendered="#{visitor.login}" >
+                        <h:outputText value="发表于：" />
+                        <h:outputText value="#{articleWe.article.createDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+                        </h:outputText>
+
+                        <h:outputText value="阅读:#{articleWe.article.totalView}" styleClass="marginLR" />
+                        <h:outputText value="评论:#{articleWe.article.totalReply}" styleClass="marginLR" />
+
+                        <h:outputLink value="/admin/blog/articleEdit.faces" styleClass="marginLR">
+                            <f:param name="articleId" value="#{articleWe.article.articleId}" />
+                            <h:outputText value="编辑" styleClass="gray"/>
+                        </h:outputLink>
+
+                        <h:commandLink action="#{articleWe.deleteArticle}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
+                            <h:outputText value="删除" styleClass="gray" />
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:form>
+            </div>
+
+            <!-- Reply List-->
+
+            <a name="p_replies" />
+            <div>
+                <q:miniDataTable id="replies"
+                                ref="re_articleId"
+                                search="#{articleWe.loadReplies}"
+                                pageSize="10"
+                                displayPage="6"
+                                alwaysShow="true"
+                                showOpenButton="false"
+                                alwaysShowScroller="false"
+                                displayInfo="true"
+                                scrollerOn="both">
+                </q:miniDataTable>
+                <q:ajaxSupport id="deleter"
+                        ref="re_replyId"
+                        listener="#{articleWe.deleteReply}"
+                        onStart="return confirm('Are you sure to delete this record?');"
+                        onFinish="deleteReplyOnFinish();Q.F.find('replies').toSearch();">
+                </q:ajaxSupport>
+            </div>
+
+            <!-- Reply -->
+
+            <a name="p_reply" />
+            <h:panelGroup rendered="#{articleWe.replyable}">
+                <h:panelGrid border="0"
+                        width="100%"
+                        columns="2"
+                        columnClasses="reply_col1,reply_col2"
+                        cellspacing="0"
+                        cellpadding="3">
+                        <h:outputText value="标题" />
+                        <h:inputText id="re_title" value="RE:#{articleWe.article.title}" style="width:100%;"/>
+
+                        <h:outputText value="姓名" />
+                        <h:inputText id="re_replyBy" value="#{articleWe.defaultName}" style="width:100%;"/>
+
+                        <h:outputText value="邮件" />
+                        <h:inputText id="re_email" value="#{articleWe.defaultEmail}" style="width:100%;"/>
+
+                        <h:outputText value="内容" />
+                        <h:panelGroup>
+                            <h:inputTextarea id="re_content" style="height:150px;width:100%;"/>
+                            <q:validator for="re_content" required="true" messageError="请填写内容" displayFlag="false" />
+                        </h:panelGroup>
+
+                        <h:panelGroup />
+                        <q:ajaxSupport eventButton="submitReply"
+                                ref="re_articleId, re_replyId, re_title, re_replyBy, re_email, re_content"
+                                listener="#{articleWe.saveOrUpdateReply}"
+                                onStart="return replyOnStart('re_title', 're_replyBy', 're_email', 're_content');"
+                                onFinish="replyOnFinish('re_content', 're_replyId');Q.F.find('replies').toSearch();">
+                            <h:commandButton id="submitReply" value="Submit" style="width:80px;" type="button"/>
+                        </q:ajaxSupport>
+                </h:panelGrid>
+            </h:panelGroup>
+
+        </div>
+    </ui:define>
+</ui:composition>

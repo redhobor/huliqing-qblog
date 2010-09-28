@@ -1,0 +1,16 @@
+<br />
+<div style="MARGIN-LEFT: 40px">注：对于首次部署QBlog系统,全部功能正常运行之前可能需要等待一定时间，这个时间可能需要
+<strong><font color="red">几分钟到</font><span style="COLOR: red; FONT-WEIGHT: bold">1~2</span></strong>
+个小时不等，这个时间主要是等待AppEngine服务器完成所有索引的创建。<br />
+您也可以打开您的
+<a style="COLOR: blue; TEXT-DECORATION: underline" href="https://appengine.google.com/" target="_blank">
+    AppEngine控制台
+</a>
+来查看相关索引的部署情况，打开控制台的 "<span style="COLOR: red">Datastore Indexes</span>"，
+如下图所示（红框部分为重点）， 查看右边的所有实体的索引，当您看到所有处于
+<span style="COLOR: red; FONT-WEIGHT: bold">building</span>
+状态的索引变为“
+<span style="COLOR: red; FONT-WEIGHT: bold">Serving</span>
+”时，QBlog才能完整正常运行。这期间程序的运行可能会出现点击后空白页的问题，这是正常现象，请等待索引的部署。
+如果您发现其它问题请Email与我： huliqing.cn@gmail.com<br /></div><br /> 
+<div style="TEXT-ALIGN: center"><img alt="indexes" src="/_res/help/gae-index.jpg" /><br /></div>

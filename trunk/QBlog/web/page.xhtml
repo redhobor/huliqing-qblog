@@ -1,0 +1,45 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/layout/#{pageWe.layout}/index.xhtml">
+    <ui:define name="title">#{pageWe.title}</ui:define>
+    
+    <ui:define name="state">
+        <q:saveState value="#{pageWe.pageId}" />
+        <q:saveState value="#{pageWe.layout}" />
+        <q:saveState value="#{pageWe.editable}" />
+    </ui:define>
+
+    <ui:define name="GROUP_HEADER">
+         <g:moduleGroup id="HEADER" pageId="#{pageWe.pageId}" />
+    </ui:define>
+ 
+    <ui:define name="GROUP_TOP">
+        <g:moduleGroup id="TOP" pageId="#{pageWe.pageId}" />
+    </ui:define>
+
+    <ui:define name="GROUP_NAVIGATION">
+        <g:moduleGroup id="NAVIGATION" pageId="#{pageWe.pageId}" />
+    </ui:define>
+
+    <ui:define name="GROUP_MENU">
+        <g:moduleGroup id="MENU" pageId="#{pageWe.pageId}" />
+    </ui:define>
+
+    <ui:define name="GROUP_CONTENT">
+        <g:moduleGroup id="CONTENT" pageId="#{pageWe.pageId}" />
+    </ui:define>
+
+    <ui:define name="GROUP_FOOTER"> 
+        <g:moduleGroup id="FOOTER" pageId="#{pageWe.pageId}" />
+    </ui:define>
+
+    <ui:define name="pmc">
+        <h:panelGroup rendered="#{pageWe.editable}">
+            <ui:include src="/pmc.xhtml" />
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

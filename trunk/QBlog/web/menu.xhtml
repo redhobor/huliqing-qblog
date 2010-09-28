@@ -1,0 +1,65 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:q="http://huliqing.name/qfaces"
+         xmlns:g="http://huliqing.name/qblog">
+    <script type="text/javascript" >
+        var _moving = false;
+        function qmOnMouseover() {
+            if (_moving) {return;}
+            _moving = true;
+            Q.get('qblog-menu').src = "/_res/image/qblog-menu-on.png";
+            Q.F.find('qblog-manager-frame').moveTo(25, -5, 50, function(){_moving = false;});
+        }
+        function qmOnMouseout() {Q.get('qblog-menu').src = "/_res/image/qblog-menu-off.png";}
+    </script>
+    <script type="text/javascript" src="/_res/js/manager.js" language="javascript"></script>
+
+    <img style="position: fixed;z-index: 9999;left:-2px;top:-2px;" id="qblog-menu" src="/_res/image/qblog-menu-off.png" usemap="#qblog-menu" alt="" border="0" />
+    <map id="qblog-menu" name="qblog-menu">
+        <area shape="polygon" coords="0,0,50,0,0,50" onmousemove="qmOnMouseover();" onmouseout="qmOnMouseout();" style="cursor:pointer" alt="" />
+    </map>
+
+    <h:form id="menuForm">
+        <q:dynFrame id="qblog-manager-frame"
+                    labelHeader="QBlog Menu"
+                    visible="false"
+                    cssPosition="fixed"
+                    onClose="Q.F.find('qblog-manager-frame').moveTo(-500, -5);return false;">
+            <h:panelGrid columns="7" border="0"  cellpadding="3" cellspacing="3" styleClass="alignC">
+                <h:selectOneMenu id="language" value="#{language.locale}" onchange="javascript:changeLanguage(this);">
+                    <f:selectItems value="#{language.localeList}" />
+                </h:selectOneMenu>
+
+                <h:outputLink value="/">
+                    <h:outputText value="#{text['p.menu.home']}" styleClass="gray" />
+                </h:outputLink>
+
+                <h:outputLink rendered="#{!visitor.login}" value="/login.faces">
+                    <f:param name="returnURL" value="#{app.currentURL}" />
+                    <h:outputText value="#{text['p.menu.login']}" styleClass="gray"/>
+                </h:outputLink>
+
+                <h:outputLink rendered="#{visitor.login}" value="/admin/blog/articleAdd.faces" >
+                    <h:outputText value="#{text['p.menu.manage']}" styleClass="gray"/>
+                </h:outputLink>
+
+                <h:outputLink rendered="#{visitor.login}" value="?editable=true">
+                    <h:outputText value="#{text['p.menu.config']}" styleClass="gray" />
+                </h:outputLink>
+
+                <h:outputLink rendered="#{visitor.login}" value="/login.faces" onclick="return confirm('#{text['p.menu.toLogout']}');" >
+                    <h:outputText value="#{text['p.menu.logout']}" styleClass="gray"/>
+                    <f:param name="action" value="logout" />
+                    <f:param name="returnURL" value="#{app.currentURL}" />
+                </h:outputLink>
+
+                <h:outputLink value="http://www.huliqing.name/" target="_blank"> 
+                    <h:outputText value="#{text['p.menu.qblog']}" styleClass="gray" />
+                </h:outputLink>
+
+                <g:help helpId="Menu" visible="false" styleClassHeader="alignL bold" />
+            </h:panelGrid>
+        </q:dynFrame>
+    </h:form>
+
+</div>

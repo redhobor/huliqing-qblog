@@ -1,0 +1,21 @@
+<ui:composition
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="folderAdd.xhtml">
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="folderList" />
+    </ui:define>
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/star.png" height="40" styleClass="alignM"/>
+        编辑相册
+    </ui:define>
+
+    <ui:define name="actions">
+        <q:saveState value="#{folderEditWe.folder}" />
+        <h:commandButton value="提交更新" action="#{folderEditWe.edit}" styleClass="button"/>
+    </ui:define>
+</ui:composition>

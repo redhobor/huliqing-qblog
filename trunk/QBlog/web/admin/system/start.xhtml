@@ -1,0 +1,79 @@
+<ui:composition 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:q="http://huliqing.name/qfaces"
+                xmlns:g="http://huliqing.name/qblog"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/WEB-INF/template/layout_system.xhtml">
+
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="start" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <img src="/_res/image/star.png" height="40" class="alignM" alt=""/>
+        从这里开始
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <h:outputText value="首次运行必看->"  style="color:red;font-size: 16px;font-weight: bold;"/>
+
+        <q:helper listener="#{helper.noticeInFirstDeploy}" drag="true"
+                  labelHeader="首次运行必看" width="300" />
+
+        <h:form>
+                <h:commandButton value="初始化系统"
+                                 onclick="return initialize(this);"
+                                 action="#{startWe.initializeQBlog}"
+                                 style="font-size: 18px;width:180px; height: 50px;margin-top: 20px;"/>
+
+        </h:form>
+        <script type="">
+            function initialize(obj) {
+                if (confirm('\
+您确认初始化吗? 这类似于恢复出厂默认值，该操作将删除以下信息(帐号及文章不会被删除): \n\
+1.页面信息\n\
+2.模块信息\n\
+3.系统参数\n\
+4.帮助信息\n\ \n\
+然后重新导入QBlog的初始配置信息，如果您并非首次使用，建议首先作一次备份。')) {
+                    obj.value = "正在初始化，稍候...";
+                    obj.onclick = function() {
+                        alert(this.value);
+                        return false;
+                    };
+                    obj.blur();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
+
+        <p style="margin-top:30px;"/>
+        
+        <fieldset>
+            <legend>几个重要帮助信息</legend>
+            <ul style="line-height:2.0;">
+                <li>
+                    <h:outputText value="关于Admin帐号的停用?" />
+                    <g:help helpId="NoticeAboutAdmin" style="max-width: 760px;" />
+                </li>
+                <li>
+                    <h:outputText value="关于Email的设置?" />
+                    <g:help helpId="NoticeAboutEmail" width="500" />
+                </li>
+                <li>
+                    <h:outputText value="QBlog是怎么运行的?" />
+                    <g:help helpId="AboutQBlog" width="400" style="max-width: 760px;" />
+                </li>
+                <li>
+                <h:outputLink value="/admin/system/helpList.faces">
+                    <h:outputText value="了解更多的帮助信息，请到这里。" />
+                </h:outputLink>
+                </li>
+            </ul>
+        </fieldset>
+    </ui:define>
+</ui:composition>

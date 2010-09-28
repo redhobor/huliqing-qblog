@@ -1,0 +1,82 @@
+<ui:composition
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:q="http://huliqing.name/qfaces"
+                xmlns:g="http://huliqing.name/qblog" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/WEB-INF/template/layout_blog.xhtml">
+    <ui:define name="subTabName">
+        <c:set var="subTabName" value="articleAdd" />
+    </ui:define>
+
+    <ui:define name="menuTitle">
+        <h:graphicImage url="/_res/image/sign.gif" styleClass="alignM"/>
+        发表文章
+        <g:help helpId="ArticlePost" />
+    </ui:define>
+
+    <ui:define name="menuContent">
+        <style type="text/css">
+            .col1{width:80px;text-align:center;}
+        </style>
+        <h:form>
+            <h:panelGrid columns="2" border="0"
+                         width="100%"
+                         columnClasses="col1,col2"
+                         rowClasses="row2,row1"
+                         cellpadding="3"
+                         cellspacing="3"
+                         styleClass="">
+                <h:outputLabel for="title" value="标题*" />
+                <h:panelGroup>
+                    <h:inputText id="title" value="#{articleUpdateWe.article.title}" style="width:99%;" />
+                    <q:validator for="title" required="true" messageError="必填" displayFlag="false"/>
+                </h:panelGroup>
+
+                <h:outputLabel for="securityType" value="隐私*" />
+                <h:panelGroup>
+                    <h:selectOneRadio id="securityType" value="#{articleUpdateWe.article.security}" >
+                        <f:converter converterId="converter.ArticleTypeConverter" />
+                        <f:selectItems value="#{articleUpdateWe.articleTypes}" />
+                    </h:selectOneRadio>
+                    <q:validator for="securityType" displayFlag="false" required="true" messageError="请选择类型"/>
+                </h:panelGroup>
+
+                <h:outputLabel value="摘要*" />
+                <h:panelGroup>
+                    <h:inputTextarea id="summary" value="#{articleUpdateWe.article.summary}" style="width:99%;height:80px;"/>
+                    <q:validator for="summary" required="true" maxLength="500" messageError="必填的,且内容不能多于500个字符" displayFlag="false" />
+                </h:panelGroup>
+
+                <h:outputLabel value="内容" />
+                <h:panelGroup>
+                    <q:editor id="content" value="#{articleUpdateWe.article.content}" enableInsertCode="true" style="width:100%;">
+                        <f:converter converterId="converter.TextConverter" />
+                    </q:editor>
+                </h:panelGroup>
+
+                <h:outputText value="标签" />
+                <h:selectManyCheckbox value="#{articleUpdateWe.tagsSelected}" style="margin-left: -3px;" >
+                    <f:selectItems value="#{articleUpdateWe.tagsAll}" />
+                </h:selectManyCheckbox>
+
+                <h:outputText value="其它" />
+                <h:panelGroup>
+                    <h:selectBooleanCheckbox id="replyable" value="#{articleUpdateWe.article.replyable}" />
+                    <h:outputLabel for="replyable" value="允许回复" style="margin-right: 20px;"/>
+
+                    <h:selectBooleanCheckbox id="mailNotice" value="#{articleUpdateWe.article.mailNotice}" />
+                    <h:outputLabel for="mailNotice" value="有回复时Email通知我" />
+                </h:panelGroup>
+
+                <h:panelGroup />
+                <h:panelGroup>
+                    <ui:insert name="actions">
+                        <h:commandButton value="发表文章" action="#{articleUpdateWe.add}" styleClass="button"/>
+                    </ui:insert>
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

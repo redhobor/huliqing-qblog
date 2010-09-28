@@ -1,0 +1,82 @@
+<datastore-indexes>
+
+    <!-- HelpEn -->
+
+    <datastore-index kind="HelpEn" ancestor="false" source="auto">
+        <property name="__key__" direction="desc"/>
+    </datastore-index>
+
+    <!-- ArticleEn -->
+
+    <datastore-index kind="ArticleEn" ancestor="false" source="auto">
+        <property name="createMonth" direction="asc"/>
+        <property name="createYear" direction="asc"/>
+        <property name="security" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <datastore-index kind="ArticleEn" ancestor="false" source="auto">
+        <property name="security" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <datastore-index kind="ArticleEn" ancestor="false" source="auto">
+        <property name="createDay" direction="asc"/>
+        <property name="createMonth" direction="asc"/>
+        <property name="createYear" direction="asc"/>
+        <property name="security" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- ReplyEn -->
+
+    <datastore-index kind="ReplyEn" ancestor="false" source="auto">
+        <property name="article" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <!-- FolderEn -->
+
+    <datastore-index kind="FolderEn" ancestor="false" source="auto">
+        <property name="security" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <datastore-index kind="FolderEn" ancestor="false" source="auto">
+        <property name="security" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <datastore-index kind="FolderEn" ancestor="false" source="auto">
+        <property name="security" direction="asc"/>
+        <property name="name" direction="desc"/>
+    </datastore-index>
+
+    <datastore-index kind="FolderEn" ancestor="false" source="auto">
+        <property name="security" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- PhotoEn -->
+
+    <datastore-index kind="PhotoEn" ancestor="false" source="auto">
+        <property name="folder" direction="asc"/>
+        <property name="createDate" direction="asc"/>
+    </datastore-index>
+
+    <datastore-index kind="PhotoEn" ancestor="false" source="auto">
+        <property name="folder" direction="asc"/>
+        <property name="createDate" direction="desc"/>
+    </datastore-index>
+
+    <datastore-index kind="PhotoEn" ancestor="false" source="auto">
+        <property name="folder" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <datastore-index kind="PhotoEn" ancestor="false" source="auto">
+        <property name="folder" direction="asc"/>
+        <property name="name" direction="desc"/>
+    </datastore-index>
+
+</datastore-indexes>

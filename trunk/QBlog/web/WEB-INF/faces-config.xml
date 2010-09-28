@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="2.0"
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+
+    <application>
+        <locale-config>
+            <default-locale>zh</default-locale>
+            <supported-locale>zh</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        <message-bundle>resource</message-bundle>
+        <resource-bundle>
+            <base-name>resource</base-name>
+            <var>text</var>
+        </resource-bundle>
+    </application>
+
+    <lifecycle>
+        <phase-listener>
+            name.huliqing.qblog.SecurityListener
+        </phase-listener>
+    </lifecycle>
+ 
+    <converter>
+        <converter-id>converter.TextConverter</converter-id>
+        <converter-class>
+            name.huliqing.qblog.converter.TextConverter
+        </converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>converter.ArticleTypeConverter</converter-id>
+        <converter-class>
+            name.huliqing.qblog.converter.ArticleTypeConverter
+        </converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>converter.SecurityConverter</converter-id>
+        <converter-class>
+            name.huliqing.qblog.converter.SecurityConverter
+        </converter-class>
+    </converter>
+
+    <!-- New -->
+
+    <component>
+        <component-type>name.huliqing.qblog.component.UIModule</component-type>
+        <component-class>
+            name.huliqing.qblog.component.UIModule
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.component.UIModuleGroup</component-type>
+        <component-class>
+            name.huliqing.qblog.component.UIModuleGroup
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.component.UIFileUpload</component-type>
+        <component-class> 
+            name.huliqing.qblog.component.UIFileUpload
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.component.UIHelp</component-type>
+        <component-class>
+            name.huliqing.qblog.component.UIHelp
+        </component-class>
+    </component>
+    
+    <component>
+        <component-type>name.huliqing.qblog.component.UIPhotoDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.component.UIPhotoDataTable
+        </component-class>
+    </component>
+
+    <!-- processor -->
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.attr.UIAttribute</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.attr.UIAttribute
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.ArticlesDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.ArticlesDataTable
+        </component-class>
+    </component>
+    
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.RecentPostArticleDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.RecentPostArticleDataTable
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.RecentReplyDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.RecentReplyDataTable
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.RSSDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.RSSDataTable
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.AlbumDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.AlbumDataTable
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.PhotoDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.PhotoDataTable
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.ModulePanelGrid</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.ModulePanelGrid
+        </component-class>
+    </component>
+
+</faces-config>

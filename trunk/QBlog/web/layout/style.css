@@ -1,0 +1,52 @@
+a:link {color:gray;text-decoration: none;}
+a:visited {color: gray;text-decoration: none;}
+a:hover {color: #ff4d00;text-decoration: underline;}
+
+/** body样式 */
+.css_body {
+    background-image: url(/layout/default/image/body_bg.gif);
+    background-attachment: fixed;
+}
+/** 整个导航栏的样式 */
+.css_nav_class {background:orange;margin:0;padding:0;}
+/** 导航按钮的一般样式，或mouse离开按钮时的样式 */
+.css_nav_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:orange;color:white}
+/** 导航按钮，当mouse放上去时的样式 */
+.css_nav_onmouseover{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:#FDF0DB;color:orange;}
+/** 导航按钮，当前选择的栏目的样式 */
+.css_nav_onmousedown{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:#FDF0DB;color:orange;}
+
+/** 模块整体样式 */
+.css_module_full {padding: 5px 0;}
+
+/** 模块Title样式 */
+.css_module_title {color:gray;font-weight: bold;padding: 5px;border-bottom:1px dotted silver;}
+
+/** 模块Content样式 */
+.css_module_content {padding:3px;}
+
+/** 文章标题 */
+.css_article_title {
+    padding:5px;
+    font-weight:bold;
+    font-size:1.0em;
+    background: #F6F6F6;
+}
+
+/** 文章摘要 */
+.css_article_summary {
+    text-indent:2em;
+    padding: 8px;
+    line-height: 1.7;
+}
+
+/** 文章内容 */
+.css_article_content {
+    padding:8px;
+    line-height: 1.7;
+}
+
+/** 文章页脚样式，该区域包含：发表日期，阅读数，评论数 */
+.css_article_footer {
+    margin-left: 3px;color:#C0C0C0;
+}
