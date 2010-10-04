@@ -88,7 +88,7 @@ public class App implements java.io.Serializable {
      * @return
      */
     public boolean isDemo() {
-        return true;
+        return false;
     }
 
     /**
