@@ -89,18 +89,22 @@ public class MailSe {
 
         // 邮件主体
         StringBuilder hb = new StringBuilder().append("<pre>")
-                .append(reply.getContent())
+                .append(reply.getContent().getValue())
                 .append("</pre>")
                 .append("<hr />")
-                .append("REPLY By:" + reply.getReplyBy())
+                .append("回复者:" + reply.getReplyBy())
                 .append("<br />")
-                .append("REPLY IP:" + reply.getReplyIpRemake())
+                .append("回复者Email:" + reply.getEmail())
                 .append("<br />")
-                .append("ARTICLE : <a href='" + articleURL + "'>" + article.getTitle())
+                .append("回复者IP:" + reply.getReplyIpRemake())
+                .append("<br />")
+                .append("相关文章 : <a href='" + articleURL + "'>" + article.getTitle())
                 .append("</a> <br />");
 
         // 对文章作者进行email提醒
-        if (article.getMailNotice()) {
+        if (article.getMailNotice()
+                // 这一句确保当前用户非“作者”，因为作者不需要再发邮件给自己。
+                && !QBlog.getCurrentVisitor().isLogin()) { 
             MailService.Message message = new MailService.Message();
             message.setSender(sender);
             message.setTo(authorAddress);

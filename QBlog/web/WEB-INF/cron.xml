@@ -10,7 +10,7 @@
   <cron>
     <url>/task/</url>
     <description> Execute Tasks </description>
-    <schedule>every 5 minutes</schedule>
+    <schedule>every 30 minutes</schedule>
   </cron>
 
   <!--cron>

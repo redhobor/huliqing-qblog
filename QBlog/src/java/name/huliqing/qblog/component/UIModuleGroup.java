@@ -152,7 +152,8 @@ public class UIModuleGroup extends UIComponentBase{
         List<ModuleEn> mes = new ArrayList<ModuleEn>(pmes.size());
         for (PageModuleEn pme : pmes) {
             ModuleEn me = ModuleSe.find(pme.getModuleId());
-            if (me != null) {
+            // 只有module为enable的才需要显示
+            if (me != null && me.getEnabled()) {
                 mes.add(me);
             }
         }
