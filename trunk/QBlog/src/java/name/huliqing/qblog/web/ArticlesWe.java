@@ -140,6 +140,10 @@ public class ArticlesWe extends BaseWe {
     }
     
     private PageModel<ArticleEn> searchByTag(PageParam pp, String tagName) {
+        // 以发表时间的倒序显示tag所查询的文章信息
+        pp.setSortField("createDate");
+        pp.setAsc(Boolean.FALSE);
+
         PageModel<TagArticleEn> tempPM = TagArticleSe.findPublicByTag(tagName, pp);
         if (tempPM.getTotal() <= 0) {
             return null;
