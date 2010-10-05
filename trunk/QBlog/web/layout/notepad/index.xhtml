@@ -1,0 +1,54 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/layout/common.xhtml"> 
+    <ui:define name="header">
+        <link href="/layout/notepad/style.css" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+            .panelOut {
+                padding:0;margin:0 auto;width:967px;
+                background:url(/layout/default/image/bg_content.png) repeat-y;
+            }
+            .panelEnd {
+                padding:0;margin:0 auto;width:967px;height:15px;border:0px solid gray;
+                background:url(/layout/default/image/bg_end.png) no-repeat;
+            }
+            .panelInner {
+                width:905px;margin:0 auto;padding:0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="body">
+        <div style="padding:0;margin:0 auto;width:997px;">
+            <div style="margin:0px 0px;"></div>
+            <div class="floatL" style="width:792px;background:url(/layout/notepad/image/bg_content.png) repeat-y;">
+                <div style="margin:0px 25px 10px 60px;">
+                    <div>
+                        <ui:insert name="GROUP_HEADER" />
+                    </div>
+                    <div style="background:#F2F2F2;">
+                        <ui:insert name="GROUP_TOP" />
+                    </div>
+                    <div> 
+                        <ui:insert name="GROUP_NAVIGATION" />
+                    </div>
+                    <div style="min-height:300px;"> 
+                        <ui:insert name="GROUP_CONTENT" />
+                    </div>
+                    <div style="background: none repeat scroll 0% 0% rgb(202, 209, 217); height: 3px; margin: 20px 0pt 10px;"></div>
+                    <div style="background:#F2F2F2;"> 
+                        <ui:insert name="GROUP_FOOTER" />
+                    </div>
+                </div>
+            </div>
+            <div class="floatR" style="width:200px;">
+                <ui:insert name="GROUP_MENU" />
+            </div>
+            <div class="clear" />
+        </div>
+    </ui:define>
+</ui:composition>
