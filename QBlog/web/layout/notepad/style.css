@@ -4,33 +4,37 @@ a:hover {color: #ff4d00;text-decoration: underline;}
 
 /** body样式 */
 .css_body {
-    background-image: url(/layout/default/image/body_bg.gif);
-    background-attachment: fixed;
+    background-color: #313131;
 }
 /** 整个导航栏的样式 */
-.css_nav_class {background:orange;margin:0;padding:0;}
+.css_nav_class {background:url(/layout/notepad/image/nav-bg01.png) repeat-x;
+               height:37px;margin:0 0 0 0;padding:0;border: 0px solid red;}
 /** 导航按钮的一般样式，或mouse离开按钮时的样式 */
-.css_nav_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:orange;color:white}
+.css_nav_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;
+                    color:gray; height:37px;line-height: 28px;}
 /** 导航按钮，当mouse放上去时的样式 */
-.css_nav_onmouseover{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:#FDF0DB;color:orange;}
+.css_nav_onmouseover{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;
+                    color:white;height:37px;line-height: 28px;background:url(/layout/notepad/image/nav-bg02.png) repeat-x;}
 /** 导航按钮，当前选择的栏目的样式 */
-.css_nav_onmousedown{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:#FDF0DB;color:orange;}
+.css_nav_onmousedown{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;
+                    color:white;height:37px;line-height: 28px;background:url(/layout/notepad/image/nav-bg02.png) repeat-x;}
 
 /** 模块整体样式 */
 .css_module_full {padding: 5px 0;}
 
 /** 模块Title样式 */
-.css_module_title {color:gray;font-weight: bold;padding: 5px;border-bottom:1px dotted silver;}
+.css_module_title {color:gray;font-weight: bold;padding: 5px;border-bottom:1px dotted #F2F2F2;}
 
 /** 模块Content样式 */
 .css_module_content {padding:3px;}
 
 /** 文章标题(文章列表中的) */
 .css_article_title {
-    padding:5px;
+    padding:0px;
     font-weight:bold;
     font-size:1.0em;
-    background: #F6F6F6;
+    margin: 10px 0 0 0;
+    color: black;
 }
 
 /** 文章摘要(文章列表中的) */
