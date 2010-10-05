@@ -98,11 +98,12 @@ public class TuDouFlashPlayerProcessor extends HtmlProcessor{
         String autoStart = attrs.getAsString("Auto Start", "true");
         
         // 播放豆单:http://www.tudou.com/player/outside/player_outside_list.swf?lid=7136365&default_skin=http://js.tudouui.com/bin/player2/outside/Skin_outside_list_4.swf&autostart=true&autoPlay=true&rurl=
+        // 播放单个:http://www.tudou.com/player/outside/player_outside.swf?iid=58951991&snap_pic=http%3A%2F%2Fi01.img.tudou.com%2Fdata%2Fimgs%2Fi%2F058%2F951%2F991%2Fw.jpg&default_skin=http%3A%2F%2Fjs.tudouui.com%2Fbin%2Fplayer2%2Foutside%2FSkin_outside_52.swf&autostart=true&autoPlay=true&rurl=
         String url = null;
         if (isLid) { // lid
             url = "http://www.tudou.com/player/outside/player_outside_list.swf?lid=" + pid + "&amp;default_skin=http://js.tudouui.com/bin/player2/outside/Skin_outside_list_4.swf&amp;autostart=" + autoStart + "&amp;autoPlay=" + autoStart + "&amp;rurl=";
         } else { // iid
-            url = "http://www.tudou.com/player/outside/player_outside.swf?iid=" + pid + "&amp;snap_pic=http://i01.img.tudou.com/data/imgs/i/056/232/622/w.jpg&amp;default_skin=http://js.tudouui.com/bin/player2/outside/Skin_outside_48.swf&amp;autostart=" + autoStart + "&amp;autoPlay=" + autoStart + "&amp;code=8bbENjytSkM&amp;rurl=";
+            url = "http://www.tudou.com/player/outside/player_outside.swf?iid=" + pid + "&amp;snap_pic=http%3A%2F%2Fi01.img.tudou.com%2Fdata%2Fimgs%2Fi%2F058%2F951%2F991%2Fw.jpg&amp;default_skin=http%3A%2F%2Fjs.tudouui.com%2Fbin%2Fplayer2%2Foutside%2FSkin_outside_52.swf&amp;autostart=" + autoStart + "&amp;autoPlay=" + autoStart + "&amp;rurl=";
         }
         StringBuilder obj = new StringBuilder();
         obj.append("<embed src=\"").append(url).append("\" ")
