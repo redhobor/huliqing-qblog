@@ -13,8 +13,12 @@
         <h:inputHidden id="re_replyId" />
 
         <div style="padding: 5px;">
-            <div class="css_article_title">
-                <h:outputText value="#{articleWe.article.title}" />
+            <div class="css_article_titleOuter">
+                <div class="css_article_titleInner">
+                    <div class="css_article_title">
+                        <h:outputText value="#{articleWe.article.title}" />
+                    </div>
+                </div>
             </div>
 
             <div class="css_article_content">
@@ -24,33 +28,38 @@
             </div>
 
             <!-- Split line-->
-            <div style="color:gray;margin-top:10px;padding:3px;border-bottom:1px solid #C0C0C0;">
-                <h:form>
-                    <h:panelGroup rendered="#{visitor.login}" >
-                        <h:outputText value="发表于：" />
-                        <h:outputText value="#{articleWe.article.createDate}">
-                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
-                        </h:outputText>
+            <div class="css_article_footerOuter">
+                <div class="css_article_footerInner">
+                    <div class="css_article_footer">
+                    <h:form>
+                        <h:panelGroup rendered="#{visitor.login}" >
+                            <h:outputText value="发表于：" />
+                            <h:outputText value="#{articleWe.article.createDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+                            </h:outputText>
 
-                        <h:outputText value="阅读:#{articleWe.article.totalView}" styleClass="marginLR" />
-                        <h:outputText value="评论:#{articleWe.article.totalReply}" styleClass="marginLR" />
+                            <h:outputText value="阅读:#{articleWe.article.totalView}" styleClass="marginLR" />
+                            <h:outputText value="评论:#{articleWe.article.totalReply}" styleClass="marginLR" />
 
-                        <h:outputLink value="/admin/blog/articleEdit.faces" styleClass="marginLR">
-                            <f:param name="articleId" value="#{articleWe.article.articleId}" />
-                            <h:outputText value="编辑" styleClass="gray"/>
-                        </h:outputLink>
+                            <h:outputLink value="/admin/blog/articleEdit.faces" styleClass="marginLR">
+                                <f:param name="articleId" value="#{articleWe.article.articleId}" />
+                                <f:param name="returnURL" value="#{app.currentURL}" />
+                                <h:outputText value="编辑" />
+                            </h:outputLink>
 
-                        <h:commandLink action="#{articleWe.deleteArticle}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
-                            <h:outputText value="删除" styleClass="gray" />
-                        </h:commandLink>
-                    </h:panelGroup>
-                </h:form>
+                            <h:commandLink action="#{articleWe.deleteArticle}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
+                                <h:outputText value="删除" />
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:form>
+                    </div>
+                </div>
             </div>
 
             <!-- Reply List-->
 
             <a name="p_replies" />
-            <div>
+            <div class="css_reply_list_full">
                 <q:miniDataTable id="replies"
                                 ref="re_articleId"
                                 search="#{articleWe.loadReplies}"
@@ -74,36 +83,38 @@
 
             <a name="p_reply" />
             <h:panelGroup rendered="#{articleWe.replyable}">
-                <h:panelGrid border="0"
-                        width="100%"
-                        columns="2"
-                        columnClasses="reply_col1,reply_col2"
-                        cellspacing="0"
-                        cellpadding="3">
-                        <h:outputText value="标题" />
-                        <h:inputText id="re_title" value="RE:#{articleWe.article.title}" style="width:100%;"/>
+                <h:panelGroup layout="block" styleClass="css_reply_zone_full">
+                    <h:panelGrid border="0"
+                            width="100%"
+                            columns="2"
+                            columnClasses="reply_col1,reply_col2"
+                            cellspacing="0"
+                            cellpadding="3">
+                            <h:outputText value="标题" />
+                            <h:inputText id="re_title" value="RE:#{articleWe.article.title}" style="width:99%;"/>
 
-                        <h:outputText value="姓名" />
-                        <h:inputText id="re_replyBy" value="#{articleWe.defaultName}" style="width:100%;"/>
+                            <h:outputText value="姓名" />
+                            <h:inputText id="re_replyBy" value="#{articleWe.defaultName}" style="width:99%;"/>
 
-                        <h:outputText value="邮件" />
-                        <h:inputText id="re_email" value="#{articleWe.defaultEmail}" style="width:100%;"/>
+                            <h:outputText value="邮件" />
+                            <h:inputText id="re_email" value="#{articleWe.defaultEmail}" style="width:99%;"/>
 
-                        <h:outputText value="内容" />
-                        <h:panelGroup>
-                            <h:inputTextarea id="re_content" style="height:150px;width:100%;"/>
-                            <q:validator for="re_content" required="true" messageError="请填写内容" displayFlag="false" />
-                        </h:panelGroup>
+                            <h:outputText value="内容" />
+                            <h:panelGroup>
+                                <h:inputTextarea id="re_content" style="height:150px;width:99%;"/>
+                                <q:validator for="re_content" required="true" messageError="请填写内容" displayFlag="false" />
+                            </h:panelGroup>
 
-                        <h:panelGroup />
-                        <q:ajaxSupport eventButton="submitReply"
-                                ref="re_articleId, re_replyId, re_title, re_replyBy, re_email, re_content"
-                                listener="#{articleWe.saveOrUpdateReply}"
-                                onStart="return replyOnStart('re_title', 're_replyBy', 're_email', 're_content');"
-                                onFinish="replyOnFinish('re_content', 're_replyId');Q.F.find('replies').toSearch();">
-                            <h:commandButton id="submitReply" value="Submit" style="width:80px;" type="button"/>
-                        </q:ajaxSupport>
-                </h:panelGrid>
+                            <h:panelGroup />
+                            <q:ajaxSupport eventButton="submitReply"
+                                    ref="re_articleId, re_replyId, re_title, re_replyBy, re_email, re_content"
+                                    listener="#{articleWe.saveOrUpdateReply}"
+                                    onStart="return replyOnStart('re_title', 're_replyBy', 're_email', 're_content');"
+                                    onFinish="replyOnFinish('re_content', 're_replyId');Q.F.find('replies').toSearch();">
+                                <h:commandButton id="submitReply" value="Submit" style="width:80px;" type="button"/>
+                            </q:ajaxSupport>
+                    </h:panelGrid>
+                </h:panelGroup>
             </h:panelGroup>
 
         </div>

@@ -64,16 +64,19 @@ public enum Style {
     /** Module 整体样式 */
     css_module_full,
 
-    /** Module标题(Name)的样式名称 */
+    /** Module标题(Name)的样式名称,title由outer与inner及title,三个div嵌套 */
+    css_module_titleOuter,
+    css_module_titleInner,
     css_module_title,
 
     /** Module内容的样式名称 */
     css_module_content,
 
-
     // ---- Article 样式
 
     /** 文章标题样式 */
+    css_article_titleOuter,
+    css_article_titleInner,
     css_article_title,
 
     /** 文章摘要的样式 */
@@ -82,6 +85,9 @@ public enum Style {
     /** 文章内容样式 */
     css_article_content,
 
-    /** 文章页脚样式，页脚包含：发表日期，评论数，阅读数等信息 */
+    /** 文章页脚样式，页脚包含：发表日期，评论数，阅读数等信息,这个样式在文章列表及
+     * 文章内容显示页都会用到 */
+    css_article_footerOuter,
+    css_article_footerInner,
     css_article_footer,
 }

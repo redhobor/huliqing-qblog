@@ -76,7 +76,7 @@ function replyOnFinish(contentId, replyId) {
 	var obj2 = document.getElementById(replyId);
 	obj1.value = "";
 	obj2.value = "";
-	location.href = "#p_replies";
+//	location.href = "#p_replies";
 }
 
 function deleteReply(replyId) {
