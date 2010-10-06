@@ -49,3 +49,18 @@ a:hover {color: #ff4d00;text-decoration: underline;}
 .css_article_footer {
     margin-left: 3px;color:#C0C0C0;
 }
+.css_article_footer a:link {color:#C0C0C0;text-decoration: none;}
+.css_article_footer a:visited {color: #C0C0C0;text-decoration: none;}
+.css_article_footer a:hover {color: #C0C0C0;text-decoration: none;}
+
+/** 回复列表的样式,存在于article页面中，跟随在article内容之后 */
+.css_reply_list_full {
+    margin-top: 10px;
+    border-top: 1px solid silver;
+}
+
+/** 回复区域的样式，主要是几个用于回复的输入框,在article页面中，跟随在reply list后 */
+.css_reply_zone_full {
+    margin: 10px 0;
+    padding: 10px 0;
+}

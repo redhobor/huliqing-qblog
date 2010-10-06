@@ -139,7 +139,9 @@ public class ArticleWe extends BaseWe {
         List<ReplyEn> replies = pm.getPageData();
         MiniPageModel mpm = new MiniPageModel();
         mpm.setTotal(pm.getTotal());
+        int count = 0; //
         for (ReplyEn r : replies) {
+            count++;
             String title = r.getTitle();
             String content = r.getContent() != null ? r.getContent().getValue() : "";
             String replyBy = (r.getReplyBy() != null ? r.getReplyBy() : r.getReplyIpRemake());
@@ -167,7 +169,9 @@ public class ArticleWe extends BaseWe {
             sb.append("<div>").append(titleObj).append("  ").append(replyByObj).append("</div>");
             sb.append("<div id=\"q_article_replies_content\"><pre>").append(content).append("</pre></div>");
             sb.append("<div style='color:#C0C0C0;'>").append(postDate).append(actionReply).append(r.isEditable() ? actionEdit : "").append(r.isEditable() ? actionDelete : "").append("</div>");
-            sb.append("<div style='height:5px;border-bottom:1px dotted #c0c0c0;'/>");
+            if (count < replies.size()) {
+                sb.append("<div style='height:5px;border-bottom:1px dotted #c0c0c0;'/>");
+            }
 
             // 处理回复信息的编辑，这一部分主要是在页面渲染隐藏控件，用于保存各个回复信息的内容
             // 在用户点击编辑这后重新获取这些内容进行编辑

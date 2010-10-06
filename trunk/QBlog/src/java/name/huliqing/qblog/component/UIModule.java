@@ -182,15 +182,20 @@ public class UIModule extends UIComponentBase {
         rw.writeAttribute("id", modulePanelId, null);
         rw.writeAttribute("class", Style.css_module_full, null);
 
-        // Render module name
+        // Render module name: 由三个区域构成outer/inner/name zone
         rw.startElement("div", this);
-        rw.writeAttribute("class", (autoStyle && displayName ? Style.css_module_title : ""), null);
-        encodeModuleName(rw, nameId);
+        rw.writeAttribute("class", (autoStyle && displayName ? Style.css_module_titleOuter : ""), null);
+            rw.startElement("div", this);
+            rw.writeAttribute("class", (autoStyle && displayName ? Style.css_module_titleInner : ""), null);
+                rw.startElement("div", this);
+                rw.writeAttribute("class", (autoStyle && displayName ? Style.css_module_title : ""), null);
+                encodeModuleName(rw, nameId);
+                rw.endElement("div");
+            rw.endElement("div");
         rw.endElement("div");
 
         // Render module content
         rw.startElement("div", this);
-
         // 如果用户有登录，但是没有显示模块名称，那么应该在内容区域触发事件，使它
         // 能够触发模块名称的显示，从而可以通过名称直接点击编辑按钮
         if (QBlog.getCurrentVisitor().isLogin() && !displayName) {
@@ -199,7 +204,6 @@ public class UIModule extends UIComponentBase {
             rw.writeAttribute("onmouseover", eventOver, null);
             rw.writeAttribute("onmouseout", eventOut, null);
         }
-        
         rw.writeAttribute("class", (autoStyle ? Style.css_module_content : ""), null);
     }
 

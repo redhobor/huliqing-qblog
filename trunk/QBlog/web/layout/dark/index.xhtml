@@ -1,0 +1,51 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/layout/common.xhtml"> 
+    <ui:define name="header">
+        <link href="/layout/dark/style.css" rel="stylesheet" type="text/css" />
+    </ui:define>
+
+    <ui:define name="body">
+        <div style="padding:0;margin:0 auto;width:920px;background: url(/layout/dark/image/bg-center.jpg) no-repeat;">
+            <div>
+                <ui:insert name="GROUP_HEADER" />
+            </div>
+            <div>
+                <ui:insert name="GROUP_TOP" />
+            </div>
+        </div>
+        <div style="background: black;margin:0;padding:0;height:67px;
+             background: url(/layout/dark/image/nav-bg.png) repeat-x;">
+            <div style="width:910px;margin:0 auto;">
+                <ui:insert name="GROUP_NAVIGATION" />
+            </div>
+        </div>
+        <div style="padding:0;margin:0 auto;width:920px;">
+            <div>
+                <div class="floatL" style="width:715px;min-height:300px;
+                     background-image: url(/layout/dark/image/menu-side.png);
+                     background-repeat: repeat-y;
+                     background-position: top right;">
+                    <div style="margin-right:15px;">
+                        <ui:insert name="GROUP_CONTENT" />
+                    </div>
+                </div>
+                <div class="floatR" style="width:200px;">
+                    <ui:insert name="GROUP_MENU" />
+                </div>
+                <div class="clear" />
+            </div>
+            
+        </div>
+        <div style="height:3px;background: gray;"></div>
+        <div style="padding:0;margin:0 auto;width:920px;">
+            <div>
+                <ui:insert name="GROUP_FOOTER" />
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

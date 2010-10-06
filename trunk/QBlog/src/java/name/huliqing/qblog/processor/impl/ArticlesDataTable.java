@@ -171,12 +171,18 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
             href += ",pageId=" + pageId;
 
         rw.startElement("div", this);
-            rw.writeAttribute("class", Style.css_article_title, null);
-            rw.startElement("a", this);
-            rw.writeAttribute("href", href, null);
-            rw.writeAttribute("target", (target != null ? target : "_self"), null);
-            rw.writeText(ae.getTitle(), null);
-            rw.endElement("a");
+        rw.writeAttribute("class", Style.css_article_titleOuter, null);
+            rw.startElement("div", this);
+            rw.writeAttribute("class", Style.css_article_titleInner, null);
+                rw.startElement("div", this);
+                rw.writeAttribute("class", Style.css_article_title, null);
+                    rw.startElement("a", this);
+                    rw.writeAttribute("href", href, null);
+                    rw.writeAttribute("target", (target != null ? target : "_self"), null);
+                    rw.writeText(ae.getTitle(), null);
+                    rw.endElement("a");
+                rw.endElement("div");
+            rw.endElement("div");
         rw.endElement("div");
 
         // summary
@@ -195,7 +201,12 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
         // des
         if (showFooter != null && showFooter) {
             rw.startElement("div", this);
+            rw.writeAttribute("class", Style.css_article_footerOuter, null);
+            rw.startElement("div", this);
+            rw.writeAttribute("class", Style.css_article_footerInner, null);
+            rw.startElement("div", this);
             rw.writeAttribute("class", Style.css_article_footer, null);
+
             // post date
             rw.writeText(sdf.format(ae.getCreateDate()), null);
             // views
@@ -230,7 +241,7 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
                 rw.writeText("[TAG:", null);
                 for (String tag : tags) {
                     rw.startElement("a", this);
-                    rw.writeAttribute("style", "margin:0 3px;color:gray;", null);
+                    rw.writeAttribute("style", "margin:0 3px;", null);
                     rw.writeAttribute("href", link + tag, null);
                     rw.writeText(tag, null);
                     rw.endElement("a");
@@ -238,6 +249,8 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
                 rw.writeText("]", null);
                 rw.endElement("span");
             }
+            rw.endElement("div");
+            rw.endElement("div");
             rw.endElement("div");
         }
     }
