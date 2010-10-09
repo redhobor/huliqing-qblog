@@ -7,14 +7,26 @@ a:hover {color: #ff4d00;text-decoration: underline;}
     background-image: url(/layout/default/image/body_bg.gif);
     background-attachment: fixed;
 }
+
 /** 整个导航栏的样式 */
-.css_nav_class {background:orange;margin:0;padding:0;}
-/** 导航按钮的一般样式，或mouse离开按钮时的样式 */
-.css_nav_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:orange;color:white}
-/** 导航按钮，当mouse放上去时的样式 */
-.css_nav_onmouseover{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:#FDF0DB;color:orange;}
-/** 导航按钮，当前选择的栏目的样式 */
-.css_nav_onmousedown{font-weight: bold;cursor:pointer;padding:5px;margin-left: 5px;background:#FDF0DB;color:orange;}
+.css_nav_full {background:orange;margin:0;padding:0;}
+.css_nav_full a:link{text-decoration: none;}
+.css_nav_full a:visited{text-decoration: none;}
+.css_nav_full a:hover{text-decoration: none;}
+
+.css_nav_itemOuter_onmouseout {}
+.css_nav_itemOuter_onmouseover {}
+.css_nav_itemOuter_onmousedown {}
+
+.css_nav_itemInner_onmouseout {}
+.css_nav_itemInner_onmouseover {}
+.css_nav_itemInner_onmousedown {}
+
+.css_nav_item_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin: 0px 5px;background:orange;color:white}
+.css_nav_item_onmouseover {font-weight: bold;cursor:pointer;padding:5px;margin:0px 5px;background:#FDF0DB;color:orange;}
+.css_nav_item_onmousedown {font-weight: bold;cursor:pointer;padding:5px;margin:0px 5px;background:#FDF0DB;color:orange;}
+
+
 
 /** 模块整体样式 */
 .css_module_full {padding: 5px 0;}

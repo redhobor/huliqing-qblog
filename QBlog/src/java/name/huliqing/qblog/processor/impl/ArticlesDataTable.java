@@ -178,6 +178,7 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
                 rw.writeAttribute("class", Style.css_article_title, null);
                     rw.startElement("a", this);
                     rw.writeAttribute("href", href, null);
+                    rw.writeAttribute("onfocus", "this.blur()", null); // 让超链接不产生虚线框
                     rw.writeAttribute("target", (target != null ? target : "_self"), null);
                     rw.writeText(ae.getTitle(), null);
                     rw.endElement("a");
@@ -189,7 +190,7 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
         if (showSummary != null && showSummary) {
             rw.startElement("div", this);
             rw.writeAttribute("class", Style.css_article_summary, null);
-            rw.writeText("摘要：" + ae.getSummary(), null);
+            rw.writeText("摘要：" + (ae.getSummary() != null ? ae.getSummary() : "") + "...", null);
                 rw.startElement("a", this);
                 rw.writeAttribute("href", href, null);
                 rw.writeAttribute("target", (target != null ? target : "_self"), null);

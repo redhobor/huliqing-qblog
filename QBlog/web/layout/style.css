@@ -1,4 +1,5 @@
 /** 比较完整的css定义示例，来自 dark模板 */
+/* 全局样式 ****************************************************************** */
 a:link {color:silver;text-decoration: none;}
 a:visited {color: silver;text-decoration: none;}
 a:hover {color: white;text-decoration: underline;}
@@ -10,68 +11,135 @@ body {
     font-weight:normal;
 }
 
-/** body样式 */
+/* body 样式 **************************************************************** */
 .css_body {
     background-image: url(/layout/dark/image/bg.jpg);
 }
 
-/** 整个导航栏的样式 */
-.css_nav_class {}
-/** 导航按钮的一般样式，或mouse离开按钮时的样式 */
-.css_nav_onmouseout {font-weight: bold;cursor:pointer;padding:0 5px;margin-left: 5px;color:gray; }
-/** 导航按钮，当mouse放上去时的样式 */
-.css_nav_onmouseover{font-weight: bold;cursor:pointer;padding:0 5px;margin-left: 5px;background-color:orange; color:white;line-height: 35px;}
-/** 导航按钮，当前选择的栏目的样式 */
-.css_nav_onmousedown{font-weight: bold;cursor:pointer;padding:0 5px;margin-left: 5px;background-color: orange;color:white;line-height: 35px;}
+
+/* 导航栏的样式 ************************************************************** */
+.css_nav_full {}
+.css_nav_full a:link{color: gray;text-decoration: none;}
+.css_nav_full a:visited{color:gray;text-decoration: none;}
+.css_nav_full a:hover{color:gray;text-decoration: none;}
+
+/* mouseout */
+.css_nav_itemOuter_onmouseout {
+    height: 50px;
+    margin: 0 20px 0 0;
+}
+.css_nav_itemOuter_onmouseover {
+    background-image: url(/layout/dark/image/nav-active.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 50px;
+    margin: 0 20px 0 0;
+}
+.css_nav_itemOuter_onmousedown {
+    background-image: url(/layout/dark/image/nav-active.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 50px;
+    margin: 0 20px 0 0;
+}
+
+.css_nav_itemInner_onmouseout {
+    height: 50px;
+    margin:0 -5px 0 5px;
+}
+.css_nav_itemInner_onmouseover {
+    background-image: url(/layout/dark/image/nav-active.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    height: 50px;
+    margin:0 -5px 0 5px;
+}
+.css_nav_itemInner_onmousedown {
+    background-image: url(/layout/dark/image/nav-active.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    height: 50px;
+    margin:0 -5px 0 5px;
+}
+
+.css_nav_item_onmouseout {
+    font-weight: bold;
+    cursor:pointer;
+    padding:0 10px;
+    color:gray;
+    line-height: 35px;
+    margin-left: -5px;
+}
+.css_nav_item_onmouseover {
+    font-weight: bold;
+    cursor:pointer;
+    padding:0 10px;
+    color:white;
+    line-height: 35px;
+    margin-left: -5px;
+}
+.css_nav_item_onmousedown {
+    font-weight: bold;
+    cursor:pointer;
+    padding:0 10px;
+    color:white;
+    line-height: 35px;
+    margin-left: -5px;
+}
+
+/* 模块样式 ****************************************************************** */
 
 /** 模块整体样式 */
 .css_module_full {padding: 5px 0;}
 
 /** 模块Title样式 */
 .css_module_titleOuter {
-    background-image: url(/layout/dark/image/menu-bg.png);
+    background-image: url(/layout/dark/image/menu-bg02.png);
     background-repeat: no-repeat;
     background-position: right top;
-    height: 35px;
+    height: 30px;
     margin-left:10px;
 }
 .css_module_titleInner {
-    background-image: url(/layout/dark/image/menu-bg.png);
+    background-image: url(/layout/dark/image/menu-bg02.png);
     background-repeat: no-repeat;
     background-position: left top;
-    height: 35px;
+    height: 30px;
     margin: 0 10px 0 -10px;
     filter:alpha(Opacity=50);-moz-opacity:0.5;opacity: 0.5;
 }
-.css_module_title {line-height: 35px;color:black;font-weight: bold;padding: 0;margin-left: 20px;}
+.css_module_title {line-height: 30px;color:black;font-weight: bold;padding: 0;margin-left: 20px;}
 
 /** 模块Content样式 */
 .css_module_content {padding:3px;}
 
-/** 文章标题(文章列表中的) */
+/* 文章样式 ****************************************************************** */
+
+/** 文章标题(文章列表中的),title样式由outer/inner/title三层div嵌套构成 */
 .css_article_titleOuter {
-    background-image: url(/layout/dark/image/menu-bg.png);
+    background-image: url(/layout/dark/image/menu-bg02.png);
     background-repeat: no-repeat;
     background-position: right top;
-    height: 35px;
-    margin:20px 0 0 10px;
+    height: 30px;
+    margin:0 0 0 10px;
 }
 .css_article_titleInner {
-    background-image: url(/layout/dark/image/menu-bg.png);
+    background-image: url(/layout/dark/image/menu-bg02.png);
     background-repeat: no-repeat;
     background-position: left top;
-    height: 35px;
+    height: 30px;
     margin: 0 10px 0 -10px;
     filter:alpha(Opacity=50);-moz-opacity:0.5;opacity: 0.5;
 }
 .css_article_title {
-    line-height: 35px;
+    line-height: 30px;
     padding:0;
     font-weight:bold;
-    font-size:1.2em;
+    font-size:1.1em;
     margin: 0 0 0 20px;
-    color: black;
+    color: white;
 }
+.css_article_title a:hover { text-decoration:none;}
 
 /** 文章摘要(文章列表中的) */
 .css_article_summary {
@@ -86,7 +154,7 @@ body {
     line-height: 1.7;
 }
 
-/** 文章页脚样式，该区域包含：发表日期，阅读数，评论数 */
+/** 文章页脚样式，该区域包含：日期，阅读数，评论数 */
 .css_article_footerOuter {
     margin: 0;
 }
@@ -105,7 +173,7 @@ body {
     border-top: 1px solid gray;
 }
 
-/** 回复区域的样式，主要是几个用于回复的输入框,在article页面中，跟随在reply list后 */
+/** 回复区域的样式，主要是几个用于回复的输入框,在article页面中 */
 .css_reply_zone_full {
     margin: 10px 0;
     padding: 10px 0;

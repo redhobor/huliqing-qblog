@@ -80,7 +80,7 @@ public class App implements java.io.Serializable {
      * @return
      */
     public String getVersion() {
-        return "0.94";
+        return "0.95";
     }
 
     /**

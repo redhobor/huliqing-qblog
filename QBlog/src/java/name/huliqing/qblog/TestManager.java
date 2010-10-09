@@ -73,23 +73,6 @@ public class TestManager {
     }
 
     private final void test() {
-        ArticleEn temp = ArticleSe.find(436L);
-        if (temp != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-            String time = sdf.format(new Date());
-            ArticleEn ae = new ArticleEn();
-            ae.setAuthor(temp.getAuthor());
-            ae.setCategory(temp.getCategory());
-            ae.setContent(temp.getContent());
-            ae.setMailNotice(temp.getMailNotice());
-            ae.setModifyDate(temp.getModifyDate());
-            ae.setReplyable(temp.getReplyable());
-            ae.setSecurity(ArticleSecurity.PUBLIC);
-            ae.setSummary(time + "-> STest:这是一篇由系统自动生成的文章，该文章用于测试。" + temp.getSummary());
-            ae.setTags("随笔,情感,画集,爱情,编程,Java,C,C++,C#,哲学");
-            ae.setTitle(time + "-> STest:" + temp.getTitle());
-            ArticleSe.testSave(ae);
-        }
+
     }
 }

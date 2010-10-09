@@ -33,10 +33,14 @@
 
 package name.huliqing.qblog.web;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -44,10 +48,12 @@ import javax.faces.model.SelectItem;
 import name.huliqing.qblog.LayoutManager;
 import name.huliqing.qblog.LayoutManager.Layout;
 import name.huliqing.qblog.QBlog;
+import name.huliqing.qblog.entity.BackupEn;
 import name.huliqing.qblog.entity.ModuleEn;
 import name.huliqing.qblog.entity.PageEn;
 import name.huliqing.qblog.entity.PageModuleEn;
 import name.huliqing.qblog.enums.Group;
+import name.huliqing.qblog.service.BackupSe;
 import name.huliqing.qblog.service.ModuleSe;
 import name.huliqing.qblog.service.PageModuleSe;
 import name.huliqing.qblog.service.PageSe;
@@ -71,9 +77,16 @@ public class PmcWe extends BaseWe {
 
     // 页面配置后的临时有格式字符串
     private String configValue;
+
+    // 配置的名称, BackupEn.name，在切换配置时更新
+    private String config;
+
+    // 当前的所有备份
+    private List<SelectItem> configs;
     
     public PmcWe() {
         super();
+        // 获取PageId
         Long tempPageId = QFaces.convertToLong(QBlog.getParam("pageId"));
         if (tempPageId != null) {
             pageId = tempPageId;
@@ -82,9 +95,27 @@ public class PmcWe extends BaseWe {
                 layout = pe.getLayout();
             }
         }
+        // 获取Layout
         String tempLayout = QBlog.getParam("layout");
         if (tempLayout != null) {
             this.layout = tempLayout;
+        }
+        // Backup Config
+        String tempConfig = QBlog.getParam("config");
+        if (tempConfig != null) {
+            BackupEn backupEn = null;
+            try {
+                backupEn = BackupSe.find(URLDecoder.decode(tempConfig, "utf8"));
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(PmcWe.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (backupEn != null) {
+                BackupSe.restore(backupEn);
+//                QBlog.redirect("/page/pageId=" + pageId);
+                // 不应该跳到原页面，页应该直接跳到首页，
+                // 因为应用新配置后，当前的pageId不一定存在
+                QBlog.redirect("/");
+            }
         }
     }
 
@@ -125,6 +156,36 @@ public class PmcWe extends BaseWe {
             }
         }
         return layouts;
+    }
+
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
+    }
+    
+    public List<SelectItem> getConfigs() {
+        if (configs == null) {
+            configs = new ArrayList<SelectItem>();
+            List<BackupEn> bes = BackupSe.findAll();
+            if (bes != null && !bes.isEmpty()) {
+                for (BackupEn be : bes) {
+                    try {
+                        configs.add(new SelectItem(URLEncoder.encode(be.getName(), "utf8"),
+                                be.getName(), be.getDes()));
+                    } catch (UnsupportedEncodingException ex) {
+                        Logger.getLogger(PmcWe.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+        return configs;
+    }
+
+    public void setConfigs(List<SelectItem> configs) {
+        this.configs = configs;
     }
 
     // ---- load modules

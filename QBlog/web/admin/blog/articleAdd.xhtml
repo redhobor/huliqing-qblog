@@ -43,15 +43,10 @@
                     <q:validator for="securityType" displayFlag="false" required="true" messageError="请选择类型"/>
                 </h:panelGroup>
 
-                <h:outputLabel value="摘要*" />
-                <h:panelGroup>
-                    <h:inputTextarea id="summary" value="#{articleUpdateWe.article.summary}" style="width:99%;height:80px;"/>
-                    <q:validator for="summary" required="true" maxLength="500" messageError="必填的,且内容不能多于500个字符" displayFlag="false" />
-                </h:panelGroup>
-
                 <h:outputLabel value="内容" />
                 <h:panelGroup>
-                    <q:editor id="content" value="#{articleUpdateWe.article.content}" enableInsertCode="true" style="width:100%;">
+                    <q:editor id="content" value="#{articleUpdateWe.article.content}" enableInsertCode="true" 
+                              style="width:100%;height: 250px;">
                         <f:converter converterId="converter.TextConverter" />
                     </q:editor>
                 </h:panelGroup>
@@ -75,6 +70,9 @@
                     <ui:insert name="actions">
                         <h:commandButton value="发表文章" action="#{articleUpdateWe.add}" styleClass="button"/>
                     </ui:insert>
+                    <h:outputLink style="margin-left: 20px;" value="http://huliqing-blog.appspot.com/article/articleId=292001" target="_blank">
+                        <h:outputText value="使用Windows Live Writer离线编辑文章更方便!" />
+                    </h:outputLink>
                 </h:panelGroup>
             </h:panelGrid>
         </h:form>

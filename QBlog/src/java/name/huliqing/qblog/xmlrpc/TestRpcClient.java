@@ -31,50 +31,51 @@
  * - Blog and source code availability: http://www.huliqing.name/
  */
 
-package name.huliqing.qblog.daocache;
+package name.huliqing.qblog.xmlrpc;
 
-import java.util.List;
-import name.huliqing.qblog.dao.BackupDa;
-import name.huliqing.qblog.entity.BackupEn;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Hashtable;
+import java.util.Vector;
+import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.client.XmlRpcClient;
+import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
 /**
  *
  * @author huliqing
  */
-public class BackupCache extends BackupDa{
-    private final static BackupCache ins = new BackupCache();
-    private BackupCache(){} 
-    public final static BackupCache getInstance() {
-        return ins;
+public class TestRpcClient {
+
+    public static void main(String[] args) throws MalformedURLException, XmlRpcException, IOException {
+        try {
+            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+            config.setServerURL(new URL("http://localhost:8080/xmlrpc"));
+            XmlRpcClient client = new XmlRpcClient();
+            client.setConfig(config);
+
+            Hashtable<String, String> blog = new Hashtable<String, String>();
+            blog.put("title", "Test a title这是中文 ");
+            blog.put("link", "http://www.huliqing.name/");
+            blog.put("description", "The content of the post");
+
+            Vector vec = new Vector();
+            vec.add("default");
+            vec.add("admin");
+            vec.add("admin");
+            vec.add(blog);
+            vec.add(true);
+
+            String result = (String) client.execute("metaWeblog.newPost", vec);
+            System.out.println("result=" + result);
+        } catch (MalformedURLException e) {
+            System.out.println(e.toString());
+        } catch (XmlRpcException e) {
+            System.out.println(e.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public boolean save(BackupEn t) {
-        return super.save(t);
-    }
-
-    @Override
-    public boolean update(BackupEn t) {
-        return super.update(t);
-    }
-
-    @Override
-    public boolean delete(String id) {
-        return super.delete(id);
-    }
-
-    @Override
-    public BackupEn find(String id) {
-        return super.find(id);
-    }
-
-    @Override
-    public List<BackupEn> findAll(String sortField, Boolean asc, Integer start, Integer size) {
-        return super.findAll(sortField, asc, start, size);
-    }
-
-    public Integer countAll() {
-        BackupEn s = new BackupEn();
-        return countByObject(s);
-    }
 }

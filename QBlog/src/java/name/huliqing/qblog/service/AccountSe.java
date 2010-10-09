@@ -163,6 +163,28 @@ public class AccountSe {
     }
 
     /**
+     * 用于非JSF生命周期内的登录验证。
+     * 如果登录成功，则返回null<BR />
+     * 如果登录失败，则返回错误信息。
+     * @param account
+     * @return
+     */
+    public final static String loginWithPasswordEncodedRPC(AccountEn account) {
+        AccountEn result = AccountCache.getInstance().find(account.getAccount());
+        if (result == null) {
+            return "不存在的用户帐号：" + account.getAccount();
+        }
+        if (!result.getActive()) {
+            return "帐号没有激活";
+        }
+        if (!result.getPassword().equals(account.getPassword())) {
+            return "密码错误";
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 退出用户登录,同时清除Cookie
      */
     public final static void logout() {

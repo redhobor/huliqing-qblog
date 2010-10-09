@@ -75,6 +75,10 @@ public class FolderSe {
         return FolderCache.getInstance().find(folderId);
     }
 
+    public final static List<FolderEn> findByName(String name) {
+        return FolderCache.getInstance().findByName(name);
+    }
+
     public final static List<FolderEn> findAll() {
         return FolderCache.getInstance().findAll(null, null);
     }

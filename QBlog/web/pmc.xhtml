@@ -12,37 +12,56 @@
                     visible="true"
                     renderCloseButton="false">
             <!-- Config 面板 -->
-            <h:panelGrid columns="2" border="0" 
-                         columnClasses="alignT,alignT"
+            <h:panelGrid columns="1" border="0"
                          headerClass="alignL"
                          style="max-width: 600px;">
-                <f:facet name="header">
-                    <h:selectOneMenu value="#{pmcWe.layout}" onchange="changeLayout(this.value, '#{pmcWe.pageId}');" >
+                <h:panelGroup>
+                    <script type="text/javascript">
+                        <!--
+                        google_ad_client = "pub-0155192758955646";
+                        /* 468x60, 创建于 10-10-8 */
+                        google_ad_slot = "1024362862";
+                        google_ad_width = 468;
+                        google_ad_height = 60;
+                        //-->
+                    </script>
+                    <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+                </h:panelGroup>
+
+                <h:panelGrid columns="3" width="100%" style="border-bottom: 1px dotted silver;">
+                    <h:commandButton value="保存页面配置" action="#{pmcWe.saveConfig}" onclick="return submitConfig();"
+                                    style="width:120px;height:32px;" />
+
+                    <h:selectOneMenu value="#{pmcWe.layout}"
+                                     onchange="changeLayout(this.value, '#{pmcWe.pageId}');"
+                                     style="width:120px;height:30px;font-size: 22px;">
                         <f:selectItem itemValue="" itemLabel="切换模版" itemDisabled="true" />
                         <f:selectItems value="#{pmcWe.layouts}" />
                     </h:selectOneMenu>
-                </f:facet>
-                <q:miniDataTable search="#{pmcWe.loadModules}"
-                                 alwaysShow="true"
-                                 showOpenButton="false"
-                                 columnClasses="dotted"
-                                 pageSize="8"
-                                 width="230"
-                                 displayPage="5"/>
-                <h:panelGroup>
-                    <div id="ajaxModulePanel"><!-- The id "modulePanel couldn't be change." --></div>
-                </h:panelGroup>
+
+                    <h:selectOneMenu value="#{pmcWe.config}" 
+                                     onchange="changeConfig(this, '#{pmcWe.pageId}');"
+                                     style="width:180px;height:30px;font-size: 22px;">
+                        <f:selectItem itemValue="" itemLabel="切换配置" />
+                        <f:selectItems value="#{pmcWe.configs}" />
+                    </h:selectOneMenu>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" columnClasses="alignT,alignT">
+                    <q:miniDataTable search="#{pmcWe.loadModules}" alwaysShow="true" showOpenButton="false" columnClasses="dotted" pageSize="8" width="230" displayPage="5"/>
+
+                    <h:panelGroup>
+                        <div id="ajaxModulePanel"><!-- The id "modulePanel couldn't be change." --></div>
+                    </h:panelGroup>
+                </h:panelGrid>
+
                 <f:facet name="footer">
                     <h:panelGroup>
-                        <h:commandButton value="保存配置" 
-                                         action="#{pmcWe.saveConfig}"
-                                         onclick="return submitConfig();"
-                                         style="width:120px;height: 40px;margin-top: 20px;" />
                         <div class="gray" style="padding:5px;background: #F0F0F0;" >
                             <div> * 生成预览 - 点击获取模块，将模块拖动并部署到相应区域，记得“保存配置”</div>
                             <div> * 模版 - 切换模版预览后，记得“保存配置” </div>
                             <div> * 备份 - 将满意的配置备份起来，多个备份配置间随意切换，一键搞定。 更多 <g:help helpId="BackupNotice" visible="false" /> </div>
-                            <div> * 浏览器 - 配置时推荐的优先顺序：FireFox,Opera,IE,Chrome,Safari(Chrome,Safari预览效果较差) </div>
+                            <div> * 浏览器 - 配置时推荐的浏览器优先顺序：FireFox,Opera,IE,Chrome,Safari </div>
                         </div>
                     </h:panelGroup>
                 </f:facet>
@@ -56,6 +75,24 @@
         // change layout
         function changeLayout(layout, pageId) {
             window.location.href = "/page/pageId=" + pageId + ",layout=" + layout + ",editable=true";
+        }
+        
+        function changeConfig(selObj, pageId) {
+            var value = selObj.value;
+            var label = selObj.options[selObj.selectedIndex].text;
+            if (confirm("您确认切换配置吗？\n\
+\n\
+提示：该操作将立即进行，并应用到所有页面，\n\
+您的以下信息将被重置到这个配置中：" + label + "\n\
+\n\
+1.系统参数\n\
+2.页面模块\n\
+3.应用模块\n\
+\n\
+建议在切换配置之前先对您的当前配置进行一次完整的备份\n\
+")) {
+                window.location.href = "/page/pageId=" + pageId + ",config=" + value + ",editable=true";
+            }
         }
 
         // Update Config

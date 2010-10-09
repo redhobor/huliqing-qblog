@@ -88,6 +88,18 @@ public class FolderCache extends FolderDa{
     }
 
     /**
+     * 通过名称查询folder
+     * @param name
+     * @return
+     */
+    public List<FolderEn> findByName(String name) {
+        FolderEn fe = new FolderEn();
+        fe.setName(name);
+        List<FolderEn> folders = findByObject(fe, null, null, null, null);
+        return folders;
+    }
+
+    /**
      * 查找相册文件夹，从start位置开始，查找size数量的记录，该方法使用createDate倒序
      * 排列
      * @param start 如果start为null,则从0取起

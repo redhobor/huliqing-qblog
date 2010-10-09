@@ -28,7 +28,10 @@
                         </h:outputLink>
                     </h:panelGroup>
                     <h:panelGroup layout="block" styleClass="css_article_summary">
-                        <h:outputText value="#{article.summary}" />
+                        <h:outputText value="#{article.summary}..." rendered="#{article.summary != null}" />
+                        <h:outputLink value="/article/articleId=#{article.articleId}">
+                            <h:outputText value="[阅读全文]" />
+                        </h:outputLink>
                     </h:panelGroup>
                     <h:panelGroup layout="block" styleClass="css_article_footer">
                         <h:outputText value="#{article.createDate}" >
@@ -37,7 +40,10 @@
                         <h:outputText value=" 阅读：#{article.totalView}" />
                         <h:outputText value=" 评论：#{article.totalReply}" />
                         <h:panelGroup layout="block" rendered="#{visitor.login}">
-                            <span style="cursor:pointer;" onclick="window.location.href='/admin/blog/articleEdit.faces?articleId=#{article.articleId}'"> 编辑 </span>
+                            <span style="cursor:pointer;" 
+                                  onclick="window.location.href='/admin/blog/articleEdit.faces?articleId=#{article.articleId}&amp;returnURL=#{app.currentURL}'"> 编辑 </span>
+                            <span style="cursor:pointer;" 
+                                  onclick="window.location.href='/admin/blog/articleDelete.faces?articleId=#{article.articleId}&amp;returnURL=#{app.currentURL}'"> 删除 </span>
                         </h:panelGroup>
                     </h:panelGroup>
                 </h:column>

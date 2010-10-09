@@ -44,22 +44,28 @@ public enum Style {
     /** 页面Body样式 */
     css_body,
 
-    // ---- 导航栏样式
+    // --------------------------------------------------------------- 导航栏样式
 
-    /** 整个导航栏的样式 */
-    css_nav_class,
+    /** 整个导航栏的样式，其中包含各个item */
+    css_nav_full,
 
-    /** 导航按钮的一般样式，或mouse离开按钮时的样式 */
-    css_nav_onmouseout,
+    /**
+     * 导航栏的item,这个item由三层div嵌套构成,outer/inner/item,这例于制定样式
+     * onmouseout,onmouseover,onmousedown分别指定了鼠标动作的各个层的样式。
+     */
+    css_nav_itemOuter_onmouseout,
+    css_nav_itemInner_onmouseout,
+    css_nav_item_onmouseout,
 
-    /** 导航按钮，当mouse放上去时的样式 */
-    css_nav_onmouseover,
+    css_nav_itemOuter_onmouseover,
+    css_nav_itemInner_onmouseover,
+    css_nav_item_onmouseover,
 
-    /** 导航按钮，当前选择的栏目的样式 */
-    css_nav_onmousedown,
+    css_nav_itemOuter_onmousedown,
+    css_nav_itemInner_onmousedown,
+    css_nav_item_onmousedown,
 
-
-    // ---- Module 样式
+    // ------------------------------------------------------------- Module 样式
 
     /** Module 整体样式 */
     css_module_full,
@@ -72,7 +78,7 @@ public enum Style {
     /** Module内容的样式名称 */
     css_module_content,
 
-    // ---- Article 样式
+    // ------------------------------------------------------------ Article 样式
 
     /** 文章标题样式 */
     css_article_titleOuter,

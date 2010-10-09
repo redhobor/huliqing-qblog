@@ -10,7 +10,7 @@
     </ui:define>
 
     <ui:define name="body">
-        <div style="padding:0;margin:0 auto;width:920px;background: url(/layout/dark/image/bg-center.jpg) no-repeat;">
+        <div style="padding:0;margin:0 auto;width:970px;background: url(/layout/dark/image/bg-center.jpg) no-repeat;">
             <div>
                 <ui:insert name="GROUP_HEADER" />
             </div>
@@ -18,31 +18,45 @@
                 <ui:insert name="GROUP_TOP" />
             </div>
         </div>
-        <div style="background: black;margin:0;padding:0;height:67px;
+        <div style="margin:0;padding:0;height:67px;background: black;
              background: url(/layout/dark/image/nav-bg.png) repeat-x;">
-            <div style="width:910px;margin:0 auto;">
+            <div style="width:970px;margin:0 auto;">
                 <ui:insert name="GROUP_NAVIGATION" />
             </div>
         </div>
-        <div style="padding:0;margin:0 auto;width:920px;">
-            <div>
-                <div class="floatL" style="width:715px;min-height:300px;
+        <div style="padding:0;margin:0 auto;width:970px;border:0px solid red;">
+                <div class="floatL" style="width:750px;margin: -20px 0 0 10px;
+                     border: 0px solid red;
                      background-image: url(/layout/dark/image/menu-side.png);
                      background-repeat: repeat-y;
                      background-position: top right;">
-                    <div style="margin-right:15px;">
-                        <ui:insert name="GROUP_CONTENT" />
+                    <div style="margin:20px 0 0 -10px;border:0px solid red;">
+                        <div style="height: 30px;border: 0px solid red;
+                             background-image: url(/layout/dark/image/dark-bg.png);
+                             background-repeat: no-repeat;
+                             margin-top: -7px;" />
+                        <div id="group_content_zone"
+                             style="border: 0px solid red;
+                             min-height: 400px;
+                             padding:0 35px 0 20px;
+                             background-image: url(/layout/dark/image/dark-bg-center.png);
+                             background-repeat: repeat-y ;">
+                            <ui:insert name="GROUP_CONTENT" />
+                        </div>
+                        <div style="height: 40px;border: 0px solid red;
+                             margin-bottom: 10px;
+                             background-image: url(/layout/dark/image/dark-bg.png);
+                             background-position: 0 40px;
+                             background-repeat: repeat-y;" />
                     </div>
                 </div>
-                <div class="floatR" style="width:200px;">
+                <div class="floatR" style="width:200px;border: 0px solid red;">
                     <ui:insert name="GROUP_MENU" />
                 </div>
                 <div class="clear" />
-            </div>
-            
         </div>
         <div style="height:3px;background: gray;"></div>
-        <div style="padding:0;margin:0 auto;width:920px;">
+        <div style="padding:0;margin:0 auto;width:970px;">
             <div>
                 <ui:insert name="GROUP_FOOTER" />
             </div>
