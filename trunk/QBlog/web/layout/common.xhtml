@@ -8,13 +8,16 @@
         <head>
             <meta http-equiv="X-UA-Compatible" content="IE=7" />
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title>
+                <ui:insert name="title" />
+            </title>
             <link rel="shortcut icon" href="#{app.ico}"  />
             <link rel="Bookmark" href="#{app.ico}"/>
             <link href="/_res/css/style.css" rel="stylesheet" type="text/css" />
+            <ui:insert name="meta" >
+                <meta name="keywords"  content="Blog, QBlog, App Engine, Open Source" />
+            </ui:insert>
             <ui:insert name="header" />
-            <title>
-                <ui:insert name="title" />
-            </title> 
         </head>
         <body class="css_body">
             <ui:include src="/menu.xhtml" />

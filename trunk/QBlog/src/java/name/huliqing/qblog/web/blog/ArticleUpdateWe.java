@@ -103,6 +103,7 @@ public class ArticleUpdateWe extends BaseWe {
     // ---- Action
     public String add() {
         this.article.setTags(makeTags());
+        this.article.setAuthor(QBlog.getCurrentVisitor().getAccount().getAccount());
         if (ArticleSe.save(this.article)) {
             if (this.article.getSecurity() == ArticleSecurity.DRAFT) {
                 QBlog.redirect("articleDraftList.faces");

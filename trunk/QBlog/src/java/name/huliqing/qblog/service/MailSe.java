@@ -85,21 +85,16 @@ public class MailSe {
         // 分析出邮件接收者的列表(对于回复者的回复)
         List<String> receives = parseReply(reply, authorAddress);
         // 在邮件中包含原文章连接信息 
-        String articleURL = QBlog.getHostRequest() + "/article/artileId=" + reply.getArticle();
+        String articleURL = QBlog.getHostRequest() + "/article/articleId=" + reply.getArticle();
 
         // 邮件主体
-        StringBuilder hb = new StringBuilder().append("<pre>")
+        StringBuilder hb = new StringBuilder()
+                .append("回复文章 : <a href='" + articleURL + "'>" + article.getTitle() + "</a><p />")
+                .append("<pre>")
                 .append(reply.getContent().getValue())
-                .append("</pre>")
-                .append("<hr />")
-                .append("回复者:" + reply.getReplyBy())
-                .append("<br />")
-                .append("回复者Email:" + reply.getEmail())
-                .append("<br />")
-                .append("回复者IP:" + reply.getReplyIpRemake())
-                .append("<br />")
-                .append("相关文章 : <a href='" + articleURL + "'>" + article.getTitle())
-                .append("</a> <br />");
+                .append("</pre><p />")
+                .append("- " + reply.getReplyBy() + " (" + reply.getEmail() + ")<br />")
+                .append("<hr />");
 
         // 对文章作者进行email提醒
         if (article.getMailNotice()
@@ -116,6 +111,18 @@ public class MailSe {
 
         // 对回复者进行提醒
         if (receives != null && !receives.isEmpty()) {
+            hb.append("")
+            .append("<a href=\"http://huliqing-blog.appspot.com/article/articleId=210001\">")
+            .append("<img style=\"height: 25px; float: left; border: 0pt none;\" " +
+                    " src=\"http://huliqing-blog.appspot.com/_res/image/qblog.png\" alt=\"\" />")
+            .append("<font size=\"3\">")
+            .append("一键KO独立博客")
+            .append("</font>")
+            .append("<font size=\"2\">")
+            .append("——简单、易用、高效、永远免费 - QBlog帮您轻松搭建完全属于自己的网站。")
+            .append("</font>")
+            .append("</a>");
+
             MailService.Message message = new MailService.Message();
             message.setSender(sender);
             message.setTo(receives);

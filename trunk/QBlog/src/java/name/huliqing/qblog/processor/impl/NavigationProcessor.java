@@ -33,12 +33,14 @@
 
 package name.huliqing.qblog.processor.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import name.huliqing.qblog.QBlog;
 import name.huliqing.qblog.entity.ModuleEn;
 import name.huliqing.qblog.entity.PageEn;
 import name.huliqing.qblog.enums.Style;
 import name.huliqing.qblog.processor.HtmlProcessor;
+import name.huliqing.qblog.processor.attr.AttrSelectOneRadio;
 import name.huliqing.qblog.processor.attr.Attribute2;
 import name.huliqing.qblog.service.PageSe;
 
@@ -51,44 +53,129 @@ public class NavigationProcessor extends HtmlProcessor {
     // 生成一个导航列
     private final String genColumn(Long pageId, String pageName, Long currentPageId) {
         boolean curr = (currentPageId != null && currentPageId.longValue() == pageId.longValue());
-        String out = Style.css_nav_onmouseout.name();
-        String over = Style.css_nav_onmouseover.name();
-        String down = Style.css_nav_onmousedown.name();
-        if (curr)
-            out = Style.css_nav_onmousedown.name();
-        return "<div class='"+ out + "' "
-                + " onmouseover=\"this.className='" + over + "'\" "
-                + "  onmouseout=\"this.className='" + out  + "'\" "
-                + " onmousedown=\"this.className='" + down + "'\" "
-                + " onclick=\"window.location.href='/page/pageId=" + pageId + "'\" >"
-                + pageName
-                + "</div>";
+        String outer_onmouseout = Style.css_nav_itemOuter_onmouseout.name();
+        String outer_onmouseover = Style.css_nav_itemOuter_onmouseover.name();
+        String outer_onmousedown = Style.css_nav_itemOuter_onmousedown.name();
+
+        String inner_onmouseout = Style.css_nav_itemInner_onmouseout.name();
+        String inner_onmouseover = Style.css_nav_itemInner_onmouseover.name();
+        String inner_onmousedown = Style.css_nav_itemInner_onmousedown.name();
+
+        String item_onmouseout = Style.css_nav_item_onmouseout.name();
+        String item_onmouseover = Style.css_nav_item_onmouseover.name();
+        String item_onmousedown = Style.css_nav_item_onmousedown.name();
+
+        if (curr) {
+            outer_onmouseout = outer_onmousedown;
+            inner_onmouseout = inner_onmousedown;
+            item_onmouseout = item_onmousedown;
+        }
+
+        StringBuilder sb = new StringBuilder(); 
+        sb.append("<div class='" + outer_onmouseout + "' "
+                + " onmouseout=\"this.className='"  + outer_onmouseout  + "'\" "
+                + " onmouseover=\"this.className='" + outer_onmouseover + "'\" "
+                + " onmousedown=\"this.className='" + outer_onmousedown + "'\" "
+                + " >")
+          .append("<div class='" + inner_onmouseout + "' "
+                + " onmouseout=\"this.className='"  + inner_onmouseout  + "'\" "
+                + " onmouseover=\"this.className='" + inner_onmouseover + "'\" "
+                + " onmousedown=\"this.className='" + inner_onmousedown + "'\" "
+                + " >")
+          .append("<a href='/page/pageId=" + pageId + "' onfocus=\"this.blur()\" >")
+          .append("<div class='" + item_onmouseout + "' "
+                + " onmouseout=\"this.className='"  + item_onmouseout  + "'\" "
+                + " onmouseover=\"this.className='" + item_onmouseover + "'\" "
+                + " onmousedown=\"this.className='" + item_onmousedown + "'\" "
+                + " >")
+          .append(pageName)
+          .append("</div>")
+          .append("</a>")
+          .append("</div>")
+          .append("</div>");
+        return sb.toString();
     }
 
     @Override
     public String makeHTML(ModuleEn module) {
-//        AttrMap attr = getAttributes(module);
+        AttrMap attr = getAttributes(module);
+        // mode => 0 = h,1 = v
+        // align => 0 = L, 1 = C, 2 = R
+        // alignText => 0 = L, 1 = C, 2 = R
+        Integer mode = attr.getAsInteger("Mode", 0);
+        // mode为水平时给予一个左对齐的导航，垂直时给予一个中对齐的导航
+        Integer align = attr.getAsInteger("Align", mode.intValue() == 0 ? 0 : 1);
+        // 导航文字默认居中对齐
+        Integer alignText = attr.getAsInteger("Align Text", 1);
+        StringBuilder style = new StringBuilder("");
+        if (mode.intValue() == 1) {
+            style.append("width:100%;");
+        }
+        if (align.intValue() == 0) {
+            style.append("margin:0 auto 0 0;");
+        } else if (align.intValue() == 1) {
+            style.append("margin:0 auto;");
+        } else if (align.intValue() == 2) {
+            style.append("margin:0 0 0 auto;");
+        }
+        if (alignText.intValue() == 0) {
+            style.append("text-align:left;");
+        } else if (alignText.intValue() == 1) {
+            style.append("text-align:center;");
+        } else if (alignText.intValue() == 2) {
+            style.append("text-align:right;");
+        }
 
         // 当前页PageId
         Long currentPageId = QBlog.getPageId();
         List<PageEn> pes = PageSe.findAllEnabled();
-        // 拼接导航信息
-        StringBuilder sb = new StringBuilder().append("<div class=\"" + Style.css_nav_class + "\" >");
-        sb.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" ><tr>");
-        if (pes != null) {
-            for (PageEn pe : pes) {
-                sb.append("<td>");
-                sb.append(genColumn(pe.getPageId(), pe.getName(), currentPageId));
-                sb.append("</td>");
+
+        // 拼接导航信息,垂直导航时给予一定的cellspacing
+        StringBuilder sb = new StringBuilder().append("<div class=\"" + Style.css_nav_full + "\" >");
+        sb.append("<table border=\"0\" cellspacing=\"" + (mode.intValue() == 1 ? 5 : 0) + "\" " +
+                " cellpadding=\"0\" style=\"" + style + "\" >");
+        if (pes != null && !pes.isEmpty()) {
+            if (mode.intValue() == 0) { // 水平导航
+                sb.append("<tr>");
+                for (PageEn pe : pes) {
+                    sb.append("<td>");
+                    sb.append(genColumn(pe.getPageId(), pe.getName(), currentPageId));
+                    sb.append("</td>");
+                }
+                sb.append("</tr>");
+            } else {
+                for (PageEn pe : pes) {
+                    sb.append("<tr><td>");
+                    sb.append(genColumn(pe.getPageId(), pe.getName(), currentPageId));
+                    sb.append("</td></tr>");
+                }
             }
+        } else {
+            sb.append("<tr><td></td></tr>");
         }
-        sb.append("</tr></table>");
+        sb.append("</table>");
         sb.append("</div>");
         return sb.toString();
     }
 
     public List<Attribute2> getRequiredAttributes() {
-        return null;
+        List<Attribute2> attrs = new ArrayList<Attribute2>(3);
+        AttrSelectOneRadio mode = new AttrSelectOneRadio("Mode", "0", "选择导航的显示方式");
+        mode.addItem("0", "水平导航条");
+        mode.addItem("1", "垂直导航条");
+        AttrSelectOneRadio align = new AttrSelectOneRadio("Align", "0", "导航栏的对齐方式");
+        align.addItem("0", "左对齐");
+        align.addItem("1", "居中对齐");
+        align.addItem("2", "右对齐");
+        AttrSelectOneRadio alignText = new AttrSelectOneRadio("Align Text", "1", "导航栏文字对齐方式");
+        alignText.addItem("0", "左对齐");
+        alignText.addItem("1", "居中对齐");
+        alignText.addItem("2", "右对齐");
+
+        attrs.add(mode);
+        attrs.add(align);
+        attrs.add(alignText);
+        return attrs;
     }
 
     @Override

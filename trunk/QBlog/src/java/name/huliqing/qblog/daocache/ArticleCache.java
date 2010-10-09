@@ -172,61 +172,6 @@ public class ArticleCache extends ArticleDa{
         return super.find(id);
     }
 
-    // remove
-//    /**
-//     * 查询所有文章，只查询简单字段,结果按createDate倒序
-//     * @param start 可为null
-//     * @param size 不能为null
-//     * @return
-//     */
-//    public final List<ArticleEn> findAll(Integer start, Integer size) {
-//        long startTime = System.currentTimeMillis();
-//
-//        if (lastPost == null) {
-//            cacheLastPost();
-//        }
-//
-//        // 从缓存中获取
-//        if (start == null || start < 0)
-//            start = 0;
-//
-//        if (size == null)
-//            throw new NullPointerException("Size couldn't be null.");
-//
-//        List<ArticleEn> result = new ArrayList<ArticleEn>();
-//        for (int i = start; i < lastPost.size(); i++) {
-//            result.add(lastPost.get(i));
-//            if (result.size() >= size.intValue()) {
-//                break;
-//            }
-//        }
-//
-//        // 如果缓存中不够，再从datastore中获取
-//        if (result.size() < size) {
-//            int needToGet = size - result.size();
-//            int nextStart = start + result.size();
-//            // (如果 nextStart >= publicTotal,则返回结果只会是empty,而且浪费操作时间)
-//            if (nextStart < ArticleIndexHelper.getInstance().getTotal()) {
-//                Long[] aids = ArticleIndexHelper.getInstance().findByDesc(nextStart, needToGet);
-//                List<ArticleEn> other = findArticlesById(aids);
-//                if (other != null && !other.isEmpty()) {
-//                    result.addAll(other);
-//                }
-//            }
-//        }
-//
-//        logger.info("Find all article use time =" + (System.currentTimeMillis() - startTime));
-//        return result;
-//    }
-//
-//    /**
-//     * 查询所有文章数
-//     * @return
-//     */
-//    public final Integer countAll() {
-//        return ArticleIndexHelper.getInstance().getTotal();
-//    }
-
     /**
      * 查询所有公开发表的文章,只查询部分字段,结果以createDate倒序
      * @param start 启始记录
@@ -404,6 +349,15 @@ public class ArticleCache extends ArticleDa{
     @Override
     public List<ArticleEn> findByDateRange(Date start, Date end) {
         return super.findByDateRange(start, end);
+    }
+
+    /**
+     * 查找最近发表的文章，这包含所有类别的文章，该方法以发表时间倒序进行查询。
+     * @param size 允许返回的最高数量
+     * @return
+     */
+    public List<ArticleEn> findRecentPost(Integer size) {
+        return super.findAll("createDate", Boolean.FALSE, 0, size);
     }
 
     // ---- Private.............................................................

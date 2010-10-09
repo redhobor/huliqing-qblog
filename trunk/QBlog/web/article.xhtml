@@ -6,6 +6,9 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     template="/page.xhtml">
     <ui:define name="title">#{articleWe.article.title}</ui:define>
+    <ui:define name="meta">
+        <meta name="keywords" content="#{articleWe.article.tags}" />
+    </ui:define>
     <ui:define name="GROUP_CONTENT">
         <script type="text/javascript" src="/_res/js/article.js" ></script>
         <q:saveState value="#{articleWe.article}" />
@@ -111,7 +114,7 @@
                                     listener="#{articleWe.saveOrUpdateReply}"
                                     onStart="return replyOnStart('re_title', 're_replyBy', 're_email', 're_content');"
                                     onFinish="replyOnFinish('re_content', 're_replyId');Q.F.find('replies').toSearch();">
-                                <h:commandButton id="submitReply" value="Submit" style="width:80px;" type="button"/>
+                                <h:commandButton id="submitReply" value="发表评论" style="width:120px;height: 40px;" type="button"/>
                             </q:ajaxSupport>
                     </h:panelGrid>
                 </h:panelGroup>

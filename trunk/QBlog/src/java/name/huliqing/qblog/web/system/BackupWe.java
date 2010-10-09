@@ -222,9 +222,9 @@ public class BackupWe extends BaseWe {
             BackupSe.save(backupEn);
             Messenger.sendInfo("Backup OK! Backup Name = " + backupEn.getName());
             this.backupEn = null;
-            this.backupProperties = false;
-            this.backupPages = false;
-            this.backupModules = false;
+//            this.backupProperties = false;
+//            this.backupPages = false;
+//            this.backupModules = false;
         } else { 
             Messenger.sendError("该备份名称已经存在，请使用其它名称！");
             return;
@@ -255,14 +255,8 @@ public class BackupWe extends BaseWe {
                 return;
             }
             String xmlValue = be.getBackupData().getValue();
-            restore(XmlUtils.newDocument(xmlValue));
+            BackupSe.restore(XmlUtils.newDocument(xmlValue));
             Messenger.sendInfo("恢复完成！Backup Name:" + be.getName());
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
@@ -270,67 +264,10 @@ public class BackupWe extends BaseWe {
         } catch (IOException ex) {
             Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
     }
 
-    private void restore(Document doc) throws ParserConfigurationException,
-            SAXException, IOException, 
-            IllegalArgumentException, 
-            IllegalAccessException, 
-            InstantiationException {
-
-        Restore restore = new Restore(doc);
-        restore.addConverter(Group.class, new GroupConverter());
-        restore.addConverter(ArticleSecurity.class, new ArticleSecurityConverter());
-        restore.addConverter(Text.class, new TextConverter()); 
-
-        // restore config
-        List<ConfigEn> ces = (List<ConfigEn>) restore.restore(ConfigEn.class);
-        if (ces != null && !ces.isEmpty()) {
-            for (ConfigEn ce : ces) {
-                ConfigManager.getInstance().saveOrUpdate(ce);
-            }
-        }
-
-        // Restore pages
-        List<PageEn> pes = (List<PageEn>) restore.restore(PageEn.class);
-        if (pes != null && !pes.isEmpty()) {
-            // 删除旧的Pages
-            PageSe.deleteAll();
-            Messenger.sendInfo("删除旧的Page, OK");
-
-            // 导入默认Page
-            for (PageEn pe : pes) {
-                PageSe.save(pe);
-            }
-            Messenger.sendInfo("恢复页面成功。");
-        }
-
-        // Restore modules
-        List<ModuleEn> mes = (List<ModuleEn>) restore.restore(ModuleEn.class);
-        if (mes != null && !mes.isEmpty()) {
-            // 删除旧Module
-            ModuleSe.deleteAll();
-            Messenger.sendInfo("删除旧的Module, OK");
-
-            // 导入默认Module
-            for (ModuleEn me : mes) {
-                ModuleSe._import(me);
-            }
-            Messenger.sendInfo("恢复模块成功。");
-        }
-
-        // Restore Page and modules
-        List<PageModuleEn> pmes = (List<PageModuleEn>) restore.restore(PageModuleEn.class);
-        if (pmes != null && !pmes.isEmpty()) {
-            // 删除旧的Page及Module配置信息
-            PageModuleSe.deleteAll();
-
-            // 导入配置
-            PageModuleSe.importAll(pmes);
-
-            Messenger.sendInfo("恢复页面与模块配置成功。");
-        }
-    }
+    
 
     // ---- Import
 
@@ -348,18 +285,12 @@ public class BackupWe extends BaseWe {
         try {
             QFile file = this.uiFileUpload.getFile();
             Document doc = ZipHelper.importAsDoc(file.getBytes());
-            restore(doc);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
+            BackupSe.restore(doc);
+        } catch (IOException ex) {
             Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
             Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException ex) {
             Logger.getLogger(BackupWe.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -31,50 +31,24 @@
  * - Blog and source code availability: http://www.huliqing.name/
  */
 
-package name.huliqing.qblog.daocache;
 
-import java.util.List;
-import name.huliqing.qblog.dao.BackupDa;
-import name.huliqing.qblog.entity.BackupEn;
+package name.huliqing.qblog.xmlrpc;
+
+import java.util.Hashtable;
 
 /**
  *
  * @author huliqing
  */
-public class BackupCache extends BackupDa{
-    private final static BackupCache ins = new BackupCache();
-    private BackupCache(){} 
-    public final static BackupCache getInstance() {
-        return ins;
-    }
+public interface BloggerAPI {
 
-    @Override
-    public boolean save(BackupEn t) {
-        return super.save(t);
-    }
+    public Hashtable[] getUsersBlogs(String appkey, String username,
+            String password) throws Exception ;
 
-    @Override
-    public boolean update(BackupEn t) {
-        return super.update(t);
-    }
+    public Hashtable[] getUserInfo(String appkey, String username,
+            String password) throws Exception ;
 
-    @Override
-    public boolean delete(String id) {
-        return super.delete(id);
-    }
+    public boolean deletePost(String appkey, String postid, String username,
+            String password, boolean publish) throws Exception;
 
-    @Override
-    public BackupEn find(String id) {
-        return super.find(id);
-    }
-
-    @Override
-    public List<BackupEn> findAll(String sortField, Boolean asc, Integer start, Integer size) {
-        return super.findAll(sortField, asc, start, size);
-    }
-
-    public Integer countAll() {
-        BackupEn s = new BackupEn();
-        return countByObject(s);
-    }
 }

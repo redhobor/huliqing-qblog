@@ -84,10 +84,6 @@ public class ConfigManager {
         Boolean value = QFaces.convertToBoolean(ce.getValue());
         if (value == null)
             value = QFaces.convertToBoolean(c.getValue());
-
-        if (value == null)
-            throw new RuntimeException("目标不能转换为Boolean, config=" + c);
-
         return value;
     }
 
@@ -104,10 +100,16 @@ public class ConfigManager {
         Integer value = QFaces.convertToInteger(ce.getValue());
         if (value == null)
             value = QFaces.convertToInteger(c.getValue());
+        return value;
+    }
 
+    public final Long getAsLong(Config c) {
+        ConfigEn ce = findConfigMap().get(c);
+        if (ce == null)
+            throw new NullPointerException("Config not found, config=" + c);
+        Long value = QFaces.convertToLong(ce.getValue());
         if (value == null)
-            throw new RuntimeException("目标不能转换为Integer, config=" + c);
-
+            value = QFaces.convertToLong(c.getValue());
         return value;
     }
 

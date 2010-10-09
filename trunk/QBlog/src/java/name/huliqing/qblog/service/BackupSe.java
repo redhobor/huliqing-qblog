@@ -33,10 +33,32 @@
 
 package name.huliqing.qblog.service;
 
+import com.google.appengine.api.datastore.Text;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import name.huliqing.common.XmlUtils;
+import name.huliqing.qblog.ConfigManager;
+import name.huliqing.qblog.Messenger;
+import name.huliqing.qblog.QBlog;
+import name.huliqing.qblog.backup.Restore;
+import name.huliqing.qblog.backup.converter.ArticleSecurityConverter;
+import name.huliqing.qblog.backup.converter.GroupConverter;
+import name.huliqing.qblog.backup.converter.TextConverter;
 import name.huliqing.qblog.daocache.BackupCache;
 import name.huliqing.qblog.entity.BackupEn;
+import name.huliqing.qblog.entity.ConfigEn;
+import name.huliqing.qblog.entity.ModuleEn;
+import name.huliqing.qblog.entity.PageEn;
+import name.huliqing.qblog.entity.PageModuleEn;
+import name.huliqing.qblog.enums.ArticleSecurity;
+import name.huliqing.qblog.enums.Group;
 import name.huliqing.qfaces.model.PageModel;
 import name.huliqing.qfaces.model.PageParam;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -52,8 +74,20 @@ public class BackupSe {
         return BackupCache.getInstance().delete(backup.getName());
     }
 
+    public final static Boolean update(BackupEn backup) {
+        return BackupCache.getInstance().update(backup);
+    }
+
+    public final static BackupEn find(String name) {
+        return BackupCache.getInstance().find(name);
+    }
+
     public final static Boolean isExistsBackupName(String name) {
         return (BackupCache.getInstance().find(name) != null);
+    }
+
+    public final static List<BackupEn> findAll() {
+        return BackupCache.getInstance().findAll("createDate", Boolean.FALSE, null, null);
     }
 
     public final static PageModel<BackupEn> findAll(PageParam pp) {
@@ -61,5 +95,76 @@ public class BackupSe {
         pm.setPageData(BackupCache.getInstance().findAll(pp.getSortField(), pp.getAsc(), pp.getStart(), pp.getPageSize()));
         pm.setTotal(BackupCache.getInstance().countAll());
         return pm;
+    }
+
+    public final static void restore(BackupEn backup) {
+        try {
+            String xmlValue = backup.getBackupData().getValue();
+            restore(XmlUtils.newDocument(xmlValue));
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(BackupSe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(BackupSe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BackupSe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public final static void restore(Document doc) {
+        // 未登录，一定不能被操作
+        if (!QBlog.getCurrentVisitor().isLogin()) {
+            Logger.getLogger(BackupSe.class.getName()).warning("试图在未登录状态" +
+                    "进行切换备份设置, remote=" + QBlog.getCurrentVisitor().getRemoteAddr());
+            return;
+        }
+        try {
+            Restore restore = new Restore(doc);
+            restore.addConverter(Group.class, new GroupConverter());
+            restore.addConverter(ArticleSecurity.class, new ArticleSecurityConverter());
+            restore.addConverter(Text.class, new TextConverter());
+            // restore config
+            List<ConfigEn> ces = (List<ConfigEn>) restore.restore(ConfigEn.class);
+            if (ces != null && !ces.isEmpty()) {
+                for (ConfigEn ce : ces) {
+                    ConfigManager.getInstance().saveOrUpdate(ce);
+                }
+            }
+            List<PageEn> pes = (List<PageEn>) restore.restore(PageEn.class);
+            if (pes != null && !pes.isEmpty()) {
+                // 删除旧的Pages
+                PageSe.deleteAll();
+                Messenger.sendInfo("删除旧的Page, OK");
+                // 导入默认Page
+                for (PageEn pe : pes) {
+                    PageSe.save(pe);
+                }
+                Messenger.sendInfo("恢复页面成功。");
+            }
+            List<ModuleEn> mes = (List<ModuleEn>) restore.restore(ModuleEn.class);
+            if (mes != null && !mes.isEmpty()) {
+                // 删除旧Module
+                ModuleSe.deleteAll();
+                Messenger.sendInfo("删除旧的Module, OK");
+                // 导入默认Module
+                for (ModuleEn me : mes) {
+                    ModuleSe._import(me);
+                }
+                Messenger.sendInfo("恢复模块成功。");
+            }
+            List<PageModuleEn> pmes = (List<PageModuleEn>) restore.restore(PageModuleEn.class);
+            if (pmes != null && !pmes.isEmpty()) {
+                // 删除旧的Page及Module配置信息
+                PageModuleSe.deleteAll();
+                // 导入配置
+                PageModuleSe.importAll(pmes);
+                Messenger.sendInfo("恢复页面与模块配置成功。");
+            }
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(BackupSe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(BackupSe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(BackupSe.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

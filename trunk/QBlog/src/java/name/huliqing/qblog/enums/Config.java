@@ -62,6 +62,9 @@ public enum Config {
     /** 文章缓存数设定，对最近刚刚发表的文章进行缓存，提高性能。注：这个缓存只对公开发表的文章起作用，对隐私，草稿类型的文章不作缓存。默认值:80 (数量不要太大,一般3-4页数据足够) */
     CON_ARTICLE_CACHE_LIMIT("80"),
 
+    /** 文章自动生成摘要时，允许的字数最大长度,最大不能超过500个字符,指定为0时将不生成摘要。 */
+    CON_ARTICLE_SUMMARY_LIMIT("300"),
+
     // ---- Reply
 
     /** [true/false]开启文章的回复功能,即允许用户回复文章,这个定义是从全局上的，如果关闭了这个功能，则所有文章都不能够被回复，即使文章自身设置了可回复的， 默认值:true */
@@ -93,9 +96,26 @@ public enum Config {
     CON_PHOTO_CACHE_DAYS("360"),
 
     /** [Int]相册缓存数，对最近创建的相册进行缓存，注：这里缓存的是相册信息，这不会缓存相册中的图片文件。默认:50 */
-    CON_PHOTO_CACHE_FOLDER("50");
+    CON_PHOTO_CACHE_FOLDER("50"),
 
-    
+    // ---- MetaWeblog Setting
+
+    /** 
+     * 指定你的Blog名称, 如果留空，则这个参数在必要时会自动设置为“Your Blog Name”
+     */
+    CON_METAWEBLOG_BLOG_NAME("Your Blog Name"),
+
+    /** 
+     * 你的Blog地址(URL)， 这个地址会由系统自动判断，不需要手动设置. 
+     */
+    CON_METAWEBLOG_SITE(""),
+
+    /**
+     * 默认的存放附件的相册ID，当来自客户端的文章包含图片等附件时，将使用这
+     * 个文件夹来存放附件,这个参数在必要时会自动设置, 你也可以手动指定。
+     */
+    CON_METAWEBLOG_ALBUM("");
+
     /**
      * 默认值
      */

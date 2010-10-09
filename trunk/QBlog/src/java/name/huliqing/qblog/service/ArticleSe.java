@@ -33,13 +33,16 @@
 
 package name.huliqing.qblog.service;
 
+import java.nio.CharBuffer;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import name.huliqing.qblog.ConfigManager;
 import name.huliqing.qblog.QBlog;
+import name.huliqing.qblog.StringUtils;
 import name.huliqing.qblog.daocache.ArticleCache;
 import name.huliqing.qblog.entity.ArticleEn;
 import name.huliqing.qblog.enums.ArticleSecurity;
@@ -52,15 +55,11 @@ public class ArticleSe {
     protected final static Logger logger = Logger.getLogger(ArticleSe.class.getName());
 
     /**
-     * 创建文章，要求登录状态,否则反回false
+     * 创建文章
      * @param article
      * @return
      */
     public final static Boolean save(ArticleEn article) {
-        if (!QBlog.getCurrentVisitor().isLogin()) {
-            logger.warning("试图在未登录状态下创建文章,remote=" + QBlog.getCurrentVisitor().getRemoteAddr());
-            return Boolean.FALSE;
-        }
         // 文章默认发表日期
         Calendar cal = Calendar.getInstance();
         article.setCreateDate(cal.getTime());
@@ -72,35 +71,8 @@ public class ArticleSe {
         article.setCreateYear(cal.get(Calendar.YEAR));
         article.setCreateMonth(cal.get(Calendar.MONTH));
         article.setCreateDay(cal.get(Calendar.DAY_OF_MONTH));
-
-        // 其它默认值
-        article.setTotalReply(0L);
-        article.setTotalView(0L);
-        article.setAuthor(QBlog.getCurrentVisitor().getAccount().getAccount());
-        ArticleCache.getInstance().save(article);
-
-        // 更新文章的标签信息
-        TagArticleSe.updateArticleTags(article.getArticleId());
-        return true;
-    }
-
-    /**
-     * 该方法用于测试,不要用于正式应用。
-     * @param article
-     * @return
-     */
-    public final static Boolean testSave(ArticleEn article) {
-        // 文章默认发表日期
-        Calendar cal = Calendar.getInstance();
-        article.setCreateDate(cal.getTime());
-
-        // 关于createYear,createMonth,createDay使用的是当前系统时区内的时间，所以
-        // 可能与createDate的各项值不一定相同。
-        cal.setTimeZone(TimeZone.getTimeZone(
-                ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_TIME_ZONE).getValue()));
-        article.setCreateYear(cal.get(Calendar.YEAR));
-        article.setCreateMonth(cal.get(Calendar.MONTH));
-        article.setCreateDay(cal.get(Calendar.DAY_OF_MONTH));
+        article.setSummary(generateSummary(article.getContent().getValue(), 
+                ConfigManager.getInstance().getAsInteger(Config.CON_ARTICLE_SUMMARY_LIMIT)));
 
         // 其它默认值
         article.setTotalReply(0L);
@@ -111,18 +83,17 @@ public class ArticleSe {
         TagArticleSe.updateArticleTags(article.getArticleId());
         return true;
     }
+
     
     /**
-     * 更新文章信息，要求登录状态，未登录则直接反回false.
+     * 更新文章信息
      * @param article
      * @return
      */
     public final static Boolean update(ArticleEn article) {
-        if (!QBlog.getCurrentVisitor().isLogin()) {
-            logger.warning("试图在未登录状态下更新文章,remote=" + QBlog.getCurrentVisitor().getRemoteAddr());
-            return Boolean.FALSE;
-        }
         article.setModifyDate(new Date());
+        article.setSummary(generateSummary(article.getContent().getValue(),
+                ConfigManager.getInstance().getAsInteger(Config.CON_ARTICLE_SUMMARY_LIMIT)));
         ArticleCache.getInstance().update(article);
         // 更新文章的标签信息
         TagArticleSe.updateArticleTags(article.getArticleId());
@@ -130,15 +101,11 @@ public class ArticleSe {
     }
 
     /**
-     * 删除文章，要求登录状态,未登录则直接反回false
+     * 删除文章
      * @param articleId
      * @return
      */
     public final static Boolean delete(Long articleId) {
-        if (!QBlog.getCurrentVisitor().isLogin()) {
-            logger.warning("试图未登录状态下删除文章,remote=" + QBlog.getCurrentVisitor().getRemoteAddr());
-            return Boolean.FALSE;
-        }
         ArticleCache.getInstance().delete(articleId);
         // 更新文章的标签信息
         TagArticleSe.updateArticleTags(articleId);
@@ -221,6 +188,15 @@ public class ArticleSe {
      */
     public final static List<ArticleEn> findAllPublic(Integer size) {
         return ArticleCache.getInstance().findAllPublic(0, size);
+    }
+
+    /**
+     * @see ArticleCache#findRecentPost(java.lang.Integer) ;
+     * @param size
+     * @return
+     */
+    public final static List<ArticleEn> findRecentPost(Integer size) {
+        return ArticleCache.getInstance().findRecentPost(size);
     }
 
     /**
@@ -314,6 +290,92 @@ public class ArticleSe {
             rb = QFaces.convertToBoolean(Config.CON_REPLY_ENABLE.getValue());
         }
         return (rb && article.getReplyable());
+    }
+
+    /**
+     * 生成文章的摘要信息, 这个过程会移除原始文章中的所有html标记，并将html的转义字
+     * 符进行反转，并获取指定的字符数.<br />
+     * 如果content为null,或len小于等于0,则直接返回null
+     * @param content 文章原始内容,html内容
+     * @param len 指定获取的最长字符长度，如果文章长度不足以达到这个长度，则返回文章
+     * 的总长度(去除html标记并进行返转义之后的长度)。
+     * @return 
+     */
+    public final static String generateSummary(String content, int len) {
+        if (content == null || len <= 0) {
+            return null;
+        }
+        // 移除所有HTML标记
+        String summary = name.huliqing.qblog.StringUtils.removeHTML(content);
+
+        // 反转html字符
+        String[][] tags = StringUtils.getEscapeCharacters();
+        HashMap<String, String> regMap = new HashMap<String, String>(tags.length * 2);
+        for (String[] tag : tags) {
+            regMap.put(tag[1], tag[0]);
+            regMap.put(tag[2], tag[0]);
+        }
+
+        int totalChar = summary.length();
+        int count = 0;          // 已经读取的字符
+        int index = 0;          // 当前char所在的index
+        boolean escape = false; // 是否处于转义字符中
+        StringBuilder sb = new StringBuilder(len);
+        CharBuffer buff = java.nio.CharBuffer.allocate(12); // 这个大小至少要等于最长的转义字符的长度,如：&curren;
+        // e.g.  &#160;这是内;容 &#160;
+        while (index < totalChar) {
+            char c = summary.charAt(index);
+            if (buff.remaining() <= 0) {
+                String temp = new String(buff.array());
+                sb.append(temp);
+                count += temp.length();
+                buff.rewind();
+                escape = false;
+            }
+            if (c == ';') {
+                if (escape) {
+                    buff.put(c);
+                    char[] temp = buff.array();
+                    String escapeWord = new String(temp, 0, buff.position());
+                    String targetWord = regMap.get(escapeWord);
+                    if (targetWord != null) {
+                        sb.append(targetWord);
+                        count++;
+                    } else {
+                        sb.append(escapeWord);
+                        count += escapeWord.length();
+                    }
+                    buff.rewind();
+                } else {
+                    sb.append(c);
+                    count++;
+                }
+                escape = false;
+            } else if (c == '&') {
+                // e.g.  &888&#160;这是内;容 &#160;
+                if (escape) {
+                    String temp = new String(buff.array(), 0, buff.position());
+                    sb.append(temp);
+                    count += temp.length();
+                }
+                escape = true;
+                buff.rewind();
+                buff.put(c);
+            } else {
+                if (escape) {
+                    buff.put(c);
+                } else {
+                    sb.append(c);
+                    count++;
+                }
+            }
+            if (count >= len) {
+                break;
+            }
+            index++;
+        }
+        summary = sb.toString();
+        return summary;
     }
 
 }

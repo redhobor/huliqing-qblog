@@ -221,9 +221,10 @@ public class UIModule extends UIComponentBase {
             rw.startElement("a", this);
             rw.writeAttribute("href", url, null);
             rw.writeAttribute("target", "_self", null);
+            rw.writeAttribute("onfocus", "this.blur()", null); // 让超链接不产生虚线框
             rw.startElement("div", this);
             if (!displayName) {
-                rw.writeAttribute("style", "cursor:pointer;display:none;position:absolute;padding:2px;margin-top:-15px;border:1px dotted #CCC;", null);
+                rw.writeAttribute("style", "cursor:pointer;display:none;position:absolute;padding:2px;margin-top:-20px;border:1px dotted #CCC;", null);
             }
             rw.writeAttribute("title", "编辑模块：" + module.getName(), null);
             rw.writeAttribute("id", nameId, null);
