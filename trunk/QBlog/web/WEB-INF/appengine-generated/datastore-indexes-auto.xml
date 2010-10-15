@@ -83,7 +83,7 @@
         <property name="folder" direction="asc"/>
         <property name="name" direction="desc"/>
     </datastore-index>
-    
+
     <!-- TagArticleEn -->
 
     <datastore-index kind="TagArticleEn" ancestor="false" source="manual">

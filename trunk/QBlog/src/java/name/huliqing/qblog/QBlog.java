@@ -39,6 +39,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -54,7 +55,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import name.huliqing.qblog.LayoutManager.Layout;
+import name.huliqing.qblog.entity.PageEn;
 import name.huliqing.qblog.enums.Config;
+import name.huliqing.qblog.service.PageSe;
 import name.huliqing.qfaces.QFaces;
 
 public class QBlog {
@@ -330,5 +334,50 @@ public class QBlog {
 
     public final static FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
+    }
+
+    /**
+     * 获取当前正在访问的页面所使用的模板
+     * @param pageId
+     * @return
+     */ 
+    public final static Layout findCurrentLayout(Long pageId) {
+
+        // 优先从parameter中获取
+        String name = QBlog.getParam("layout");
+
+        if (name != null && LayoutManager.getInstance().exists(name)) {
+            return LayoutManager.getInstance().findLayout(name);
+        }
+
+        // 从PageEn中获取
+        if (pageId == null) {
+            pageId = QFaces.convertToLong(QBlog.getParam("pageId"));
+        }
+
+        if (pageId != null) {
+            List<PageEn> pes = PageSe.findAllEnabled();
+            if (pes != null) {
+                for (PageEn pe : pes) {
+                    if (pe.getPageId().longValue() == pageId.longValue()) {
+                        name = pe.getLayout();
+                        break;
+                    }
+                }
+            }
+        }
+        if (name != null && LayoutManager.getInstance().exists(name)) {
+            return LayoutManager.getInstance().findLayout(name);
+        }
+
+        // 从默认系统设置中获取
+        name = ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_LAYOUT).getValue();
+        if (name != null && LayoutManager.getInstance().exists(name)) {
+            return LayoutManager.getInstance().findLayout(name);
+        }
+
+        // 如果系统默认layout设定不存在
+        logger.severe("找不到任何可用的模版，现在将使用默认模版: default");
+        return LayoutManager.getInstance().findLayout("default");
     }
 }

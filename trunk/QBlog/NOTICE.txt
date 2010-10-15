@@ -70,8 +70,8 @@ licenses and/or has source available from other locations.
     
 	Apache Software Foundation (http://xml.apache.org/commons)
   	David Megginson, Simple API for XML (http://www.saxproject.org)
-  	World Wide Web Consortium, xml-commons for http://xml.apache.org/ subproject (http://www.w3c.org/DOM)
-  	Sun Microsystems Inc., JSR 206, Java API for XML Processing 1.3(http://java.sun.com/xml/jaxp.html)
+  	World Wide Web Consortium, xml-commons for http://xml.apache.org/ subproject 	(http://www.w3c.org/DOM)
+  	Sun Microsystems Inc., JSR 206, Java API for XML Processing 1.3	(http://java.sun.com/xml/jaxp.html)
 	lib/xml-apis.jar
 	lib/xalan.jar
 	lib/xsltc.jar
@@ -93,5 +93,12 @@ licenses and/or has source available from other locations.
 	No license and no source code, free use.
 	lib/huliqing-common-1.1.jar
 
-	
-	
+* XmlRpc
+	License: Apache License v. 2.0
+
+	Source code availability: http://ws.apache.org/xmlrpc/
+	lib/xmlrpc3/commons-logging-1.1.jar
+	lib/xmlrpc3/ws-commons-util-1.0.2.jar
+	lib/xmlrpc3/xmlrpc-client-3.1.3.jar
+	lib/xmlrpc3/xmlrpc-common-3.1.3.jar
+	lib/xmlrpc3/xmlrpc-server-3.1.3.jar

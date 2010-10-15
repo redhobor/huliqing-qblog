@@ -1,0 +1,74 @@
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:q="http://huliqing.name/qfaces"
+    xmlns:g="http://huliqing.name/qblog"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/layout/common.xhtml"> 
+    <ui:define name="header">
+        <link href="/layout/qblog01/style.css" rel="stylesheet" type="text/css" />
+    </ui:define>
+
+    <ui:define name="body">
+        <div style="width:976px;margin:auto;">
+            <div> <ui:insert name="GROUP_HEADER" /> </div>
+            <div> <ui:insert name="GROUP_TOP" /> </div>
+            <div style="height:20px;border: 0px solid red;
+                 background: url(/layout/qblog01/image/bg.png) no-repeat;" />
+
+            <div style="border: 0px solid red; background: url(/layout/qblog01/image/bg-content.png) repeat-y;">
+                <div style="height:45px;background:url(/layout/qblog01/image/nav-bg.png) no-repeat;padding:0 10px;">
+                    <ui:insert name="GROUP_NAVIGATION" />
+                </div>
+
+                <div>
+                    <div style="z-index: -1;border:0px solid red;position: fixed;margin-left: -60px;margin-top: 70px;">
+                        <img src="/layout/qblog01/image/cct-01.png" alt="" />
+                    </div>
+
+                    <div id="testid" style="z-index: -1;width:300px;height:300px;
+                         margin: 30px 0 0 -100px;
+                         position: fixed;
+                         background: #999;"></div>
+
+                    <div id="cct-02" style="z-index: 1;border:0px solid yellow;position: fixed;margin-left: -60px;margin-top: 272px;">
+                        <img src="/layout/qblog01/image/cct-02.png" alt=""/>
+                    </div>
+                </div>
+
+                <div style="z-index: 10;border: 0px solid blue;padding:0 5px;">
+                    
+                    <div class="floatL" style="min-height: 400px;width:710px;padding:0 10px 0 20px;border-right: 2px solid silver;">
+                        <ui:insert name="GROUP_CONTENT" />
+                    </div>
+                    
+                    <div class="floatR" style="width:195px;margin-right: 20px;border:0px solid red;">
+                        <ui:insert name="GROUP_MENU" />
+                    </div>
+
+                    <div style="clear:both;" />
+                    <div style="padding:0 20px;">
+                        <div style="background: none repeat scroll 0% 0% rgb(202, 209, 217); height: 3px; margin: 20px 0pt 10px;"></div>
+                        <ui:insert name="GROUP_FOOTER" />
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;" />
+            <div style="height:35px;border: 0px solid green;
+                 background-image: url(/layout/qblog01/image/bg.png);
+                 background-repeat: no-repeat;
+                 background-position: 0 -157px;" ></div>
+
+            <div style="z-index: 999; position: fixed;left:0px;top:530px;"><img src="/layout/qblog01/image/cct-03.png" alt=""/></div>
+
+            <script type="text/javascript" language="javascript">
+                function display(objId) {
+                    var obj = Q.get(objId);
+                    var p = Q.U.getPosition(obj);
+                    Q.U.move(obj, p.x, (p.y - 300), 2000);
+                }
+                display("testid");
+            </script>
+        </div>
+    </ui:define>
+</ui:composition>

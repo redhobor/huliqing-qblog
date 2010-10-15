@@ -33,9 +33,15 @@
 
 package name.huliqing.qblog;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -127,10 +133,8 @@ public class LayoutManager {
     }
 
     private Layout loadLayout(File layoutDir) {
-        Layout l = new Layout();
-        l.setName(layoutDir.getName());
-        //...author,email...
-        return l;
+        Layout layout = new Layout(layoutDir.getName());
+        return layout;
     }
 
     // 检查目标文件夹是否为正常可用的layout文件夹
@@ -159,6 +163,10 @@ public class LayoutManager {
         // 模版作者Email
         private String email;
 
+        public Layout(String name) {
+            this.name = name;
+        }
+
         public String getAuthor() {
             return author;
         }
@@ -181,6 +189,31 @@ public class LayoutManager {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        /**
+         * 返回子模板：articleList.html的信息,如果不存在articleList，则返回null
+         * @return
+         */
+        public String getSubTemplateArticleList() {
+            File file = new File("layout/" + getName() + "/articleList.html");
+            if (file.exists() && file.isFile()) {
+                try {
+                    FileReader fr = new FileReader(file);
+                    BufferedReader br = new BufferedReader(fr);
+                    StringBuilder sb = new StringBuilder();
+                    char[] buff = new char[1024];
+                    int len;
+                    while ((len = br.read(buff, 0, buff.length)) != -1) {
+                        sb.append(buff, 0, len);
+                    }
+                    br.close();
+                    return sb.toString();
+                } catch (IOException ex) {
+                    Logger.getLogger(LayoutManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return null;
         }
     }
 }
