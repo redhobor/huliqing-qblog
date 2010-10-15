@@ -131,41 +131,44 @@ public class PageWe extends BaseWe {
      * @return layout
      */
     private String findLayout(Long pid) {
-
-        // 优先从parameter中获取
-        String name = QBlog.getParam("layout");
-
-        if (name != null && LayoutManager.getInstance().exists(name)) {
-            return name; 
-        }
-
-        // 从PageEn中获取
-        if (pid == null) {
-            pid = QFaces.convertToLong(QBlog.getParam("pageId"));
-        }
-        if (pid != null) {
-            List<PageEn> pes = PageSe.findAllEnabled();
-            if (pes != null) {
-                for (PageEn pe : pes) {
-                    if (pe.getPageId().longValue() == pid.longValue()) {
-                        name = pe.getLayout();
-                        break;
-                    }
-                }
-            }
-        }
-        if (name != null && LayoutManager.getInstance().exists(name)) {
-            return name;
-        }
-
-        // 从默认系统设置中获取
-        name = ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_LAYOUT).getValue();
-        if (name != null && LayoutManager.getInstance().exists(name)) {
-            return name;
-        }
-
-        // 如果系统默认layout设定不存在
-        Logger.getLogger(PageWe.class.getName()).log(Level.SEVERE, "找不到任何可用的模版，现在将使用默认模版: default");
-        return "default";
+        return QBlog.findCurrentLayout(pageId).getName();
+        
+        // remove
+//
+//        // 优先从parameter中获取
+//        String name = QBlog.getParam("layout");
+//
+//        if (name != null && LayoutManager.getInstance().exists(name)) {
+//            return name;
+//        }
+//
+//        // 从PageEn中获取
+//        if (pid == null) {
+//            pid = QFaces.convertToLong(QBlog.getParam("pageId"));
+//        }
+//        if (pid != null) {
+//            List<PageEn> pes = PageSe.findAllEnabled();
+//            if (pes != null) {
+//                for (PageEn pe : pes) {
+//                    if (pe.getPageId().longValue() == pid.longValue()) {
+//                        name = pe.getLayout();
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        if (name != null && LayoutManager.getInstance().exists(name)) {
+//            return name;
+//        }
+//
+//        // 从默认系统设置中获取
+//        name = ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_LAYOUT).getValue();
+//        if (name != null && LayoutManager.getInstance().exists(name)) {
+//            return name;
+//        }
+//
+//        // 如果系统默认layout设定不存在
+//        Logger.getLogger(PageWe.class.getName()).log(Level.SEVERE, "找不到任何可用的模版，现在将使用默认模版: default");
+//        return "default";
     }
 }

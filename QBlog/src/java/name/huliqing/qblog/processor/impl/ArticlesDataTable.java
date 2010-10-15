@@ -30,17 +30,20 @@
  * - License: GNU Lesser General Public License (LGPL)
  * - Blog and source code availability: http://www.huliqing.name/
  */
-
 package name.huliqing.qblog.processor.impl;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import name.huliqing.qblog.App;
+import name.huliqing.qblog.LayoutManager.Layout;
 import name.huliqing.qblog.QBlog;
 import name.huliqing.qblog.entity.ArticleEn;
 import name.huliqing.qblog.enums.Style;
@@ -49,21 +52,17 @@ import name.huliqing.qblog.enums.Style;
  *
  * @author huliqing
  */
-public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializable{
-    private final static Logger logger = Logger.getLogger(ArticlesDataTable.class.getName());
+public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializable {
 
+    private final static Logger logger = Logger.getLogger(ArticlesDataTable.class.getName());
     // 是否显示文章的摘要信息
     private Boolean showSummary;
-
     // 是否显示文章页脚信息
     private Boolean showFooter;
-
     // 打开文章连接的目标窗口，如_self,_blank...
     private String target;
-
     // 文章发表日期格式，如：yyyy-MM-dd
     private String pattern;
-
     // 文章发表日期的时区
     private String timeZone;
 
@@ -106,8 +105,8 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
     public void setShowSummary(Boolean showSummary) {
         this.showSummary = showSummary;
     }
-
     private Object[] _values;
+
     @Override
     public void restoreState(FacesContext fc, Object state) {
         _values = (Object[]) state;
@@ -151,39 +150,114 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
             try {
                 sdf = new SimpleDateFormat(pattern != null ? pattern : "yyyy-MM-dd HH:mm");
             } catch (Exception e) {
-                logger.warning("发现不符合规则的日期格式，目标pattern=" + pattern + "," +
-                        "偿试改为默认格式：yyyy-MM-dd HH:mm");
+                logger.warning("发现不符合规则的日期格式，目标pattern=" + pattern + ","
+                        + "偿试改为默认格式：yyyy-MM-dd HH:mm");
                 sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             }
             sdf.setTimeZone(TimeZone.getTimeZone(timeZone != null ? timeZone : "GMT+8"));
             Long pageId = QBlog.getPageId();
-            for (ArticleEn ae : aes) {
-                encodeArticle(rw, ae, pageId, sdf, returnURL);
+
+            String articleListTempate = QBlog.findCurrentLayout(pageId).getSubTemplateArticleList();
+            if (articleListTempate != null) {
+                for (ArticleEn ae : aes) {
+                    encodeArticleWithTemplate(fc, ae, pageId, sdf, returnURL, articleListTempate);
+                }
+            } else {
+                for (ArticleEn ae : aes) {
+                    encodeArticle(rw, ae, pageId, sdf, returnURL);
+                }
             }
         }
     }
 
-    public void encodeArticle(ResponseWriter rw, ArticleEn ae, 
+    public void encodeArticleWithTemplate(FacesContext fc, ArticleEn ae,
+            Long pageId, SimpleDateFormat sdf, String returnURL, String template) throws IOException {
+        String href = "/article/articleId=" + ae.getArticleId();
+        if (pageId != null) {
+            href += ",pageId=" + pageId;
+        }
+        String _target = (target != null ? target : "_self");
+
+        String editEvent = "window.location.href='/admin/blog/articleEdit.faces?articleId="
+                + ae.getArticleId() + "&amp;returnURL=" + returnURL + ";'";
+        String deleteEvent = "if (confirm('您真的要删除这篇文章吗? 删除后不能恢复')) {window.location.href ='/admin/blog/articleDelete.faces?articleId="
+                + ae.getArticleId() + "&amp;returnURL=" + returnURL + ";'}";
+
+        // {article.title}
+        String _title = "<a href=\"" + href + "\" target='" + _target + "' onfocus='this.blur()' >" + ae.getTitle() + "</a>";
+
+        // {article.summary}
+        String _summary = ae.getSummary() + "...<a href=\"" + href + "\" target=\"" + _target + "\" onfocus=\"this.blur()\" > [阅读全文] </a>";
+
+        // {article.view} {article.reply}
+        String _view = "阅读:" + ae.getTotalView();
+        String _reply = "评论:" + ae.getTotalReply();
+
+        // {article.edit} {article.delete}
+        String _edit = "<span style=\"cursor:pointer;\" onclick=\"" + editEvent + "\">编辑</span>";
+        String _delete = "<span style=\"cursor:pointer;\" onclick=\"" + deleteEvent + "\">删除</span>";
+
+        // {article.tags}
+        String _tags = "";
+        if (ae.getTags() != null && !"".equals(ae.getTags())) {
+            String[] tags = ae.getTags().split(",");
+            String link = "/articles/pageId=" + pageId + ",tag=";
+            StringBuilder sbTags = new StringBuilder();
+            for (String tag : tags) {
+                sbTags.append("<a href='" + link + tag + "' style='margin:0 3px;'>" + tag + "</a>");
+            }
+            _tags = sbTags.toString();
+        }
+
+        sdf.applyPattern("yyyy");
+        String _date_yyyy = sdf.format(ae.getCreateDate());
+        sdf.applyPattern("yy");
+        String _date_yy = sdf.format(ae.getCreateDate());
+        sdf.applyPattern("MM");
+        String _date_mm = sdf.format(ae.getCreateDate());
+        sdf.applyPattern("dd");
+        String _date_dd = sdf.format(ae.getCreateDate());
+
+        template = template.replace("{article.date.yyyy}", _date_yyyy);
+        template = template.replace("{article.date.yy}", _date_yy);
+        template = template.replace("{article.date.mm}", _date_mm);
+        template = template.replace("{article.date.dd}", _date_dd);
+        template = template.replace("{article.view}", _view);
+        template = template.replace("{article.reply}", _reply);
+        template = template.replace("{article.title}", _title);
+        template = template.replace("{article.summary}", _summary);
+        template = template.replace("{article.edit}", _edit);
+        template = template.replace("{article.delete}", _delete);
+        template = template.replace("{article.tags}", _tags);
+
+        HtmlOutputText out = new HtmlOutputText();
+        out.setValue(template);
+        out.setEscape(false);
+        out.encodeAll(fc);
+    }
+
+    public void encodeArticle(ResponseWriter rw, ArticleEn ae,
             Long pageId, SimpleDateFormat sdf, String returnURL) throws IOException {
         // title
         String href = "/article/articleId=" + ae.getArticleId();
-        if (pageId != null)
+        if (pageId != null) {
             href += ",pageId=" + pageId;
+        }
 
         rw.startElement("div", this);
         rw.writeAttribute("class", Style.css_article_titleOuter, null);
-            rw.startElement("div", this);
-            rw.writeAttribute("class", Style.css_article_titleInner, null);
-                rw.startElement("div", this);
-                rw.writeAttribute("class", Style.css_article_title, null);
-                    rw.startElement("a", this);
-                    rw.writeAttribute("href", href, null);
-                    rw.writeAttribute("onfocus", "this.blur()", null); // 让超链接不产生虚线框
-                    rw.writeAttribute("target", (target != null ? target : "_self"), null);
-                    rw.writeText(ae.getTitle(), null);
-                    rw.endElement("a");
-                rw.endElement("div");
-            rw.endElement("div");
+        rw.startElement("div", this);
+        rw.writeAttribute("class", Style.css_article_titleInner, null);
+        rw.startElement("div", this);
+        rw.writeAttribute("class", Style.css_article_title, null);
+        rw.startElement("a", this);
+        rw.writeAttribute("href", href, null);
+        rw.writeAttribute("onfocus", "this.blur()", null); // 让超链接不产生虚线框
+        rw.writeAttribute("target", (target != null ? target : "_self"), null);
+        rw.writeText(ae.getTitle(), null);
+        rw.endElement("a");
+        rw.endElement("div");
+        rw.endElement("div");
         rw.endElement("div");
 
         // summary
@@ -191,11 +265,11 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
             rw.startElement("div", this);
             rw.writeAttribute("class", Style.css_article_summary, null);
             rw.writeText("摘要：" + (ae.getSummary() != null ? ae.getSummary() : "") + "...", null);
-                rw.startElement("a", this);
-                rw.writeAttribute("href", href, null);
-                rw.writeAttribute("target", (target != null ? target : "_self"), null);
-                rw.writeText("[阅读全文]", null);
-                rw.endElement("a");
+            rw.startElement("a", this);
+            rw.writeAttribute("href", href, null);
+            rw.writeAttribute("target", (target != null ? target : "_self"), null);
+            rw.writeText("[阅读全文]", null);
+            rw.endElement("a");
             rw.endElement("div");
         }
 
@@ -217,7 +291,7 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
 
             // edit and delete
             if (QBlog.getCurrentVisitor().isLogin()) {
-                String editEvent = "window.location.href ='/admin/blog/articleEdit.faces?articleId=" 
+                String editEvent = "window.location.href ='/admin/blog/articleEdit.faces?articleId="
                         + ae.getArticleId() + "&returnURL=" + returnURL + "'";
                 String deleteEvent = "if (confirm('您真的要删除这篇文章吗? 删除后不能恢复')) {window.location.href ='/admin/blog/articleDelete.faces?articleId="
                         + ae.getArticleId() + "&returnURL=" + returnURL + "'}";

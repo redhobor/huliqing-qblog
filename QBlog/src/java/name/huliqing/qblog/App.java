@@ -105,4 +105,5 @@ public class App implements java.io.Serializable {
         String url = QBlog.getOriginalURI(true, false);
         return url;
     }
+
 }

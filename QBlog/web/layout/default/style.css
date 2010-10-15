@@ -22,7 +22,7 @@ a:hover {color: #ff4d00;text-decoration: underline;}
 .css_nav_itemInner_onmouseover {}
 .css_nav_itemInner_onmousedown {}
 
-.css_nav_item_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin: 0px 5px;background:orange;color:white}
+.css_nav_item_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin: 0px 5px;background:orange;color:white;}
 .css_nav_item_onmouseover {font-weight: bold;cursor:pointer;padding:5px;margin:0px 5px;background:#FDF0DB;color:orange;}
 .css_nav_item_onmousedown {font-weight: bold;cursor:pointer;padding:5px;margin:0px 5px;background:#FDF0DB;color:orange;}
 

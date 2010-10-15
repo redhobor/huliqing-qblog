@@ -1,0 +1,98 @@
+a:link {color:black;text-decoration: none;}
+a:visited {color: black;text-decoration: none;}
+a:hover {color: orange;text-decoration: underline;}
+
+/** body样式 */
+.css_body {
+    background-color: #999;
+    line-height: 1.3;
+}
+
+/** 整个导航栏的样式 */
+.css_nav_full {}
+.css_nav_full a:link{text-decoration: none;}
+.css_nav_full a:visited{text-decoration: none;}
+.css_nav_full a:hover{text-decoration: none;}
+
+.css_nav_itemOuter_onmouseout {}
+.css_nav_itemOuter_onmouseover {}
+.css_nav_itemOuter_onmousedown {}
+
+.css_nav_itemInner_onmouseout {}
+.css_nav_itemInner_onmouseover {}
+.css_nav_itemInner_onmousedown {}
+
+.css_nav_item_onmouseout {font-weight: bold;cursor:pointer;padding:5px;margin: 0px 5px;color:white;}
+.css_nav_item_onmouseover {font-weight: bold;cursor:pointer;padding:5px;margin:0px 5px;color:orange;}
+.css_nav_item_onmousedown {font-weight: bold;cursor:pointer;padding:5px;margin:0px 5px;color:orange;}
+
+/** 模块整体样式 */
+.css_module_full {padding: 5px 0;}
+
+/** 模块Title样式 */
+.css_module_titleOuter {
+    background-image: url(/layout/qblog01/image/menu-bg02.png);
+    background-repeat: no-repeat;
+    background-position: right top;
+    height: 30px;
+    margin-left:10px;
+
+}
+.css_module_titleInner {
+    background-image: url(/layout/qblog01/image/menu-bg02.png);
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 30px;
+    margin: 0 10px 0 -10px;
+    
+}
+.css_module_title {line-height: 30px;color:black;font-weight: bold;padding: 0;margin-left: 20px;}
+
+/** 模块Content样式 */
+.css_module_content {padding:3px;}
+
+/** 文章标题 */
+.css_article_title {
+    font-weight:bold;
+    font-size:1.2em;
+    border-bottom: 1px dotted #C0C0C0;
+}
+.css_article_title a:link {color:black;text-decoration: none;}
+.css_article_title a:visited {color: black;text-decoration: none;}
+.css_article_title a:hover {color: orange;text-decoration: none;}
+
+.css_article_summary {line-height: 1.8;}
+
+/** 文章内容 */
+.css_article_content {
+    padding:8px;
+    line-height: 1.7;
+}
+
+/** 文章页脚样式，该区域包含：发表日期，阅读数，评论数 */
+.css_article_footer {color:#C0C0C0;}
+.css_article_footer a:link {color:#C0C0C0;text-decoration: none;}
+.css_article_footer a:visited {color: #C0C0C0;text-decoration: none;}
+.css_article_footer a:hover {color: #C0C0C0;text-decoration: none;}
+
+/** 回复列表的样式,存在于article页面中，跟随在article内容之后 */
+.css_reply_list_full {
+    margin-top: 10px;
+    border-top: 1px solid silver;
+}
+
+/** 回复区域的样式，主要是几个用于回复的输入框,在article页面中，跟随在reply list后 */
+.css_reply_zone_full {
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
+/** Ext */
+.dateField {
+    width:83px;height:47px;
+    float: left;color: silver;
+    font-family: Georgia,'Times New Roman',times,serif;
+    font-weight: bold;
+    background: url(/layout/qblog01/image/title-bg2.png) no-repeat;
+    margin:0px 10px 0 -28px;
+}
