@@ -130,10 +130,8 @@ public class ModuleAddWe extends BaseWe {
             module.setAttributes(new Text(xmlStr));
         }
         if (ModuleSe.save(module)) {
-            return "moduleList";
-        } else {
-            Messenger.sendError("Error...");
-            return null;
+            QBlog.redirect("/admin/system/moduleList.faces");
         }
+        return null;
     }
 }

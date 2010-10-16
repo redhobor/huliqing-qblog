@@ -107,6 +107,18 @@ public class TagArticleSe {
     }
 
     /**
+     * 通过Tag查询该类Tag下的文章列表。只查询Security为PUBLIC的文章。并且结果
+     * 以文章的createDate的倒序排列,
+     * @param tagName tag名称
+     * @param size 允许返回的文章最高数量
+     * @param asc 是否按createDate正序(否则为倒序)
+     * @return
+     */
+    public final static List<TagArticleEn> findPublicByTag(String tagName, Integer size, boolean asc) {
+        return TagArticleCache.getInstance().findPublicByTag(tagName, "createDate", asc, 0, size);
+    }
+
+    /**
      * 分页查询，通过Tag查询该类Tag下的文章列表。只查询Security为PUBLIC的文章
      * @param tagName tag名称
      * @param pp 分页查询参数

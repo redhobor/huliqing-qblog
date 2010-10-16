@@ -17,38 +17,13 @@
         <q:saveState value="#{articlesWe.month}" />
         <q:saveState value="#{articlesWe.day}" />
 
-        <h:form>
-        <q:scroller for="articles" listener="#{articlesWe.loadData}" 
-                    var="article" pageSize="10">
-            <h:dataTable id="articles" width="100%" border="0">
-                <h:column>
-                    <h:panelGroup layout="block" styleClass="css_article_title">
-                        <h:outputLink value="/article/pageId=#{articlesWe.pageId},articleId=#{article.articleId}">
-                            <h:outputText value="#{article.title}" />
-                        </h:outputLink>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="css_article_summary">
-                        <h:outputText value="#{article.summary}..." rendered="#{article.summary != null}" />
-                        <h:outputLink value="/article/articleId=#{article.articleId}">
-                            <h:outputText value="[阅读全文]" />
-                        </h:outputLink>
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="css_article_footer">
-                        <h:outputText value="#{article.createDate}" >
-                            <f:convertDateTime pattern="#{app.dateTimeFormat}" timeZone="#{app.timeZone}" />
-                        </h:outputText>
-                        <h:outputText value=" 阅读：#{article.totalView}" />
-                        <h:outputText value=" 评论：#{article.totalReply}" />
-                        <h:panelGroup layout="block" rendered="#{visitor.login}">
-                            <span style="cursor:pointer;" 
-                                  onclick="window.location.href='/admin/blog/articleEdit.faces?articleId=#{article.articleId}&amp;returnURL=#{app.currentURL}'"> 编辑 </span>
-                            <span style="cursor:pointer;" 
-                                  onclick="window.location.href='/admin/blog/articleDelete.faces?articleId=#{article.articleId}&amp;returnURL=#{app.currentURL}'"> 删除 </span>
-                        </h:panelGroup>
-                    </h:panelGroup>
-                </h:column>
-            </h:dataTable>
-        </q:scroller>
+        <h:form style="margin: 0;padding:0;">
+            <!-- 这两个样式确保与"文章列表模块所生成的样式一致" -->
+            <div class="css_module_full">
+                <div class="css_module_content">
+                    <g:articlesPanel />
+                </div>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>

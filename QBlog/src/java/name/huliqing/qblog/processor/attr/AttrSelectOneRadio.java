@@ -45,6 +45,8 @@ import javax.faces.context.FacesContext;
  * @author huliqing
  */
 public class AttrSelectOneRadio extends Attribute2{
+    private List<String[]> items = new ArrayList<String[]>();
+    private String layout;
 
     public AttrSelectOneRadio(){}
 
@@ -56,7 +58,6 @@ public class AttrSelectOneRadio extends Attribute2{
     public String getAttrType() {
         return "AttrSelectOneRadio";
     }
-    private List<String[]> items = new ArrayList<String[]>();
 
     private Object[] _values;
     @Override
@@ -82,10 +83,19 @@ public class AttrSelectOneRadio extends Attribute2{
         items.add(new String[]{value, label});
     }
 
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
+
     @Override
     public void encodeBegin(FacesContext fc) throws IOException {
         super.encodeBegin(fc);
         HtmlSelectOneRadio radio = new HtmlSelectOneRadio();
+        radio.setLayout(layout);
         if (getStyle() != null) {
             radio.setStyle(getStyle());
         } else {

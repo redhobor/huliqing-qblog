@@ -30,7 +30,6 @@
  * - License: GNU Lesser General Public License (LGPL)
  * - Blog and source code availability: http://www.huliqing.name/
  */
-
 package name.huliqing.qblog.processor.impl;
 
 import java.io.IOException;
@@ -42,66 +41,45 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import name.huliqing.qblog.ConfigManager;
 import name.huliqing.qblog.QBlog;
-import name.huliqing.qblog.entity.ArticleEn;
+import name.huliqing.qblog.entity.TagArticleEn;
 import name.huliqing.qblog.enums.Config;
 
 /**
  *
  * @author huliqing
  */
-public class RecentPostArticleDataTable extends HtmlDataTable implements java.io.Serializable{
+public class TagArticlesDataTable extends HtmlDataTable implements java.io.Serializable {
 
-    private Boolean showIndex;
-    private Boolean showDate;
-    private String dateFormat;
-    private String timeZone;
-    // 是否显示编辑、删除按钮
-    private Boolean showEdit;
+    // 绑定的tag
+    private String tag;
+
     // 打开文章的目标窗口
     private String target;
 
-    private Object[] _values;
-    @Override
-    public void restoreState(FacesContext fc, Object state) {
-        _values = (Object[]) state;
-        super.restoreState(fc, _values[0]);
-        this.showIndex = (Boolean) _values[1];
-        this.showDate = (Boolean) _values[2];
-        this.dateFormat = (String) _values[3];
-        this.timeZone = (String) _values[4];
-        this.showEdit = (Boolean) _values[5];
-        this.target = (String) _values[6];
+    // 是否显示发布日期
+    private Boolean showDate;
+
+    // 文章发表日期格式，如：yyyy-MM-dd
+    private String pattern;
+
+    // 文章发表日期的时区
+    private String timeZone;
+
+    // 是否显示编辑、删除按钮
+    private Boolean showEdit;
+
+    // 是否显示序号
+    private Boolean showIndex;
+
+    // 显示"更多..."
+    private Boolean showMore;
+
+    public String getPattern() {
+        return pattern;
     }
 
-    @Override
-    public Object saveState(FacesContext fc) {
-        if (_values == null) {
-            _values = new Object[7];
-        }
-        _values[0] = super.saveState(fc);
-        _values[1] = this.showIndex;
-        _values[2] = this.showDate;
-        _values[3] = this.dateFormat;
-        _values[4] = this.timeZone;
-        _values[5] = this.showEdit;
-        _values[6] = this.target;
-        return _values;
-    }
-
-    public Boolean getShowIndex() {
-        return showIndex;
-    }
-
-    public void setShowIndex(Boolean showIndex) {
-        this.showIndex = showIndex;
-    }
-
-    public String getDateFormat() {
-        return dateFormat;
-    }
-
-    public void setDateFormat(String dateFormat) {
-        this.dateFormat = dateFormat;
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 
     public Boolean getShowDate() {
@@ -110,14 +88,6 @@ public class RecentPostArticleDataTable extends HtmlDataTable implements java.io
 
     public void setShowDate(Boolean showDate) {
         this.showDate = showDate;
-    }
-
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
     }
 
     public Boolean getShowEdit() {
@@ -135,45 +105,120 @@ public class RecentPostArticleDataTable extends HtmlDataTable implements java.io
     public void setTarget(String target) {
         this.target = target;
     }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public Boolean getShowIndex() {
+        return showIndex;
+    }
+
+    public void setShowIndex(Boolean showIndex) {
+        this.showIndex = showIndex;
+    }
+
+    public Boolean getShowMore() {
+        return showMore;
+    }
+
+    public void setShowMore(Boolean showMore) {
+        this.showMore = showMore;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
     
+    private Object[] _values;
     @Override
-    public void encodeBegin(FacesContext context) throws IOException {}
+    public void restoreState(FacesContext fc, Object state) {
+        _values = (Object[]) state;
+        super.restoreState(fc, _values[0]);
+        this.target = (String) _values[1];
+        this.showDate = (Boolean) _values[2];
+        this.pattern = (String) _values[3];
+        this.timeZone = (String) _values[4];
+        this.showEdit = (Boolean) _values[5];
+        this.showIndex = (Boolean) _values[6];
+        this.showMore = (Boolean) _values[7];
+        this.tag = (String) _values[8];
+    }
 
     @Override
-    public void encodeEnd(FacesContext context) throws IOException {}
+    public Object saveState(FacesContext fc) {
+        if (_values == null) {
+            _values = new Object[9];
+        }
+        _values[0] = super.saveState(fc);
+        _values[1] = this.target;
+        _values[2] = this.showDate;
+        _values[3] = this.pattern;
+        _values[4] = this.timeZone;
+        _values[5] = this.showEdit;
+        _values[6] = this.showIndex;
+        _values[7] = this.showMore;
+        _values[8] = this.tag;
+        return _values;
+    }
+
+    @Override
+    public void encodeBegin(FacesContext fc) throws IOException {}
+
+    @Override
+    public void encodeEnd(FacesContext fc) throws IOException {}
 
     @Override
     public void encodeChildren(FacesContext fc) throws IOException {
-        List<ArticleEn> aes = (List<ArticleEn>) this.getValue();
+        List<TagArticleEn> aes = (List<TagArticleEn>) this.getValue();
         if (aes != null && !aes.isEmpty()) {
             ResponseWriter rw = fc.getResponseWriter();
+            String returnURL = QBlog.getOriginalURI(true, true);
             SimpleDateFormat sdf = null;
-            if (getShowDate()) {
+            if (showDate != null && showDate) {
                 try {
-                    sdf = new SimpleDateFormat(dateFormat != null ?
-                        dateFormat : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_DATE_FORMAT));
+                    sdf = new SimpleDateFormat(pattern != null ? 
+                        pattern : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_DATE_FORMAT));
                 } catch (Exception e) {
                     sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    e.printStackTrace();
                 }
-                sdf.setTimeZone(TimeZone.getTimeZone(timeZone != null ? timeZone : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_TIME_ZONE)));
+                sdf.setTimeZone(TimeZone.getTimeZone(timeZone != null ? 
+                    timeZone : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_TIME_ZONE)));
             }
             Long pageId = QBlog.getPageId();
-            int i = 0;
             boolean _showEdit = (QBlog.getCurrentVisitor().isLogin() && showEdit != null && showEdit);
-            String returnURL = QBlog.getOriginalURI(true, true);
-            for (ArticleEn ae : aes) {
-                encodeArticle(rw, ae, ++i, sdf, pageId, _showEdit, returnURL);
+            int i = 0;
+            for (TagArticleEn ae : aes) {
+                encodeArticle(++i, rw, pageId, ae, sdf, _showEdit, returnURL);
+            }
+            if (showMore != null && showMore) {
+                String href = "/articles/pageId=" + pageId + ",tag=" + tag;
+                rw.startElement("div", this);
+                rw.writeAttribute("style", "text-align:right;", null);
+                    rw.startElement("a", this);
+                    rw.writeAttribute("href", href, null);
+                    rw.writeAttribute("title", "Show More", null);
+                    rw.writeText("More", null);
+                    rw.endElement("a");
+                rw.endElement("div");
             }
         }
     }
 
-    public void encodeArticle(ResponseWriter rw, ArticleEn ae, Integer index,
-            SimpleDateFormat sdf, Long pageId, boolean _showEdit, String returnURL) throws IOException {
-        String href = "/article/articleId=" + ae.getArticleId();
+    private void encodeArticle(int index, ResponseWriter rw, Long pageId, TagArticleEn tae, SimpleDateFormat sdf, boolean _showEdit, String returnURL) throws IOException {
+        String href = "/article/articleId=" + tae.getArticleId();
         if (pageId != null) {
             href += ",pageId=" + pageId;
         }
+
         rw.startElement("div", this);
         rw.writeAttribute("style", "padding:3px;", null);
             if (getShowIndex()) {
@@ -182,24 +227,27 @@ public class RecentPostArticleDataTable extends HtmlDataTable implements java.io
                 rw.writeText(index + ". ", null);
                 rw.endElement("span");
             }
+        
             rw.startElement("a", this);
             rw.writeAttribute("href", href, null);
             rw.writeAttribute("onfocus", "this.blur()", null); // 让超链接不产生虚线框
             rw.writeAttribute("target", (target != null ? target : "_self"), null);
-            rw.writeAttribute("title", ae.getTitle(), null);
-            rw.writeText(ae.getTitle(), null);
+            rw.writeAttribute("title", tae.getTitle(), null);
+            rw.writeText(tae.getTitle(), null);
             rw.endElement("a");
+
             if (sdf != null) {
                 rw.startElement("span", this);
                 rw.writeAttribute("style", "margin-left:5px;color:gray;", null);
-                rw.writeText(sdf.format(ae.getCreateDate()), null);
+                rw.writeText(sdf.format(tae.getCreateDate()), null);
                 rw.endElement("span");
             }
+
             if (_showEdit) {
                 String editEvent = "window.location.href ='/admin/blog/articleEdit.faces?articleId="
-                        + ae.getArticleId() + "&returnURL=" + returnURL + "'";
+                        + tae.getArticleId() + "&returnURL=" + returnURL + "'";
                 String deleteEvent = "if (confirm('您真的要删除这篇文章吗? 删除后不能恢复')) {window.location.href ='/admin/blog/articleDelete.faces?articleId="
-                        + ae.getArticleId() + "&returnURL=" + returnURL + "'}";
+                        + tae.getArticleId() + "&returnURL=" + returnURL + "'}";
                 rw.startElement("span", this);
                 rw.writeAttribute("style", "margin-left:5px;color:gray;cursor:pointer", null);
                 rw.writeAttribute("onclick", editEvent, null);
@@ -212,11 +260,6 @@ public class RecentPostArticleDataTable extends HtmlDataTable implements java.io
                 rw.writeText(" 删除", null);
                 rw.endElement("span");
             }
-        rw.endElement("div"); 
-    }
-
-    @Override
-    public boolean getRendersChildren() {
-        return true;
+        rw.endElement("div");
     }
 }

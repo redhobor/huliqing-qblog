@@ -33,6 +33,7 @@
 
 package name.huliqing.qblog.web.blog;
 
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -71,6 +72,7 @@ public class ArticleUpdateWe extends BaseWe {
             article = new ArticleEn();
             article.setReplyable(true);
             article.setMailNotice(true);
+            article.setCreateDate(new Date());
             article.setSecurity(ArticleSecurity.PUBLIC);
         }
         return article;

@@ -50,6 +50,7 @@ import name.huliqing.qblog.processor.impl.PhotoProcessor;
 import name.huliqing.qblog.processor.impl.RSSProcessor;
 import name.huliqing.qblog.processor.impl.RecentPostArticleProcessor;
 import name.huliqing.qblog.processor.impl.RecentReplyProcessor;
+import name.huliqing.qblog.processor.impl.TagArticlesProcessor;
 import name.huliqing.qblog.processor.impl.TuDouFlashPlayerProcessor;
 
 /**
@@ -66,6 +67,7 @@ public class ProcessorFactory {
         add(new NavigationProcessor());
         add(new ArticlesProcessor());
         add(new RecentPostArticleProcessor());
+        add(new TagArticlesProcessor());
         add(new RecentReplyProcessor());
         add(new RSSProcessor());
         add(new CalendarProcessor());

@@ -35,6 +35,13 @@
     </tag>
 
     <tag>
+        <tag-name>articlesPanel</tag-name>
+        <component>
+            <component-type>name.huliqing.qblog.component.UIArticlesPanel</component-type>
+        </component>
+    </tag>
+
+    <tag>
         <tag-name>attribute</tag-name>
         <component>
             <component-type>name.huliqing.qblog.processor.attr.UIAttribute</component-type>

@@ -76,7 +76,7 @@
                         <h:outputText value="创建日期" />
                     </f:facet>
                     <h:outputText value="#{account.createDate}" >
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8"/>
+                        <f:convertDateTime pattern="#{app.dateTimeFormat}" timeZone="#{app.timeZone}" />
                     </h:outputText>
                 </h:column>
                 <f:facet name="footer">

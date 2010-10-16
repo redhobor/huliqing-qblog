@@ -90,7 +90,7 @@ public class QBlogRPC implements MetaWeblogAPI, BloggerAPI{
 //      Date dateCreated = (Date) struct.get("dateCreated");
 //      Date pubDate = (Date) struct.get("pubDate");
         
-        ArticleEn ae = ArticleSe.find(Long.parseLong(postid));
+        ArticleEn ae = ArticleSe.rpcFind(Long.parseLong(postid));
         if (ae == null)
             throw new RuntimeException("Article not found with article " +
                     "id=" + postid + ", the article maybe deleted.");
@@ -107,7 +107,7 @@ public class QBlogRPC implements MetaWeblogAPI, BloggerAPI{
             String password) throws Exception {
         validateAccount(username, password);
         String site = ConfigManager.getInstance().getAsString(Config.CON_METAWEBLOG_SITE);
-        ArticleEn ae = ArticleSe.find(Long.parseLong(postid));
+        ArticleEn ae = ArticleSe.rpcFind(Long.parseLong(postid));
         Hashtable<String, Object> struct = buildArticleStruct(ae, site);
         return struct;
     }
@@ -222,7 +222,7 @@ public class QBlogRPC implements MetaWeblogAPI, BloggerAPI{
     public Hashtable[] getRecentPosts(String blogid,
             String username, String password, int numberOfPosts) throws Exception {
         validateAccount(username, password);
-        List<ArticleEn> aes = ArticleSe.findRecentPost(numberOfPosts);
+        List<ArticleEn> aes = ArticleSe.rpcFindRecentPost(numberOfPosts);
         if (aes == null || aes.isEmpty()) {
             return null;
         }

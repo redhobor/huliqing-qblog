@@ -61,13 +61,17 @@ public class ArticleSe {
      */
     public final static Boolean save(ArticleEn article) {
         // 文章默认发表日期
-        Calendar cal = Calendar.getInstance();
-        article.setCreateDate(cal.getTime());
+        if (article.getCreateDate() == null) {
+            article.setCreateDate(new Date());
+        }
 
         // 关于createYear,createMonth,createDay使用的是当前系统时区内的时间，所以
         // 可能与createDate的各项值不一定相同。
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(article.getCreateDate());
         cal.setTimeZone(TimeZone.getTimeZone(
                 ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_TIME_ZONE).getValue()));
+
         article.setCreateYear(cal.get(Calendar.YEAR));
         article.setCreateMonth(cal.get(Calendar.MONTH));
         article.setCreateDay(cal.get(Calendar.DAY_OF_MONTH));
@@ -91,10 +95,23 @@ public class ArticleSe {
      * @return
      */
     public final static Boolean update(ArticleEn article) {
+        if (article.getCreateDate() == null) {
+            article.setCreateDate(new Date());
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(article.getCreateDate());
+        cal.setTimeZone(TimeZone.getTimeZone(
+                ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_TIME_ZONE).getValue()));
+        article.setCreateYear(cal.get(Calendar.YEAR));
+        article.setCreateMonth(cal.get(Calendar.MONTH));
+        article.setCreateDay(cal.get(Calendar.DAY_OF_MONTH));
+        
         article.setModifyDate(new Date());
         article.setSummary(generateSummary(article.getContent().getValue(),
                 ConfigManager.getInstance().getAsInteger(Config.CON_ARTICLE_SUMMARY_LIMIT)));
         ArticleCache.getInstance().update(article);
+
         // 更新文章的标签信息
         TagArticleSe.updateArticleTags(article.getArticleId());
         return Boolean.TRUE;
@@ -146,6 +163,16 @@ public class ArticleSe {
     }
 
     /**
+     * @see ArticleCache#findNextPublic(name.huliqing.qblog.entity.ArticleEn, boolean)
+     * @param current
+     * @param next
+     * @return
+     */
+    public final static ArticleEn findNextPublic(ArticleEn current, boolean next) {
+        return ArticleCache.getInstance().findNextPublic(current, next);
+    }
+
+    /**
      * 翻页版查询所有Draft文章，注：该方法不会查询content字段
      * @param pp 分页参数
      * @return
@@ -188,15 +215,6 @@ public class ArticleSe {
      */
     public final static List<ArticleEn> findAllPublic(Integer size) {
         return ArticleCache.getInstance().findAllPublic(0, size);
-    }
-
-    /**
-     * @see ArticleCache#findRecentPost(java.lang.Integer) ;
-     * @param size
-     * @return
-     */
-    public final static List<ArticleEn> findRecentPost(Integer size) {
-        return ArticleCache.getInstance().findRecentPost(size);
     }
 
     /**
@@ -378,4 +396,23 @@ public class ArticleSe {
         return summary;
     }
 
+    /**
+     * 获取指定的文章，该方法不验证用户是否登录及ArticleSecurity.该方法专门用于
+     * XmlRpc, XmlRpc在进入这一步之前应该已经验证了用户权限。
+     * @param articleId
+     * @return
+     */
+    public final static ArticleEn rpcFind(Long articleId) {
+        ArticleEn ae = ArticleCache.getInstance().find(articleId);
+        return ae;
+    }
+
+    /**
+     * @see ArticleCache#rpcFindRecentPost(java.lang.Integer) ;
+     * @param size
+     * @return
+     */
+    public final static List<ArticleEn> rpcFindRecentPost(Integer size) {
+        return ArticleCache.getInstance().findRecentPost(size);
+    }
 }

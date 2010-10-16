@@ -34,7 +34,7 @@
                     <q:validator for="title" required="true" messageError="必填" displayFlag="false"/>
                 </h:panelGroup>
 
-                <h:outputLabel for="securityType" value="隐私*" />
+                <h:outputLabel for="securityType" value="隐私" />
                 <h:panelGroup>
                     <h:selectOneRadio id="securityType" value="#{articleUpdateWe.article.security}" >
                         <f:converter converterId="converter.ArticleTypeConverter" />
@@ -42,6 +42,9 @@
                     </h:selectOneRadio>
                     <q:validator for="securityType" displayFlag="false" required="true" messageError="请选择类型"/>
                 </h:panelGroup>
+
+                <h:outputLabel for="" value="日期" />
+                <q:calendar value="#{articleUpdateWe.article.createDate}" timeZone="#{app.timeZone}" pattern="#{app.dateTimeFormat}" renderAsPop="true" />
 
                 <h:outputLabel value="内容" />
                 <h:panelGroup>

@@ -13,8 +13,7 @@
         <div style="width:976px;margin:auto;">
             <div> <ui:insert name="GROUP_HEADER" /> </div>
             <div> <ui:insert name="GROUP_TOP" /> </div>
-            <div style="height:20px;border: 0px solid red;
-                 background: url(/layout/qblog01/image/bg.png) no-repeat;" />
+            <div style="height:20px;background: url(/layout/qblog01/image/bg.png) no-repeat;" />
 
             <div style="border: 0px solid red; background: url(/layout/qblog01/image/bg-content.png) repeat-y;">
                 <div style="height:45px;background:url(/layout/qblog01/image/nav-bg.png) no-repeat;padding:0 10px;">
@@ -22,27 +21,24 @@
                 </div>
 
                 <div>
-                    <div style="z-index: -1;border:0px solid red;position: fixed;margin-left: -60px;margin-top: 70px;">
+                    <div style="z-index: -1;position: fixed;margin-left: -65px;margin-top: 70px;">
                         <img src="/layout/qblog01/image/cct-01.png" alt="" />
                     </div>
 
-                    <div id="testid" style="z-index: -1;width:300px;height:300px;
-                         margin: 30px 0 0 -100px;
-                         position: fixed;
-                         background: #999;"></div>
+                    <div id="displayObj" style="z-index: -1;width:300px;height:300px;margin: 30px 0 0 -100px;position: fixed;background: #999;"></div>
 
-                    <div id="cct-02" style="z-index: 1;border:0px solid yellow;position: fixed;margin-left: -60px;margin-top: 272px;">
+                    <div id="cct-02" style="z-index: 1;border:0px solid yellow;position: fixed;margin-left: -65px;margin-top: 272px;">
                         <img src="/layout/qblog01/image/cct-02.png" alt=""/>
                     </div>
                 </div>
 
                 <div style="z-index: 10;border: 0px solid blue;padding:0 5px;">
                     
-                    <div class="floatL" style="min-height: 400px;width:710px;padding:0 10px 0 20px;border-right: 2px solid silver;">
+                    <div class="floatL" style="min-height: 200px;width:705px;padding:0 15px 0 20px;border-right: 2px solid silver;">
                         <ui:insert name="GROUP_CONTENT" />
                     </div>
                     
-                    <div class="floatR" style="width:195px;margin-right: 20px;border:0px solid red;">
+                    <div class="floatL" style="width:196px;margin:0 0 0 -2px;border-left:2px solid silver;padding: 0 10px;">
                         <ui:insert name="GROUP_MENU" />
                     </div>
 
@@ -67,7 +63,7 @@
                     var p = Q.U.getPosition(obj);
                     Q.U.move(obj, p.x, (p.y - 300), 2000);
                 }
-                display("testid");
+                display("displayObj");
             </script>
         </div>
     </ui:define>
