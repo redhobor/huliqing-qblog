@@ -25,7 +25,8 @@
             <q:scroller for="mlist"
                         listener="#{moduleListWe.loadData}"
                         var="module"
-                        displayJump="false">
+                        displayJump="false"
+                        pageSize="10">
                 <h:dataTable id="mlist"
                              binding="#{moduleListWe.uiData}"
                              headerClass="header"

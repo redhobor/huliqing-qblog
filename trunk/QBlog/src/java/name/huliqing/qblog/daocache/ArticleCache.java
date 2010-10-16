@@ -173,6 +173,17 @@ public class ArticleCache extends ArticleDa{
     }
 
     /**
+     * @see ArticleDa#findPublicNext(name.huliqing.qblog.entity.ArticleEn, boolean)
+     * @param current
+     * @param next
+     * @return
+     */
+    @Override
+    public ArticleEn findNextPublic(ArticleEn current, boolean next) {
+        return super.findNextPublic(current, next);
+    }
+
+    /**
      * 查询所有公开发表的文章,只查询部分字段,结果以createDate倒序
      * @param start 启始记录
      * @param size 获取的允许最高数量

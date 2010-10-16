@@ -39,6 +39,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import name.huliqing.qblog.entity.ArticleEn;
 import name.huliqing.qblog.enums.ArticleSecurity;
@@ -231,11 +232,61 @@ public abstract class ArticleDa extends BaseDao<ArticleEn, Long> {
             return o1.getCreateDate().before(o2.getCreateDate()) ? 1 : 0;
         }
     }
-    
-// // remove
-//    private class ArticleIdDesc implements Comparator<ArticleEn> {
-//        public int compare(ArticleEn o1, ArticleEn o2) {
-//            return o1.getArticleId() > o2.getArticleId() ? 0 : 1;
-//        }
-//    }
+
+    /**
+     * 查找下一篇文章（或者上一篇文章），如果next=true,则查找下一篇文章，否则查找前一
+     * 篇文章。
+     * @param current 当前的文章,该方法根据这篇文章，查找它的下一篇文章或上一篇文章
+     * @param next true/false
+     * @return next/previous article or null if not found.
+     */
+    protected ArticleEn findNextPublic(ArticleEn current, boolean next) {
+         StringBuilder sb = new StringBuilder("select obj.articleId " +
+                ",obj.title" +
+                ",obj.summary" +
+                ",obj.createDate" +
+                ",obj.totalView" +
+                ",obj.totalReply" +
+                ",obj.createDay" +
+                ",obj.security" +
+                ",obj.replyable" +
+                ",obj.mailNotice" +
+                ",obj.modifyDate" +
+                ",obj.tags" +
+                " from ArticleEn obj ");
+        if (next) {
+            sb.append(" where obj.createDate >:createDate order by obj.createDate asc ");
+        } else {
+            sb.append(" where obj.createDate <:createDate order by obj.createDate desc ");
+        }
+        EntityManager em = getEM();
+        try {
+            Query q = em.createQuery(sb.toString());
+            q.setParameter("createDate", current.getCreateDate());
+            q.setFirstResult(0);
+            q.setMaxResults(1);
+            Object[] temp = (Object[]) q.getSingleResult();
+            ArticleEn ae = null;
+            if (temp != null) {
+                ae = new ArticleEn();
+                ae.setArticleId((Long) temp[0]);
+                ae.setTitle((String) temp[1]);
+                ae.setSummary((String) temp[2]);
+                ae.setCreateDate((Date) temp[3]);
+                ae.setTotalView((Long) temp[4]);
+                ae.setTotalReply((Long) temp[5]);
+                ae.setCreateDay((Integer) temp[6]);
+                ae.setSecurity((ArticleSecurity) temp[7]);
+                ae.setReplyable((Boolean)temp[8]);
+                ae.setMailNotice((Boolean)temp[9]);
+                ae.setModifyDate((Date)temp[10]);
+                ae.setTags((String)temp[11]);
+            }
+            return ae;
+        } catch (NoResultException nre) {
+            return null;
+        }finally {
+            em.close();
+        }
+    }
 }

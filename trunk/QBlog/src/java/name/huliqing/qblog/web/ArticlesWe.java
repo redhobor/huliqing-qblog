@@ -41,12 +41,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.component.html.HtmlPanelGroup;
 import name.huliqing.qblog.QBlog;
 import name.huliqing.qblog.entity.ArticleEn;
 import name.huliqing.qblog.entity.TagArticleEn;
+import name.huliqing.qblog.processor.impl.ArticlesDataTable;
 import name.huliqing.qblog.service.ArticleSe;
 import name.huliqing.qblog.service.TagArticleSe;
 import name.huliqing.qfaces.QFaces;
+import name.huliqing.qfaces.component.Scroller;
 import name.huliqing.qfaces.model.PageModel;
 import name.huliqing.qfaces.model.PageParam;
 
@@ -70,7 +73,7 @@ public class ArticlesWe extends BaseWe {
         if (tempPageId != null) {
             pageId = tempPageId;
         }
-        
+
         String tempTag = QBlog.getParam("tag");
         if (tempTag != null) {
             try {

@@ -83,6 +83,13 @@
             name.huliqing.qblog.component.UIPhotoDataTable
         </component-class>
     </component>
+    
+    <component>
+        <component-type>name.huliqing.qblog.component.UIArticlesPanel</component-type>
+        <component-class>
+            name.huliqing.qblog.component.UIArticlesPanel
+        </component-class>
+    </component>
 
     <!-- processor -->
 
@@ -104,6 +111,13 @@
         <component-type>name.huliqing.qblog.processor.impl.RecentPostArticleDataTable</component-type>
         <component-class>
             name.huliqing.qblog.processor.impl.RecentPostArticleDataTable
+        </component-class>
+    </component>
+
+    <component>
+        <component-type>name.huliqing.qblog.processor.impl.TagArticlesDataTable</component-type>
+        <component-class>
+            name.huliqing.qblog.processor.impl.TagArticlesDataTable
         </component-class>
     </component>
 
@@ -141,5 +155,7 @@
             name.huliqing.qblog.processor.impl.ModulePanelGrid
         </component-class>
     </component>
+
+
 
 </faces-config>

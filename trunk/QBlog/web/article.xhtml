@@ -26,37 +26,45 @@
 
             <div class="css_article_content">
                 <h:outputText value="#{articleWe.article.content}" escape="false">
-                        <f:converter converterId="converter.TextConverter" />
+                    <f:converter converterId="converter.TextConverter" />
                 </h:outputText>
             </div>
-
+            
             <!-- Split line-->
             <div class="css_article_footerOuter">
                 <div class="css_article_footerInner">
                     <div class="css_article_footer">
-                    <h:form>
-                        <h:panelGroup rendered="#{visitor.login}" >
+                        <h:form>
                             <h:outputText value="发表于：" />
                             <h:outputText value="#{articleWe.article.createDate}">
-                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+                                <f:convertDateTime pattern="#{app.dateTimeFormat}" timeZone="#{app.timeZone}" />
                             </h:outputText>
 
                             <h:outputText value="阅读:#{articleWe.article.totalView}" styleClass="marginLR" />
                             <h:outputText value="评论:#{articleWe.article.totalReply}" styleClass="marginLR" />
 
-                            <h:outputLink value="/admin/blog/articleEdit.faces" styleClass="marginLR">
-                                <f:param name="articleId" value="#{articleWe.article.articleId}" />
-                                <f:param name="returnURL" value="#{app.currentURL}" />
-                                <h:outputText value="编辑" />
-                            </h:outputLink>
+                            <h:panelGroup rendered="#{visitor.login}" >
+                                <h:outputLink value="/admin/blog/articleEdit.faces" styleClass="marginLR">
+                                    <f:param name="articleId" value="#{articleWe.article.articleId}" />
+                                    <f:param name="returnURL" value="#{app.currentURL}" />
+                                    <h:outputText value="编辑" />
+                                </h:outputLink>
 
-                            <h:commandLink action="#{articleWe.deleteArticle}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
-                                <h:outputText value="删除" />
-                            </h:commandLink>
-                        </h:panelGroup>
-                    </h:form>
+                                <h:commandLink action="#{articleWe.deleteArticle}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
+                                    <h:outputText value="删除" />
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </h:form>
                     </div>
                 </div>
+            </div>
+
+            <div style="padding:3px 0;margin-top: 3px;">
+                上一篇:<a href="/article/articleId=#{articleWe.previous.articleId},pageId=#{articleWe.pageId}" > #{articleWe.previous.title} </a>
+            </div>
+            <div style="padding:3px 0;">
+                下一篇:<a href="/article/articleId=#{articleWe.next.articleId},pageId=#{articleWe.pageId}" > #{articleWe.next.title} </a>
+                <h:outputText value="没有了" rendered="#{articleWe.next.articleId == null}" />
             </div>
 
             <!-- Reply List-->

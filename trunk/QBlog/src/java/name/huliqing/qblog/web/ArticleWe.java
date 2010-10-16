@@ -58,16 +58,65 @@ import name.huliqing.qfaces.model.PageModel;
 public class ArticleWe extends BaseWe {
 
     private ArticleEn article;
+    private ArticleEn previous;
+    private ArticleEn next;
+    private Long pageId;
 
     public ArticleWe() {
         super();
+        Long tempPageId = QBlog.getPageId();
+        if (tempPageId != null) {
+            pageId = tempPageId;
+        }
         Long articleId = QBlog.getArticleId();
         if (articleId != null) {
             this.article = ArticleSe.find(articleId);
             if (this.article != null) {
                 ArticleSe.increaseTotalView(articleId, 1);
+                this.previous = ArticleSe.findNextPublic(article, false);
+                this.next = ArticleSe.findNextPublic(article, true);
             }
         }
+    }
+
+    // ---- Getter and Setter
+
+    public Long getPageId() {
+        return pageId;
+    }
+
+    public void setPageId(Long pageId) {
+        this.pageId = pageId;
+    }
+
+    public ArticleEn getArticle() {
+        return article;
+    }
+
+    public void setArticle(ArticleEn article) {
+        this.article = article;
+    }
+
+    public ArticleEn getNext() {
+        if (next == null) {
+            next = new ArticleEn();
+        }
+        return next;
+    }
+
+    public void setNext(ArticleEn next) {
+        this.next = next;
+    }
+
+    public ArticleEn getPrevious() {
+        if (previous == null) {
+            previous = new ArticleEn();
+        }
+        return previous;
+    }
+
+    public void setPrevious(ArticleEn previous) {
+        this.previous = previous;
     }
 
     // 在admin有登录的情况下，帮助填充回复栏部分的内容
@@ -93,16 +142,6 @@ public class ArticleWe extends BaseWe {
         // ignore
     }
 
-    // ---- Getter and Setter
-
-    public ArticleEn getArticle() {
-        return article;
-    }
-
-    public void setArticle(ArticleEn article) {
-        this.article = article;
-    }
-
     public Boolean getReplyable() {
         return ArticleSe.isReplyable(article);
     }
@@ -116,6 +155,7 @@ public class ArticleWe extends BaseWe {
     }
 
     // ---- Action
+
     public MiniPageModel loadReplies(MiniPageParam mpp) {
         Long articleId = QFaces.convertToLong(mpp.getRefValues()[0]);
         ArticleEn _ae = ArticleSe.find(articleId);

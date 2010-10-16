@@ -34,7 +34,6 @@ package name.huliqing.qblog.processor.impl;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
@@ -42,10 +41,10 @@ import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import name.huliqing.qblog.App;
-import name.huliqing.qblog.LayoutManager.Layout;
+import name.huliqing.qblog.ConfigManager;
 import name.huliqing.qblog.QBlog;
 import name.huliqing.qblog.entity.ArticleEn;
+import name.huliqing.qblog.enums.Config;
 import name.huliqing.qblog.enums.Style;
 
 /**
@@ -105,6 +104,7 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
     public void setShowSummary(Boolean showSummary) {
         this.showSummary = showSummary;
     }
+
     private Object[] _values;
 
     @Override
@@ -148,13 +148,14 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
             String returnURL = QBlog.getOriginalURI(true, true);
             SimpleDateFormat sdf = null;
             try {
-                sdf = new SimpleDateFormat(pattern != null ? pattern : "yyyy-MM-dd HH:mm");
+                sdf = new SimpleDateFormat(pattern != null ? 
+                    pattern : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_DATE_FORMAT));
             } catch (Exception e) {
-                logger.warning("发现不符合规则的日期格式，目标pattern=" + pattern + ","
-                        + "偿试改为默认格式：yyyy-MM-dd HH:mm");
+                logger.warning("发现不符合规则的日期格式，目标pattern=" + pattern + ",偿试改为默认格式：yyyy-MM-dd HH:mm");
                 sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             }
-            sdf.setTimeZone(TimeZone.getTimeZone(timeZone != null ? timeZone : "GMT+8"));
+            sdf.setTimeZone(TimeZone.getTimeZone(timeZone != null ? 
+                timeZone : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_TIME_ZONE)));
             Long pageId = QBlog.getPageId();
 
             String articleListTempate = QBlog.findCurrentLayout(pageId).getSubTemplateArticleList();
@@ -179,9 +180,9 @@ public class ArticlesDataTable extends HtmlDataTable implements java.io.Serializ
         String _target = (target != null ? target : "_self");
 
         String editEvent = "window.location.href='/admin/blog/articleEdit.faces?articleId="
-                + ae.getArticleId() + "&amp;returnURL=" + returnURL + ";'";
+                + ae.getArticleId() + "&amp;returnURL=" + returnURL + "'";
         String deleteEvent = "if (confirm('您真的要删除这篇文章吗? 删除后不能恢复')) {window.location.href ='/admin/blog/articleDelete.faces?articleId="
-                + ae.getArticleId() + "&amp;returnURL=" + returnURL + ";'}";
+                + ae.getArticleId() + "&amp;returnURL=" + returnURL + "'}";
 
         // {article.title}
         String _title = "<a href=\"" + href + "\" target='" + _target + "' onfocus='this.blur()' >" + ae.getTitle() + "</a>";

@@ -75,8 +75,11 @@ public class PageWe extends BaseWe {
         if (tempEditable != null && tempEditable && QBlog.getCurrentVisitor().isLogin()) {
             HttpServletRequest hsr = (HttpServletRequest) QBlog.getFacesContext().getExternalContext().getRequest();
             // 只有“page”页面能够被配置
-            if (hsr.getRequestURI().startsWith("/page.")) {
+            if (hsr.getRequestURI().startsWith("/page")) {
                 editable = tempEditable;
+            } else {
+                // 注意不要进入“死循环”
+                QBlog.redirect("/page/pageId=" + pageId + "?editable=true");
             }
         }
     }

@@ -40,8 +40,10 @@ import java.util.TimeZone;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import name.huliqing.qblog.ConfigManager;
 import name.huliqing.qblog.QBlog;
 import name.huliqing.qblog.entity.ReplyEn;
+import name.huliqing.qblog.enums.Config;
 
 /**
  *
@@ -126,14 +128,13 @@ public class RecentReplyDataTable extends HtmlDataTable implements java.io.Seria
             SimpleDateFormat sdf = null;
             if (getShowDate()) {
                 try {
-                    sdf = new SimpleDateFormat(getDateFormat());
+                    sdf = new SimpleDateFormat((dateFormat != null && !"".equals(dateFormat)) ?
+                        dateFormat : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_DATE_FORMAT));
                 } catch (Exception e) {
                     sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    e.printStackTrace();
                 }
-                if (getTimeZone() != null) {
-                    sdf.setTimeZone(TimeZone.getTimeZone(getTimeZone()));
-                }
+                sdf.setTimeZone(TimeZone.getTimeZone((timeZone != null && !"".equals(timeZone)) ?
+                    timeZone : ConfigManager.getInstance().getAsString(Config.CON_SYSTEM_TIME_ZONE)));
             }
             Long pageId = QBlog.getPageId();
             int i = 0;

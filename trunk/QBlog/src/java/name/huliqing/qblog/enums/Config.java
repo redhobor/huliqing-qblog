@@ -45,8 +45,8 @@ public enum Config {
     /** 当前系统所使用的默认模版,默认值:default，在修改这个值之前建议先查看当前系统都有什么模版可用，否则可能会使页面无法显示。 */
     CON_SYSTEM_LAYOUT("default"),
 
-    /** 系统默认的日期时间格式如："yyyy-MM-dd hh:mm:ss" */
-    CON_SYSTEM_DATE_FORMAT("yyyy-MM-dd HH:mm:ss"),
+    /** 系统默认的日期时间格式如："yyyy-MM-dd HH:mm" */
+    CON_SYSTEM_DATE_FORMAT("yyyy-MM-dd HH:mm"),
 
     /** 系统使用的默认时区:默认 "GMT+8" */
     CON_SYSTEM_TIME_ZONE("GMT+8"),

@@ -47,6 +47,7 @@
                         <h:panelGrid columns="2">
                             <h:outputLink value="/admin/blog/articleEdit.faces" styleClass="marginLR">
                                 <f:param name="articleId" value="#{article.articleId}" />
+                                <f:param name="returnURL" value="#{app.currentURL}" />
                                 <h:graphicImage url="/_res/image/button-edit.gif" />
                             </h:outputLink>
                             <h:commandLink actionListener="#{articleListWe.delete}" onclick="return confirm('#{text['p.toDelete']}');" styleClass="marginLR">
@@ -106,7 +107,7 @@
                             <h:outputText value="Create" />
                         </f:facet>
                         <h:outputText value="#{article.createDate}" >
-                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+                            <f:convertDateTime pattern="#{app.dateTimeFormat}" timeZone="#{app.timeZone}" />
                         </h:outputText>
                     </h:column>
 
@@ -115,7 +116,7 @@
                             <h:outputText value="Modify" />
                         </f:facet>
                         <h:outputText value="#{article.modifyDate}" >
-                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                            <f:convertDateTime pattern="#{app.dateTimeFormat}" timeZone="#{app.timeZone}" />
                         </h:outputText>
                     </h:column>
 

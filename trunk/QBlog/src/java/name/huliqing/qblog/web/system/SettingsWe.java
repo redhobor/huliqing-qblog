@@ -42,6 +42,7 @@ import name.huliqing.qblog.ConfigManager;
 import name.huliqing.qblog.Messenger;
 import name.huliqing.qblog.QBlog;
 import name.huliqing.qblog.entity.ConfigEn;
+import name.huliqing.qblog.enums.Config;
 
 @ManagedBean
 @RequestScoped
@@ -70,10 +71,26 @@ public class SettingsWe extends BaseWe {
             Messenger.sendError("Notice:Demo版本不允许修改系统配置.");
             return;
         }
-        for (ConfigEn c : configs) {
-            ConfigManager.getInstance().updateConfig(c);
+        try {
+            for (ConfigEn c : configs) {
+                ConfigManager.getInstance().updateConfig(c);
+            }
+            Messenger.sendInfo("配置信息已经更新");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Messenger.sendError("出错：" + e.getMessage());
         }
-        Messenger.sendInfo(QBlog.formatDate(new Date()) + ", 配置信息已经更新");
+        // 检查错误
+        try {
+            QBlog.formatDate(new Date());
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            ConfigEn ce = ConfigManager.getInstance().findConfig(Config.CON_SYSTEM_DATE_FORMAT);
+            ce.setValue("yyyy-MM-dd HH:mm");
+            ConfigManager.getInstance().updateConfig(ce);
+            Messenger.sendError("系统日期格式化错误，该格式已经被重置为：yyyy-MM-dd HH:mm");
+        }
+
     }
 
     public void resetAll() {
