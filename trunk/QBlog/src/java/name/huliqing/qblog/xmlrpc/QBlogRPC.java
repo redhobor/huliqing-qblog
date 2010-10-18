@@ -76,7 +76,7 @@ public class QBlogRPC implements MetaWeblogAPI, BloggerAPI{
         article.setMailNotice(ConfigManager.getInstance().getAsBoolean(Config.CON_REPLY_NOTICE));
         article.setReplyable(ConfigManager.getInstance().getAsBoolean(Config.CON_REPLY_ENABLE));
         article.setTags(buildTags((Object[]) struct.get("categories")));
-        if (ArticleSe.save(article)) {
+        if (ArticleSe.rpcSave(article)) {
             return article.getArticleId().toString();
         }
         throw new RuntimeException("Can't post articles(unknow)");
@@ -100,7 +100,7 @@ public class QBlogRPC implements MetaWeblogAPI, BloggerAPI{
         ae.setSummary(ArticleSe.generateSummary(description, 300));
         ae.setSecurity(publish ? ArticleSecurity.PUBLIC : ArticleSecurity.DRAFT);
         ae.setTags(buildTags((Object[]) struct.get("categories")));
-        return ArticleSe.update(ae);
+        return ArticleSe.rpcUpdate(ae);
     }
 
     public Hashtable<String, Object> getPost(String postid, String username,
@@ -117,7 +117,7 @@ public class QBlogRPC implements MetaWeblogAPI, BloggerAPI{
         validateAccount(username, password);
         if (postid == null)
             throw new RuntimeException("post id could not be null!");
-        return ArticleSe.delete(Long.parseLong(postid));
+        return ArticleSe.rpcDelete(Long.parseLong(postid));
     }
 
     public Hashtable<String, Object> newMediaObject(String blogid, String username,

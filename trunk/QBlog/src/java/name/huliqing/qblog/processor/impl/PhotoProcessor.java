@@ -62,12 +62,13 @@ import name.huliqing.qfaces.component.Scroller;
  */
 public class PhotoProcessor extends XmlProcessor2{
 
+    @Override
     public List<Attribute2> getRequiredAttributes() {
         AttrInputText columns = new AttrInputText("Columns", "4", "每行显示多少列");
 
         AttrInputText pageSize = new AttrInputText("Page Size", "8", "每页显示多少张图片");
 
-        AttrInputText displayPage = new AttrInputText("Display Page", "9", "最多的可见页码数,默认:3");
+        AttrInputText displayPage = new AttrInputText("Display Page", "9", "最多的可见页码数,默认:9");
 
         AttrSelectBooleanCheckbox displayJump = new AttrSelectBooleanCheckbox("Display Jump", "false", "是否显示一个输入框用于输入页面进行翻页跳转.");
 
@@ -79,7 +80,7 @@ public class PhotoProcessor extends XmlProcessor2{
         sort.addItem("true", "正序");
         sort.addItem("false", "倒序");
         
-        AttrSelectOneRadio face = new AttrSelectOneRadio("Face", "1", "翻页条的样式,可选择0/1,默认:2");
+        AttrSelectOneRadio face = new AttrSelectOneRadio("Face", "1", "翻页条的样式,可选择1/2,默认:2");
         face.addItem("0", "样式1");
         face.addItem("1", "样式2");
         
@@ -150,6 +151,7 @@ public class PhotoProcessor extends XmlProcessor2{
         return as;
     }
 
+    @Override
     public UIComponent render(ModuleEn module) {
         AttrMap attr = getAttributes(module);
 
@@ -291,10 +293,12 @@ public class PhotoProcessor extends XmlProcessor2{
         return form;
     }
 
+    @Override
     public String getName() {
         return "图片集";
     }
 
+    @Override
     public String getDescription() {
         return "使用这个模块来显示我的某个相册中的图片。";
     }

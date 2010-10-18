@@ -54,12 +54,70 @@ import name.huliqing.qfaces.model.PageParam;
 public class ArticleSe {
     protected final static Logger logger = Logger.getLogger(ArticleSe.class.getName());
 
+    public final static Boolean save(ArticleEn article) {
+        if (!QBlog.getCurrentVisitor().isLogin()) {
+            return Boolean.FALSE;
+        }
+        return _save(article);
+    }
+    
+    public final static Boolean update(ArticleEn article) {
+        if (!QBlog.getCurrentVisitor().isLogin()) {
+            return Boolean.FALSE;
+        }
+        return _update(article);
+    }
+
+    public final static Boolean delete(Long articleId) {
+        if (!QBlog.getCurrentVisitor().isLogin()) {
+            return Boolean.FALSE;
+        }
+        return _delete(articleId);
+    }
+
+    public final static Boolean rpcSave(ArticleEn article) {
+        return _save(article);
+    }
+
+    public final static Boolean rpcUpdate(ArticleEn article) {
+        return _update(article);
+    }
+
+    /**
+     * 获取指定的文章，该方法不验证用户是否登录及ArticleSecurity.该方法专门用于
+     * XmlRpc, XmlRpc在进入这一步之前应该已经验证了用户权限。
+     * @param articleId
+     * @return
+     */
+    public final static ArticleEn rpcFind(Long articleId) {
+        ArticleEn ae = ArticleCache.getInstance().find(articleId);
+        return ae;
+    }
+
+    /**
+     * 删除指定文章，不需要验证用户是否登录，forXmlRpc
+     * @param articleId
+     * @return
+     */
+    public final static Boolean rpcDelete(Long articleId) {
+        return _delete(articleId);
+    }
+
+    /**
+     * @see ArticleCache#rpcFindRecentPost(java.lang.Integer) ;
+     * @param size
+     * @return
+     */
+    public final static List<ArticleEn> rpcFindRecentPost(Integer size) {
+        return ArticleCache.getInstance().findRecentPost(size);
+    }
+
     /**
      * 创建文章
      * @param article
      * @return
      */
-    public final static Boolean save(ArticleEn article) {
+    private final static Boolean _save(ArticleEn article) {
         // 文章默认发表日期
         if (article.getCreateDate() == null) {
             article.setCreateDate(new Date());
@@ -94,7 +152,7 @@ public class ArticleSe {
      * @param article
      * @return
      */
-    public final static Boolean update(ArticleEn article) {
+    private final static Boolean _update(ArticleEn article) {
         if (article.getCreateDate() == null) {
             article.setCreateDate(new Date());
         }
@@ -122,7 +180,7 @@ public class ArticleSe {
      * @param articleId
      * @return
      */
-    public final static Boolean delete(Long articleId) {
+    private final static Boolean _delete(Long articleId) {
         ArticleCache.getInstance().delete(articleId);
         // 更新文章的标签信息
         TagArticleSe.updateArticleTags(articleId);
@@ -396,23 +454,5 @@ public class ArticleSe {
         return summary;
     }
 
-    /**
-     * 获取指定的文章，该方法不验证用户是否登录及ArticleSecurity.该方法专门用于
-     * XmlRpc, XmlRpc在进入这一步之前应该已经验证了用户权限。
-     * @param articleId
-     * @return
-     */
-    public final static ArticleEn rpcFind(Long articleId) {
-        ArticleEn ae = ArticleCache.getInstance().find(articleId);
-        return ae;
-    }
-
-    /**
-     * @see ArticleCache#rpcFindRecentPost(java.lang.Integer) ;
-     * @param size
-     * @return
-     */
-    public final static List<ArticleEn> rpcFindRecentPost(Integer size) {
-        return ArticleCache.getInstance().findRecentPost(size);
-    }
+    
 }

@@ -77,35 +77,38 @@
     <servlet>
         <servlet-name>QFaces</servlet-name>
         <servlet-class>name.huliqing.qfaces.FacesServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>QFaces</servlet-name>
         <url-pattern>*.qfaces</url-pattern>
     </servlet-mapping>
     <!-- XmlRpc Servlet-->
-    <!--
-    <servlet>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <servlet-class>org.apache.xmlrpc.webserver.XmlRpcServlet</servlet-class>
-        <init-param>
-        <param-name>enabledForExtensions</param-name>
-        <param-value>true</param-value>
-        <description>
-            Sets, whether the servlet supports vendor extensions for XML-RPC.
-        </description>
-        </init-param>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>XmlRpcServlet</servlet-name>
-        <url-pattern>/xmlrpc</url-pattern>
-    </servlet-mapping>
-    -->
     <servlet>
         <servlet-name>MyXmlRpcServer</servlet-name>
         <servlet-class>name.huliqing.qblog.xmlrpc.MyXmlRpcServer3</servlet-class>
+        <load-on-startup>3</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>MyXmlRpcServer</servlet-name>
         <url-pattern>/xmlrpc</url-pattern>
     </servlet-mapping>
+    <!-- Session cleanup -->
+    <servlet>
+        <servlet-name>SessionCleanup</servlet-name>
+        <servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionCleanup</servlet-name>
+        <url-pattern>/ah/SessionCleanup</url-pattern>
+    </servlet-mapping>
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/ah/SessionCleanup</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>
