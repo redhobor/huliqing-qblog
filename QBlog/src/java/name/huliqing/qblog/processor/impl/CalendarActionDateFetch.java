@@ -268,7 +268,7 @@ public class CalendarActionDateFetch implements java.io.Serializable{
             }
         }
         private String buildRecord(ArticleEn ae) {
-            return "<li style=\"margin:3px 0 0 -12px;line-height:1.5em;\"><a href=\"/article/articleId="+ ae.getArticleId() + "\" >" + ae.getTitle() + "</a></li>";
+            return "<li style=\"margin:3px 5px 0 -20px;\"><a href=\"/article/articleId="+ ae.getArticleId() + "\" >" + ae.getTitle() + "</a></li>";
         }
     }
 

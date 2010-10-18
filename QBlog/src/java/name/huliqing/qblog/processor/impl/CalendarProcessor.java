@@ -50,15 +50,17 @@ import name.huliqing.qfaces.component.Frame;
  */
 public class CalendarProcessor extends XmlProcessor2{
 
+    @Override
     public List<Attribute2> getRequiredAttributes() {
         List<Attribute2> as = new ArrayList<Attribute2>(2);
         as.add(new AttrSelectBooleanCheckbox("Pop Panel", "false",
-                "是否显示一个快捷弹出窗口，可选值true/false, 当鼠标移动到某一个有高亮显示的日期时会" +
+                "是否显示一个快捷弹出窗口，当鼠标移动到某一个有高亮显示的日期时会" +
                 "弹出相应的快捷窗口，该窗口显示当天所发表过的所有文章。默认值：false"));
-        as.add(new AttrSelectBooleanCheckbox("Today", "true", "是否在日历页脚显示今天的日期,可选值true/false, 默认值：true"));
+        as.add(new AttrSelectBooleanCheckbox("Today", "true", "是否在日历页脚显示今天的日期,默认选中"));
         return as;
     }
 
+    @Override
     public UIComponent render(ModuleEn module) {
         AttrMap attr = getAttributes(module);
 
@@ -78,10 +80,12 @@ public class CalendarProcessor extends XmlProcessor2{
         return cal;
     }
 
+    @Override
     public String getName() {
         return "日历渲染器";
     }
 
+    @Override
     public String getDescription() {
         return "添加该事件日历可以帮助显示当前月发表过文章的日子，点击相应日期会快速查询到当天发表过的所有文章。";
     }

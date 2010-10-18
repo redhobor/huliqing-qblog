@@ -158,6 +158,7 @@ public class NavigationProcessor extends HtmlProcessor {
         return sb.toString();
     }
 
+    @Override
     public List<Attribute2> getRequiredAttributes() {
         List<Attribute2> attrs = new ArrayList<Attribute2>(3);
         AttrSelectOneRadio mode = new AttrSelectOneRadio("Mode", "0", "选择导航的显示方式");
@@ -180,7 +181,7 @@ public class NavigationProcessor extends HtmlProcessor {
 
     @Override
     public String getName() {
-        return "导航栏渲染器";
+        return "我的导航栏";
     }
 
     @Override

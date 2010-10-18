@@ -60,11 +60,12 @@
             </div>
 
             <div style="padding:3px 0;margin-top: 3px;">
-                上一篇:<a href="/article/articleId=#{articleWe.previous.articleId},pageId=#{articleWe.pageId}" > #{articleWe.previous.title} </a>
+                新一篇:<a href="/article/articleId=#{articleWe.next.articleId},pageId=#{articleWe.pageId}" > #{articleWe.next.title} </a>
+                <h:outputText value="没有了" rendered="#{articleWe.next.articleId == null}" />
             </div>
             <div style="padding:3px 0;">
-                下一篇:<a href="/article/articleId=#{articleWe.next.articleId},pageId=#{articleWe.pageId}" > #{articleWe.next.title} </a>
-                <h:outputText value="没有了" rendered="#{articleWe.next.articleId == null}" />
+                旧一篇:<a href="/article/articleId=#{articleWe.previous.articleId},pageId=#{articleWe.pageId}" > #{articleWe.previous.title} </a>
+                <h:outputText value="没有了" rendered="#{articleWe.previous.articleId == null}" />
             </div>
 
             <!-- Reply List-->

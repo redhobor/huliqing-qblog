@@ -10,9 +10,13 @@ a:hover {color: orange;text-decoration: underline;}
 }
 
 /** 整个导航栏的样式 */
-.css_nav_full {}
-.css_nav_full a:link{text-decoration: none;}
-.css_nav_full a:visited{text-decoration: none;}
+.css_nav_full {
+    margin-top: -4px;
+    font-size: 1.1em;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+.css_nav_full a:link{color:white;text-decoration: none;}
+.css_nav_full a:visited{color:white;text-decoration: none;}
 .css_nav_full a:hover{text-decoration: none;}
 
 .css_nav_itemOuter_onmouseout {}
@@ -95,5 +99,5 @@ a:hover {color: orange;text-decoration: underline;}
     font-family: Georgia,'Times New Roman',times,serif;
     font-weight: bold;
     background: url(/layout/qblog01/image/title-bg2.png) no-repeat;
-    margin:-3px 10px 0 -28px;
+    margin:-3px 10px 0 -26px;
 }

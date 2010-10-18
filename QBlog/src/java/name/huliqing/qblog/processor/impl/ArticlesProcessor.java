@@ -51,6 +51,7 @@ import name.huliqing.qfaces.component.Scroller;
  */
 public class ArticlesProcessor extends XmlProcessor2{
 
+    @Override
     public List<Attribute2> getRequiredAttributes() {
         List<Attribute2> as = new ArrayList<Attribute2>(10);
         AttrInputText pageSize = new AttrInputText("PageSize", "10", "每页显示多少篇文章，默认10");
@@ -61,7 +62,7 @@ public class ArticlesProcessor extends XmlProcessor2{
         target.addItem("_blank", "新窗口");
         AttrSelectBooleanCheckbox showSummary = new AttrSelectBooleanCheckbox("Show Summary", "true", "是否显示摘要信息.");
         AttrSelectBooleanCheckbox showFooter = new AttrSelectBooleanCheckbox("Show Footer", "true", "是否显示文章Footer,该区域包含发表日期，评论数，阅读数及编辑按钮.");
-        AttrSelectOneRadio face = new AttrSelectOneRadio("Face", "1", "翻页条的样式,可选择0/1,默认:2");
+        AttrSelectOneRadio face = new AttrSelectOneRadio("Face", "1", "翻页条的样式,可选择1/2,默认:2");
         face.addItem("0", "样式1");
         face.addItem("1", "样式2");
         AttrInputText timeZone = new AttrInputText("TimeZone", "GMT+8", "文章发表时间的时区设置,默认:GMT+8");
@@ -85,6 +86,7 @@ public class ArticlesProcessor extends XmlProcessor2{
         return as;
     }
         
+    @Override
     public UIComponent render(ModuleEn module) {
         AttrMap attr = getAttributes(module);
 
@@ -123,11 +125,13 @@ public class ArticlesProcessor extends XmlProcessor2{
         return form;
     }
     
+    @Override
     public String getDescription() {
         return "该渲染器能够帮助您产生“文章列表”模块，这个模块可以列出系统中所有文章信息。" +
                 "在创建模块之后，您可以将它添加到其它任何页面中。";
     }
 
+    @Override
     public String getName() {
         return "文章列表渲染器";
     }

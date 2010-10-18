@@ -39,5 +39,5 @@ img {border:0;}
 .row2 {background:#F6F6F6;}
 .oper {width:60px;}
 .none {font-size: 0;height:0;overflow:hidden;}
-.actionPanel {max-width:400px;background: #F0F0F0;border:3px solid #C0C0C0;padding: 3px;text-align: left;line-height: 1.2;}
+.actionPanel {max-width:250px;background: #F0F0F0;border:3px solid #C0C0C0;padding: 3px;text-align: left;line-height: 1.5;}
 .actionDate {color:blue;text-decoration: underline;}

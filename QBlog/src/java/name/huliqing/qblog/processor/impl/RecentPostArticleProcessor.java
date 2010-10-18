@@ -51,22 +51,24 @@ import name.huliqing.qblog.service.ArticleSe;
  */
 public class RecentPostArticleProcessor extends XmlProcessor2{
 
+    @Override
     public List<Attribute2> getRequiredAttributes() {
         List<Attribute2> as = new ArrayList<Attribute2>(7);
         as.add(new AttrInputText("Size", "6", "显示的文章数,默认:6"));
-        as.add(new AttrSelectBooleanCheckbox("Show Index", "true", "是否显示序号，请填写 true/false,默认:true"));
-        as.add(new AttrSelectBooleanCheckbox("Show Date", "false", "是否显示发表日期，请填写true/false, 默认:false"));
-        as.add(new AttrSelectBooleanCheckbox("Show Edit", "false", "是否显示快速编辑按钮,当您为登录状态时可以看到编辑、删除按钮，方便操作."));
+        as.add(new AttrSelectBooleanCheckbox("Show Index", "true", "是否显示序号，默认:是"));
+        as.add(new AttrSelectBooleanCheckbox("Show Date", "false", "是否显示发表日期，默认:否"));
+        as.add(new AttrSelectBooleanCheckbox("Show Edit", "false", "是否显示快速编辑按钮,当您为登录状态时可以看到编辑、删除按钮，方便操作.默认:否"));
         AttrSelectOneRadio target = new AttrSelectOneRadio("Target", "_self", "打开文章的目标窗口，默认：原窗口");
         target.addItem("_self", "原窗口");
         target.addItem("_blank", "新窗口");
         as.add(target);
-        as.add(new AttrInputText("Date Format", "yyyy-MM-dd", "文章发表日期的格式，只有Show Date为true时才有意义,默认:yyyy-MM-dd"));
+        as.add(new AttrInputText("Date Format", "yyyy-MM-dd", "文章发表日期的格式，只有Show Date选中时才有意义,默认:yyyy-MM-dd"));
         as.add(new AttrInputText("Time Zone", "GMT+8", "时区，默认:GMT+8"));
         
         return as;
     }
 
+    @Override
     public UIComponent render(ModuleEn module) {
         AttrMap attr = getAttributes(module);
 
@@ -92,10 +94,12 @@ public class RecentPostArticleProcessor extends XmlProcessor2{
         return table;
     }
 
+    @Override
     public String getName() {
         return "最近发表的文章";
     }
 
+    @Override
     public String getDescription() {
         return "显示我最近发表的文章";
     }

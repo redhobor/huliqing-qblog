@@ -51,6 +51,7 @@ import name.huliqing.qfaces.component.Scroller;
  */
 public class AlbumProcessor extends XmlProcessor2{
 
+    @Override
     public List<Attribute2> getRequiredAttributes() {
         AttrInputText columns = new AttrInputText("Columns", "1", "每行显示多少列");
 
@@ -68,7 +69,7 @@ public class AlbumProcessor extends XmlProcessor2{
         sort.addItem("true", "正序");
         sort.addItem("false", "倒序");
 
-        AttrSelectOneRadio face = new AttrSelectOneRadio("Face", "1", "翻页条的样式,可选择0/1,默认:2");
+        AttrSelectOneRadio face = new AttrSelectOneRadio("Face", "1", "翻页条的样式,可选择1/2,默认:2");
         face.addItem("0", "样式1");
         face.addItem("1", "样式2");
 
@@ -108,6 +109,7 @@ public class AlbumProcessor extends XmlProcessor2{
         return as;
     }
 
+    @Override
     public UIComponent render(ModuleEn module) {
         AttrMap attr = getAttributes(module);
 
@@ -155,10 +157,12 @@ public class AlbumProcessor extends XmlProcessor2{
         return form;
     }
 
+    @Override
     public String getName() {
         return "相册集";
     }
 
+    @Override
     public String getDescription() {
         return "这个渲染器生成一个相册列表";
     }
